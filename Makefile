@@ -1,7 +1,12 @@
 NAME = minishell
 
 SRCS = main.c
-OBJS = $(SRCS:.c=.o)
+
+OBJ = $(SRCS:.c=.o)
+
+OBJ_PATH = obj/
+SRC_PATH = ./
+OBJS = $(addprefix $(OBJ_PATH), $(OBJ))
 
 CC = cc
 RM = rm -rf
@@ -11,10 +16,10 @@ LIBFTP = ./libft/
 LIBPF = $(LIBPFP)libftprintf.a
 LIBFT = $(LIBFTP)libft.a
 
-%.o : %.c
+$(OBJ_PATH)%.o : $(SRC_PATH)%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all:  $(NAME) $(LIBPF) $(LIBFT)
+all: $(OBJ_PATH) $(NAME) $(LIBPF) $(LIBFT)
 
 $(NAME): $(OBJS) $(LIBPF) $(LIBFT)
 	$(CC) $(CFLAGS) -lreadline $(OBJS) $(LIBPF) $(LIBFT) -o $(NAME)
@@ -25,8 +30,11 @@ $(LIBPF):
 $(LIBFT):
 	@make -C $(LIBFTP)
 
+$(OBJ_PATH):
+	mkdir $(OBJ_PATH)
+
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJ_PATH)
 	@make clean -C $(LIBPFP)
 	@make clean -C $(LIBFTP)
 
