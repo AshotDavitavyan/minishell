@@ -6,9 +6,9 @@ char	*get_quote_token(char *user_input, char type)
 
 	i = 1;
 	user_input++;
-	while (*user_input != type)
+	while (user_input[i] != type)
 	{
-
+		user_input++;
 	}
 	return (NULL);
 }
