@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adavitav <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/16 12:13:29 by adavitav          #+#    #+#              #
-#    Updated: 2023/02/21 17:17:43 by adavitav         ###   ########.fr        #
+#    Updated: 2023/05/31 14:19:26 by vgribkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,17 +22,24 @@ SRCS = 	ft_putchar.c \
 		hex_check_lc.c \
 		hex_check_uc.c \
 
-OBJS = $(SRCS:.c=.o)
+OBJS = $(addprefix obj/,$(SRCS:.c=.o))
+OBJ_PATH = obj/
 
 FLAGS = -Wall -Werror -Wextra
 
-all: $(NAME)
+all: $(OBJ_PATH) $(NAME)
 
-$(NAME):
-	gcc $(FLAGS) -c $(SRCS)
+$(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
 
+$(OBJ_PATH)%.o: %.c
+	cc $(FLAGS) -c $< -o $@
+
+$(OBJ_PATH):
+	mkdir $(OBJ_PATH)
+
 clean:
+	rm -rf $(OBJ_PATH)
 	rm -rf *.o
 
 fclean: clean
