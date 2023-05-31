@@ -7,7 +7,7 @@
 #Exec
 minishell
 
-.DS_Store
+*.DS_Store
 
 #Objects
 *obj/
