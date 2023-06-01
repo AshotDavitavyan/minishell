@@ -1,0 +1,13 @@
+#Exec
+*.out
+#Visual Studio Code
+*.vscode
+#debugger
+*.dSYM
+#Exec
+minishell
+
+*.DS_Store
+
+#Objects
+*obj/
