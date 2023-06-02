@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	error()
+void	error(void)
 {
 	write(2, "Error\n", 6);
 	exit (1);
@@ -64,6 +64,7 @@ void	get_tokens(char *user_input)
 	int	i;
 
 	i = 0;
+	user_input = space_skip(user_input);
 	while (*user_input)
 	{
 		if (*user_input == 34 || *user_input == 39)
@@ -72,7 +73,8 @@ void	get_tokens(char *user_input)
 			i = 0;
 		}
 		if (*user_input == ' ')
-		{		
+		{
+			printf("Here\n");	
 			user_input = add_token(user_input, i);
 			user_input = space_skip(user_input);
 			i = 0;
@@ -84,32 +86,30 @@ void	get_tokens(char *user_input)
 		add_token(user_input, i);
 }
 
-static char	*alloc(char *user_input, char *input_new, int j, int i)
+static char	*alloc(char *u_i, char *input_new, int j, int i)
 {
-	while (user_input[i])
+	while (u_i[i])
 	{
-		if ((user_input[i] == '<' || user_input[i] == '>')
-			&& user_input[i + 1] == user_input[i])
+		if ((u_i[i] == '<' || u_i[i] == '>') && u_i[i + 1] == u_i[i])
 		{
 			input_new[j++] = ' ';
-			input_new[j++] = user_input[i++];
-			input_new[j++] = user_input[i++];
-			if (user_input[i])
-				input_new[j++] = ' ';
-			continue ;	
-		}
-		else if (user_input[i] == '|' || user_input[i] == '<'
-			|| user_input[i] == '>')
-		{
-			input_new[j++] = ' ';
-			input_new[j++] = user_input[i++];
-			if (user_input[i])
+			input_new[j++] = u_i[i++];
+			input_new[j++] = u_i[i++];
+			if (u_i[i])
 				input_new[j++] = ' ';
 			continue ;
 		}
-		input_new[j++] = user_input[i++];
+		else if (u_i[i] == '|' || u_i[i] == '<' || u_i[i] == '>')
+		{
+			input_new[j++] = ' ';
+			input_new[j++] = u_i[i++];
+			if (u_i[i])
+				input_new[j++] = ' ';
+			continue ;
+		}
+		input_new[j++] = u_i[i++];
 	}
-//	printf("%s\n", input_new);
+	input_new[j] = '\0';
 	return (input_new);
 }
 
