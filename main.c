@@ -6,7 +6,14 @@ void	error()
 	exit (1);
 }
 
-char	*get_quote_token(char *user_input, char type)
+char	*space_skip(char *user_input)
+{
+	while (*user_input == ' ')
+		user_input++;
+	return (user_input);
+}
+
+char	*add_quote_token(char *user_input, char type)
 {
 	int		i;
 	char	*token;
@@ -24,28 +31,32 @@ char	*get_quote_token(char *user_input, char type)
 		token[i++] = *user_input;
 		user_input++;
 	}
-	user_input++;
+	token[i] = '\0';
 	return (user_input);
 }
 
-char	*space_skip(char *user_input)
-{
-	while (*user_input == ' ')
-		user_input++;
-	return (user_input);
-}
+
+//------------------Token Print here----------------//
 
 char	*add_token(char *user_input, int i)
 {
 	char	*token;
 
 	token = (char *)malloc((i + 1) * sizeof(char));
-
 	while (i != 0)
 	{
 		user_input--;
 		i--;
 	}
+	while (*user_input != ' ' && *user_input != '\0')
+	{
+		token[i++] = *user_input;
+		user_input++;
+	}
+	user_input++;
+	token[i] = '\0';
+	printf("Token:[%s]\n", token);
+	return (user_input);
 }
 
 void	get_tokens(char *user_input)
@@ -57,17 +68,20 @@ void	get_tokens(char *user_input)
 	{
 		if (*user_input == 34 || *user_input == 39)
 		{
-			user_input = get_quote_token(user_input, *user_input);
+			user_input = add_quote_token(user_input, *user_input);
 			i = 0;
 		}
 		if (*user_input == ' ')
-		{
+		{		
 			user_input = add_token(user_input, i);
+			user_input = space_skip(user_input);
 			i = 0;
 		}
-
 		user_input++;
+		i++;
 	}
+	if (*user_input == '\0')
+		add_token(user_input, i);
 }
 
 static char	*alloc(char *user_input, char *input_new, int j, int i)
@@ -95,6 +109,7 @@ static char	*alloc(char *user_input, char *input_new, int j, int i)
 		}
 		input_new[j++] = user_input[i++];
 	}
+//	printf("%s\n", input_new);
 	return (input_new);
 }
 
@@ -137,13 +152,9 @@ int	main(int argc, char **argv, char **env)
 {
 	(void)argv;
 	(void)argc;
+	(void)env;
 	char *user_input;
 
-	while(*env)
-	{
-		printf("%s\n", *env);
-		env++;
-	}
 	while (1)
 	{
 		user_input = readline("minishell$ ");
