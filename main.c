@@ -1,27 +1,71 @@
 #include "minishell.h"
 
+void	error()
+{
+	write(2, "Error\n", 6);
+	exit (1);
+}
+
 char	*get_quote_token(char *user_input, char type)
 {
-	int i;
+	int		i;
+	char	*token;
 
 	i = 1;
 	user_input++;
-	while (user_input[i] != type)
+	while (user_input[i] && user_input[i] != type)
+		i++;
+	if (user_input[i] != type)
+		error();
+	token = (char *)malloc(i * sizeof(char));
+	i = 1;
+	while (*user_input != type)
 	{
+		token[i++] = *user_input;
 		user_input++;
 	}
-	return (NULL);
+	user_input++;
+	return (user_input);
+}
+
+char	*space_skip(char *user_input)
+{
+	while (*user_input == ' ')
+		user_input++;
+	return (user_input);
+}
+
+char	*add_token(char *user_input, int i)
+{
+	char	*token;
+
+	token = (char *)malloc((i + 1) * sizeof(char));
+
+	while (i != 0)
+	{
+		user_input--;
+		i--;
+	}
 }
 
 void	get_tokens(char *user_input)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (*user_input)
 	{
 		if (*user_input == 34 || *user_input == 39)
-			user_input = get_quote_token(user_input, *user_input)
+		{
+			user_input = get_quote_token(user_input, *user_input);
+			i = 0;
+		}
+		if (*user_input == ' ')
+		{
+			user_input = add_token(user_input, i);
+			i = 0;
+		}
+
 		user_input++;
 	}
 }
