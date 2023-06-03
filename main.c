@@ -42,6 +42,8 @@ char	*add_token(char *user_input, int i)
 {
 	char	*token;
 
+	if (i == 1 && *user_input == '\0')
+		return NULL;
 	token = (char *)malloc((i + 1) * sizeof(char));
 	while (i != 0)
 	{
@@ -55,7 +57,7 @@ char	*add_token(char *user_input, int i)
 	}
 	user_input++;
 	token[i] = '\0';
-	printf("Token:[%s]\n", token);
+	// printf("Token:[%s]\n", token);
 	return (user_input);
 }
 
@@ -74,7 +76,6 @@ void	get_tokens(char *user_input)
 		}
 		if (*user_input == ' ')
 		{
-			printf("Here\n");	
 			user_input = add_token(user_input, i);
 			user_input = space_skip(user_input);
 			i = 0;
@@ -86,66 +87,100 @@ void	get_tokens(char *user_input)
 		add_token(user_input, i);
 }
 
-static char	*alloc(char *u_i, char *input_new, int j, int i)
+// static char	*alloc(char *u_i, char *input_new, int j, int i)
+// {
+// 	while (u_i[i])
+// 	{
+// 		if ((u_i[i] == '<' || u_i[i] == '>') && u_i[i + 1] == u_i[i])
+// 		{
+// 			input_new[j++] = ' ';
+// 			input_new[j++] = u_i[i++];
+// 			input_new[j++] = u_i[i++];
+// 			if (u_i[i])
+// 				input_new[j++] = ' ';
+// 			continue ;
+// 		}
+// 		else if (u_i[i] == '|' || u_i[i] == '<' || u_i[i] == '>')
+// 		{
+// 			input_new[j++] = ' ';
+// 			input_new[j++] = u_i[i++];
+// 			if (u_i[i])
+// 				input_new[j++] = ' ';
+// 			continue ;
+// 		}
+// 		input_new[j++] = u_i[i++];
+// 	}
+// 	input_new[j] = '\0';
+// 	printf("[%s]\n", input_new);
+// 	return (input_new);
+// }
+
+int	skip_quotes(char *user_input, int pos)
 {
-	while (u_i[i])
+	char	type;
+	int		size;
+
+	type = user_input[pos++];
+	size = 2;
+	while (user_input[pos] != type || user_input[pos] != '\0')
 	{
-		if ((u_i[i] == '<' || u_i[i] == '>') && u_i[i + 1] == u_i[i])
-		{
-			input_new[j++] = ' ';
-			input_new[j++] = u_i[i++];
-			input_new[j++] = u_i[i++];
-			if (u_i[i])
-				input_new[j++] = ' ';
-			continue ;
-		}
-		else if (u_i[i] == '|' || u_i[i] == '<' || u_i[i] == '>')
-		{
-			input_new[j++] = ' ';
-			input_new[j++] = u_i[i++];
-			if (u_i[i])
-				input_new[j++] = ' ';
-			continue ;
-		}
-		input_new[j++] = u_i[i++];
+		size++;
+		pos++;
 	}
-	input_new[j] = '\0';
-	return (input_new);
+	if (user_input[pos] == '\0')
+		error();
+	return (size);
+}
+
+
+int	handle_redirs(char *user_input, int pos)
+{
+	char	type;
+	int		size;
+
+	type = user_input[pos];
+	size = 0;
+
+	if (user_input[pos + 1] == type)
+		return (4);
+	else if (user_input[pos] == '|' || user_input[pos + 1] != type)
+		return (3);
+	return (96);
 }
 
 char	*put_spaces(char *user_input)
 {
 	int		i;
 	int		size;
-	char	*input_new;
+	char	*input_new = NULL;
 
 	i = 0;
 	size = 0;
-	while (user_input[i])
+
+	while (user_input[i++])
 	{
-		if ((user_input[i] == '<' || user_input[i] == '>')
-			&& user_input[i + 1] == user_input[i])
+		if (user_input[i] == 34 || user_input[i] == 39)
 		{
-			i++;
-			size++;
+			size += skip_quotes(user_input, i);
+			i += skip_quotes(user_input, i);
 		}
-		else if (user_input[i] == '|' || user_input[i] == '<'
-			|| user_input[i] == '>')
+		if (user_input[i] == '<' || user_input[i] == '>' || user_input[i] == '|')
 		{
-			size++;
-			size += (user_input[i + 1] != 0);
+			size += handle_redirs(user_input, i);
+			i += (handle_redirs(user_input, i) - 2);
 		}
 		size++;
-		i++;
 	}
-	input_new = (char *)malloc((size + 1) * (sizeof(char)));
-	return (alloc(user_input, input_new, 0, 0));
+	printf("%d\n", size);
+	// input_new = (char *)malloc((size + 1) * sizeof(char));
+	return (input_new);
+	// return (alloc(user_input, input_new, 0, 0));
 }
 
 void	lexing(char *user_input)
 {
 	user_input = put_spaces(user_input);
-	get_tokens(user_input);
+//	get_tokens(user_input);
 }
 
 int	main(int argc, char **argv, char **env)
