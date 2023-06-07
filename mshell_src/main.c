@@ -158,7 +158,15 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		user_input = readline("minishell$ ");
+		if (!user_input)
+			break;
 		lexing(user_input);
+		if (ft_strncmp("env", user_input, 4) == 0)
+			bi_env(argc, argv, env);
+		if (ft_strncmp("pwd", user_input, 4) == 0)
+			bi_pwd();
 	}
+	printf("\n%s", user_input);
 	return (0);
 }
+

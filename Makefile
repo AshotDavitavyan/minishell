@@ -1,7 +1,7 @@
 NAME = minishell
 SRC_PATH = mshell_src
 OBJ_PATH = obj
-SRCS = $(addprefix $(SRC_PATH)/, main.c)
+SRCS = $(addprefix $(SRC_PATH)/, main.c built_ins.c)
 OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc
@@ -33,5 +33,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all fclean clean re
-
-

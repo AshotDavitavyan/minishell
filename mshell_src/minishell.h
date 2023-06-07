@@ -17,4 +17,8 @@
 // 	t_token	*next;
 // }	t_token;
 
+void	bi_env(int argc ,char **argv, char **env);
+
+void	bi_pwd(void);
+
 #endif
