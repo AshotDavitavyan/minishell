@@ -27,19 +27,19 @@ FLAGS = -Wall -Werror -Wextra
 all: $(OBJ_PATH) $(NAME)
 
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+	@ar rcs $(NAME) $(OBJS)
 
 $(OBJ_PATH)%.o: %.c
-	cc $(FLAGS) -c $< -o $@
+	@cc $(FLAGS) -c $< -o $@
 
 $(OBJ_PATH):
-	mkdir $(OBJ_PATH)
+	@mkdir $(OBJ_PATH)
 
 clean:
-	rm -rf obj
+	@rm -rf obj
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean $(NAME)
 
