@@ -1,51 +1,37 @@
 NAME = minishell
-
-SRCS = main.c
-
-OBJ = $(SRCS:.c=.o)
-
-OBJ_PATH = obj/
-SRC_PATH = ./
-OBJS = $(addprefix $(OBJ_PATH), $(OBJ))
+SRC_PATH = mshell_src
+OBJ_PATH = obj
+SRCS = $(addprefix $(SRC_PATH)/, main.c)
+OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Werror -Wextra
-LIBPFP = ./ft_printf/
 LIBFTP = ./libft/
-LIBPF = $(LIBPFP)libftprintf.a
 LIBFT = $(LIBFTP)libft.a
 
-$(OBJ_PATH)%.o : $(SRC_PATH)%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+all: $(NAME) $(LIBPF) $(LIBFT)
 
-all: $(OBJ_PATH) $(NAME) $(LIBPF) $(LIBFT)
+$(OBJ_PATH)/%.o : $(SRC_PATH)/%.c
+	@mkdir -p $(OBJ_PATH)
+	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS) $(LIBPF) $(LIBFT)
-	$(CC) $(CFLAGS) -lreadline $(OBJS) $(LIBPF) $(LIBFT) -o $(NAME)
-
-$(LIBPF):
-	@make -C $(LIBPFP)
+$(NAME): $(OBJS) $(LIBFT)
+	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(LIBFT) -o $(NAME)
 
 $(LIBFT):
-	@make -C $(LIBFTP)
-
-$(OBJ_PATH):
-	mkdir $(OBJ_PATH)
+	@ make -C $(LIBFTP)
 
 clean:
-	$(RM) $(OBJ_PATH)
-	@make clean -C $(LIBPFP)
+	@$(RM) $(OBJ_PATH)
 	@make clean -C $(LIBFTP)
 
 fclean: clean
-	$(RM) $(NAME)
-	@make fclean -C $(LIBPFP)
+	@$(RM) $(NAME)
 	@make fclean -C $(LIBFTP)
 
 re: fclean all
 
-reb: fclean bonus
+.PHONY: all fclean clean re
 
-.PHONY: all flean clean re
 
