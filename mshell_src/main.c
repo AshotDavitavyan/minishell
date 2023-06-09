@@ -109,7 +109,7 @@ static char	*alloc(char *user_input, char *input_new, int j, int i)
 		}
 		input_new[j++] = user_input[i++];
 	}
-//	printf("%s\n", input_new);
+	printf("%s\n", input_new);
 	return (input_new);
 }
 
