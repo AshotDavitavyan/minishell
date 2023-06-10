@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+
+/////////////////QUOTES WITH FLAGS QUOTES WITH COMMANDS////////////////////////
+//When seeing a quote check wether or not there was ' ' before and if there was not,
+//join it with what was before, IF the thing before wasn't pipe or redir, 
+//if there was a space, then handle it as a normal quote
+ 
+
 void	error(void)
 {
 	write(2, "Error\n", 6);
@@ -38,21 +45,36 @@ char	*add_quote_token(char *user_input, char type)
 
 //------------------Token Print here----------------//
 
-int	flags_check(char *user_input)
-{
-		if (*user_input == ' ' && space_skip(user_input) == '-')
-			return (1);
-		// else if (*user_input == ' ' && ((space_skip(user_input) == 34) ||
-		//  space_skip(user_input) == 39)) && *(space_skip(user_input) + 1) == '-')
-		// 	return (2);
-}
+// int	flags_check(char *user_input)
+// {
+// 	if (*user_input == ' ' && space_skip(user_input) == '-')
+// 		return (1);
+// //	else if (*user_input == ' ' && ((space_skip(user_input) == 34) ||
+// //		space_skip(user_input) == 39)) && *(space_skip(user_input) + 1) == '-')
+// //	return (2);
+// }
 
-char	*add_flags(char *user_input)
-{
-	char	*flags;
-	
-	return (flags);
-}
+// char	*add_flags(char **user_input, int f_case)
+// {
+// 	char	*flags;
+// 	int		size;
+
+// 	if (f_case == 1)
+// 	{
+// 		user_input = space_skip(user_input);0
+// 		user_input++;
+// 	}
+// 	while (*user_input != '\0')
+// 	{
+// 		if (*user_input == ' ' && space_skip(user_input) != '-')
+// 			break ;
+// 		size++;
+// 		user_input++;
+// 	}
+// 	flags = (char *)malloc((size + 1) * sizeof(char));
+// 	while (*user_input != )
+// 	return (flags);
+// }
 
 char	*add_token(char *user_input, int i)
 {
@@ -75,10 +97,10 @@ char	*add_token(char *user_input, int i)
 	}
 	user_input++;
 	token[i] = '\0';
-	if (flags_check(user_input) == 1)
-		flags = add_flags(user_input)
+	// if (flags_check(user_input) == 1)
+	// 	flags = add_flags(user_input, 1);
 	printf("non_quote_token:[%s]\n", token);
-	create_token(token);
+	// create_token(token);
 	return (user_input);
 }
 
@@ -184,19 +206,22 @@ static char	*alloc(char *u_i, char *input_new, int j, int i)
 	return (input_new);
 }
 
-int	skip_quotes(char *user_input, int pos)
+int	skip_quotes(char *user_input, int *pos)
 {
 	char	type;
 	int		size;
-
-	type = user_input[pos++];
+	
 	size = 2;
-	while (user_input[pos] != type && user_input[pos] != '\0')
+	// if ((*pos) > 0 && (user_input[(*pos) - 1] != ' ' || user_input[(*pos) - 1] != '|'
+	// 	|| user_input[(*pos) - 1] != '<' || user_input[(*pos) - 1] != '>'))
+	// 	size = 0;
+	type = user_input[(*pos)++];
+	while (user_input[*pos] != type && user_input[*pos] != '\0')
 	{
 		size++;
-		pos++;
+		(*pos)++;
 	}
-	if (user_input[pos] == '\0')
+	if (user_input[*pos] == '\0')
 		error();
 	return (size);
 }
@@ -228,8 +253,7 @@ char	*put_spaces(char *user_input)
 	{
 		if (user_input[i] == 34 || user_input[i] == 39)
 		{
-			size += skip_quotes(user_input, i);
-			i += skip_quotes(user_input, i);
+			size += skip_quotes(user_input, &i);
 			continue ;
 		}
 		if (user_input[i] == '<' || user_input[i] == '>' || user_input[i] == '|')

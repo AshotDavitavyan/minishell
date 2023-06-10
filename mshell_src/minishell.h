@@ -8,13 +8,13 @@
 #include <readline/history.h>
 #include "../libft/libft.h"
 
-// typedef struct s_token
-// {
-// 	struct t_token	*before;
-// 	int		type;
-// 	char 	*flags;
-// 	char 	*name;
-// 	struct t_token	*next;
-// }	t_token;
+typedef struct s_token
+{
+	struct t_token	*before;
+	int		type;
+	char 	*flags;
+	char 	*name;
+	struct t_token	*next;
+}	t_token;
 
 #endif
