@@ -77,7 +77,7 @@ void	printf_node(t_token *lst)
 	}
 	while(lst)
 	{
-		printf("%s ", lst -> token);
+		printf("%s\n", lst -> token);
 		lst = lst -> next;
 	}
 }
@@ -114,7 +114,7 @@ int	count_words_V(char const *s, char c)
 	return (count);
 }
 
-char	**main_split_V(char const *s, char c)
+char	**main_split_V(char *s, char c)
 {
 	char	**words;
 	int		i;
@@ -133,12 +133,6 @@ char	**main_split_V(char const *s, char c)
 		k = i;
 		while (s[i] != c && s[i])
 			i++;
-		if (s[i + 1] == '-')
-		{
-			i++;
-			while (s[i] != c && s[i])
-				i++;
-		}
 		if (i > k)
 		{
 			words[j] = ft_substr(s, k, i - k);
@@ -149,7 +143,7 @@ char	**main_split_V(char const *s, char c)
 	return (words);
 }
 
-char	**ft_split_V(char const *s, char c)
+char	**ft_split_V(char *s, char c)
 {
 	char	**words;
 	int		count;
@@ -173,36 +167,26 @@ char	**ft_split_V(char const *s, char c)
 int	main(int argc, char **argv, char **env)
 {
 	t_token *token;
-	char *s;
 
 	if (argc || argv || env)
 		;
-	while (1)
+	int i = 1;
+	while(argc - 1)
 	{
-		s = readline("$> ");
-		if (!s)
-		{
-			printf("\n");
-			break;
-		}
-		int i = 0;
-		char **splited_s = ft_split_V(s, ' ');
-		while(splited_s[i])
-		{
-			ft_lstadd_back_token(&token, ft_lstnew_token(splited_s[i]));
-			i++;
-		}
-		if (ft_strncmp("env", token -> token, 4) == 0)
-			bi_env(env);
-		else if (ft_strncmp("pwd", token -> token, 4) == 0)
-			bi_pwd();
-		else if (ft_strncmp("echo", token -> token, 4) == 0)
-			bi_echo(token);
-		else if (ft_lstsize_token(token) == 1)
-			exec_1(token, env);
-		ft_lstclear_token(&token, (*del_token));
-		while (wait(NULL) != -1)
-			;
+		ft_lstadd_back_token(&token, ft_lstnew_token(argv[i]));
+		i++;
+		argc--;
 	}
+	if (ft_strncmp("env", token -> token, 4) == 0)
+		bi_env(env);
+	else if (ft_strncmp("pwd", token -> token, 4) == 0)
+		bi_pwd();
+	else if (ft_strncmp("echo", token -> token, 4) == 0)
+		bi_echo(token);
+	else if (ft_lstsize_token(token) == 1)
+		exec_1(token, env);
+	ft_lstclear_token(&token, (*del_token));
+	while (wait(NULL) != -1)
+		;
 	return (0);
 }
