@@ -1,11 +1,8 @@
 #include "minishell.h"
 
-
-/////////////////QUOTES WITH FLAGS QUOTES WITH COMMANDS////////////////////////
-//When seeing a quote check wether or not there was ' ' before and if there was not,
-//join it with what was before, IF the thing before wasn't pipe or redir, 
-//if there was a space, then handle it as a normal quote
- 
+////////////////////////////QUOTE AFTER QUOTE WITHOUT SPACE/////////////////////////////
+//Handle Dollar signs aswell
+//Single characters disappear
 
 void	error(void)
 {
@@ -15,10 +12,12 @@ void	error(void)
 
 char	*space_skip(char *user_input)
 {
-	while (*user_input == ' ')
+	while (*user_input == ' ' && *user_input)
 		user_input++;
 	return (user_input);
 }
+
+//------------------Token Print here----------------//
 
 char	*add_quote_token(char *user_input, char type)
 {
@@ -43,39 +42,6 @@ char	*add_quote_token(char *user_input, char type)
 	return (++user_input);
 }
 
-//------------------Token Print here----------------//
-
-// int	flags_check(char *user_input)
-// {
-// 	if (*user_input == ' ' && space_skip(user_input) == '-')
-// 		return (1);
-// //	else if (*user_input == ' ' && ((space_skip(user_input) == 34) ||
-// //		space_skip(user_input) == 39)) && *(space_skip(user_input) + 1) == '-')
-// //	return (2);
-// }
-
-// char	*add_flags(char **user_input, int f_case)
-// {
-// 	char	*flags;
-// 	int		size;
-
-// 	if (f_case == 1)
-// 	{
-// 		user_input = space_skip(user_input);0
-// 		user_input++;
-// 	}
-// 	while (*user_input != '\0')
-// 	{
-// 		if (*user_input == ' ' && space_skip(user_input) != '-')
-// 			break ;
-// 		size++;
-// 		user_input++;
-// 	}
-// 	flags = (char *)malloc((size + 1) * sizeof(char));
-// 	while (*user_input != )
-// 	return (flags);
-// }
-
 char	*add_token(char *user_input, int i)
 {
 	char	*token;
@@ -95,33 +61,26 @@ char	*add_token(char *user_input, int i)
 		token[i++] = *user_input;
 		user_input++;
 	}
-	user_input++;
 	token[i] = '\0';
-	// if (flags_check(user_input) == 1)
-	// 	flags = add_flags(user_input, 1);
 	printf("non_quote_token:[%s]\n", token);
-	// create_token(token);
+	user_input++;
+	// create_token(token, flags);
 	return (user_input);
 }
 
-void	get_tokens(char *user_input, t_token *structure)
+void	get_tokens(char *user_input, t_token *structure, int i)
 {
 	(void)structure;
-	int	i;
 
-	i = 0;
 	user_input = space_skip(user_input);
 	while (*user_input)
 	{
 		if (*user_input == 34 || *user_input == 39)
 		{
 			user_input = add_quote_token(user_input, *user_input);
-			i = 0;
+			i = (!(*user_input));
 			if (!(*user_input))
-			{
-				i = 1;
 				break ;
-			}
 			continue ;
 		}
 		if (*user_input == ' ')
@@ -138,91 +97,174 @@ void	get_tokens(char *user_input, t_token *structure)
 		add_token(user_input, i);
 }
 
-int	alloc_quotes(char *user_input, char *input_new, int pos_usr, int pos_new)
+///////////////////////////////////////////////////////////////////////////////////
+
+
+void	join_quote(char **user_input, char **input_new)
 {
 	char	type;
-	int		old_pos;
 
-	type = user_input[pos_usr++];
-	input_new[pos_new++] = type;
-	old_pos = pos_new;
-
-	while (user_input[pos_usr] != type)
-	{
-		input_new[pos_new] = user_input[pos_usr];
-		pos_new++;
-		pos_usr++;
-	}
-	input_new[pos_new++] = type;
-	return (pos_new - old_pos + 1);
+	type = *(*user_input)++;
+	while (**user_input != type)
+		*(*input_new)++ = *(*user_input)++;
+	(*user_input)++;
 }
 
-int	alloc_redpip(char *user_input, char *input_new, int pos_usr, int pos_new)
+int check(char *user_input, int step, int to_do, int *flag)
+{
+	int type;
+
+	type = *user_input;
+	if (to_do == 1 && step > 0 && *(user_input - 1) != ' ')
+		return (1);
+	if (to_do == 2)
+	{
+		if (*flag == 0)
+		{
+			user_input++;
+			while (*user_input != type)
+				user_input++;
+		}
+		if (*(user_input + 1) != ' ' && *(user_input + 1) != '|'
+			&& *(user_input + 1) != '>' && *(user_input + 1) != '<' 
+				&& *(user_input + 1) != '\0')
+			return (1);
+	}
+	return (0);
+}
+
+void	alloc_quotes(char **user_input, char **input_new, int step, int flag)
 {
 	char	type;
 
-	type = user_input[pos_usr++];
-	if (user_input[pos_usr] != type)
+	if (check(*user_input, step, 1, &flag) == 1)
 	{
-		input_new[pos_new++] = ' ';
-		input_new[pos_new++] = type;
-		input_new[pos_new++] = ' ';
-		return (3);
+		join_quote(user_input, input_new);
+		flag = 1;
+	}
+	if (check(*user_input, step, 2, &flag) == 1)
+	{
+		if (flag == 0)
+			join_quote(user_input, input_new);
+		return ;
+	}
+	if (flag == 1)
+		return ;
+	type = *(*user_input)++;
+	*(*input_new)++ = type;
+	while (**user_input != type)
+	{
+		**input_new = **user_input;
+		(*input_new)++;
+		(*user_input)++;
+	}
+	*(*input_new)++ = *(*user_input)++;
+}
+
+void	alloc_redpip(char **user_input, char **input_new)
+{
+	char	type;
+
+	type = *(*user_input)++;
+	if (**user_input != type || *(*user_input - 1) == '|')
+	{
+		*(*input_new)++ = ' ';
+		*(*input_new)++ = type;
+		*(*input_new)++ = ' ';
 	}
 	else
 	{
-		input_new[pos_new++] = ' ';
-		input_new[pos_new++] = type;
-		input_new[pos_new++] = type;
-		input_new[pos_new++] = ' ';
-		return (4);
+		*(*input_new)++ = ' ';
+		*(*input_new)++ = type;
+		*(*input_new)++ = type;
+		*(*input_new)++ = ' ';
+		(*user_input)++;
 	}
 }
 
-static char	*alloc(char *u_i, char *input_new, int j, int i)
+static char	*alloc(char *u_i, char *input_new, int step)
 {
-	int	add;
+	char *start;
 
-	add = 0;
-	while (u_i[i])
+	start = input_new;
+	while (*u_i)
 	{
-		if (u_i[i] == 34 || u_i[i] == 39)
+		if (*u_i == 34 || *u_i == 39)
 		{
-			add = alloc_quotes(u_i, input_new, i, j);
-			i += add;
-			j += add;
+			alloc_quotes(&u_i, &input_new, step, 0);
 			continue ;
 		}
-		if (u_i[i] == '|' || u_i[i] == '<' || u_i[i] == '>')
+		if (*u_i == '|' || *u_i == '<' || *u_i == '>')
 		{
-			add = alloc_redpip(u_i, input_new, i, j);
-			i += add - 2;
-			j += add;
+			alloc_redpip(&u_i, &input_new);
+			step = 0;
 			continue ;
 		}
-		input_new[j++] = u_i[i++];
+		*(input_new++) = *(u_i++);
+		step++;
 	}
-	input_new[j] = '\0';
+	*input_new = '\0';
+	input_new = start;
 	return (input_new);
 }
 
-int	skip_quotes(char *user_input, int *pos)
+/////////////////////////////////////////////////////////////////////////////////////
+
+int	thank_you_norminette(char *u, int p)
+{
+	if (p > 0 && (u[p - 1] != ' ' || u[p - 1]
+		!= '|'|| u[p - 1] != '<' || u[p - 1] != '>'))
+		return (0);
+	return (1);
+}
+
+void	check_for_quotes_after(char *u, int *p, int *size, int *flag)
+{
+	char type;
+
+	if (u[*p] != 34 && u[*p] != 39)
+		return ;
+	type = u[(*p)++];
+	(*size) -= (*flag);
+	(*flag) = 0;
+	while (u[*p] != type && u[*p] != '\0')
+	{
+		(*p)++;
+		(*size)++;
+		if (u[*p] == type && (u[*p + 1] == 34 || u[*p + 1] == 39))
+			(*p) += 2;
+	}
+	if (u[*p] == '\0')
+		error();
+	(*p)++;
+}
+
+int	skip_quotes(char *u, int *p, int flag, int size)
 {
 	char	type;
-	int		size;
-	
-	size = 2;
-	// if ((*pos) > 0 && (user_input[(*pos) - 1] != ' ' || user_input[(*pos) - 1] != '|'
-	// 	|| user_input[(*pos) - 1] != '<' || user_input[(*pos) - 1] != '>'))
-	// 	size = 0;
-	type = user_input[(*pos)++];
-	while (user_input[*pos] != type && user_input[*pos] != '\0')
+
+	size = 2 *(thank_you_norminette(u, *p) == 1);
+	flag = 2 *(thank_you_norminette(u, *p) == 1);
+	type = u[(*p)++];
+	while (u[*p] != type && u[*p] != '\0')
 	{
 		size++;
-		(*pos)++;
+		(*p)++;
 	}
-	if (user_input[*pos] == '\0')
+	if (u[(*p)++] == '\0')
 		error();
+	check_for_quotes_after(u, p, &size, &flag);
+	if (u[*p] != '\0' && u[*p] != ' ' && u[*p] != '|' && u[*p]
+		!= '<' && u[(*p)] != '>' && u[*p] != 34 && u[*p] != 39)
+	{
+		while (u[*p] !=  ' ' && u[*p] != '\0' && u[*p] != '|' 
+			&& u[*p] != '<' && u[*p] != '>' && u[*p] != 34 && u[*p] != 39)
+		{
+			size++;
+			(*p)++;
+		}
+		size -= flag;
+	}
 	return (size);
 }
 
@@ -253,7 +295,7 @@ char	*put_spaces(char *user_input)
 	{
 		if (user_input[i] == 34 || user_input[i] == 39)
 		{
-			size += skip_quotes(user_input, &i);
+			size += skip_quotes(user_input, &i, 2, 2);
 			continue ;
 		}
 		if (user_input[i] == '<' || user_input[i] == '>' || user_input[i] == '|')
@@ -266,13 +308,16 @@ char	*put_spaces(char *user_input)
 		i++;
 	}
 	input_new = (char *)malloc((size + 1) * sizeof(char));
-	return (alloc(user_input, input_new, 0, 0));
+	printf("%d\n", size);
+	return (alloc(user_input, input_new, 0));
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////
 
 void	lexing(char *user_input, t_token *structure)
 {
 	user_input = put_spaces(user_input);
-	get_tokens(user_input, structure);
+	get_tokens(user_input, structure, 0);
 }
 
 int	main(int argc, char **argv, char **env)
