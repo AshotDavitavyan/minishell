@@ -84,10 +84,15 @@ int	redirects_checker(t_token *token)
 	return (flag);
 }
 
-void	def_of_exec_a_file(char *token, char **argvv,char **file)
+void	def_of_exec_a_file(char *token, char **argvv,char **file, int flag)
 {
 	char **argv;
 
+	if(flag == -1)
+	{
+		*argvv = ft_split_V(token, ' ')[0];
+		return ;
+	}
 	argv = ft_split_V(token, ' ');
 	if (ft_strchr(argv[0], '>') || ft_strchr(argv[0], '<'))
 	{
@@ -108,8 +113,10 @@ void	executing_one(int flag, char *argvv, char *file, char **env)
 	int fd_file;
 	char **args;
 	int f;
-
-	fd_file = open(file, O_RDWR | O_TRUNC, 0777);
+	if (flag == 0)
+		fd_file = open(file, O_RDWR, 0777);
+	else if (flag == 1)
+		fd_file = open(file, O_RDWR | O_TRUNC, 0777);
 	f = fork();
 	if (f == 0)
 	{
@@ -129,6 +136,10 @@ void	exec_1(t_token *token, char **env)
 	char *argvv;
 
 	flag = redirects_checker(token);
-	def_of_exec_a_file(token -> token, &argvv, &file);
+	def_of_exec_a_file(token -> token, &argvv, &file, flag);
 	executing_one(flag, argvv, file, env);
+}
+void	exec_n(t_token token, char **env)
+{
+	
 }

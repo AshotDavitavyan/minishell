@@ -133,6 +133,12 @@ char	**main_split_V(char *s, char c)
 		k = i;
 		while (s[i] != c && s[i])
 			i++;
+		if (s[i + 1] == '-')
+		{
+			i++;
+			while (s[i] != c && s[i])
+				i++;
+		}
 		if (i > k)
 		{
 			words[j] = ft_substr(s, k, i - k);
@@ -185,8 +191,11 @@ int	main(int argc, char **argv, char **env)
 		bi_echo(token);
 	else if (ft_lstsize_token(token) == 1)
 		exec_1(token, env);
+	else if (ft_lstsize_token(token) > 1)
+		exec_n(token, env);
 	ft_lstclear_token(&token, (*del_token));
 	while (wait(NULL) != -1)
 		;
 	return (0);
 }
+
