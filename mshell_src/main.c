@@ -3,6 +3,7 @@
 ////////////////////////////QUOTE AFTER QUOTE WITHOUT SPACE/////////////////////////////
 //Handle Dollar signs aswell
 //Single characters disappear
+//Buffer overflow when redirect or pipe is placed right before quote >"asd"
 
 void	error(void)
 {
@@ -99,57 +100,10 @@ void	get_tokens(char *user_input, t_token *structure, int i)
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-
-void	join_quote(char **user_input, char **input_new)
+void	alloc_quotes(char **user_input, char **input_new)
 {
 	char	type;
 
-	type = *(*user_input)++;
-	while (**user_input != type)
-		*(*input_new)++ = *(*user_input)++;
-	(*user_input)++;
-}
-
-int check(char *user_input, int step, int to_do, int *flag)
-{
-	int type;
-
-	type = *user_input;
-	if (to_do == 1 && step > 0 && *(user_input - 1) != ' ')
-		return (1);
-	if (to_do == 2)
-	{
-		if (*flag == 0)
-		{
-			user_input++;
-			while (*user_input != type)
-				user_input++;
-		}
-		if (*(user_input + 1) != ' ' && *(user_input + 1) != '|'
-			&& *(user_input + 1) != '>' && *(user_input + 1) != '<' 
-				&& *(user_input + 1) != '\0')
-			return (1);
-	}
-	return (0);
-}
-
-void	alloc_quotes(char **user_input, char **input_new, int step, int flag)
-{
-	char	type;
-
-	if (check(*user_input, step, 1, &flag) == 1)
-	{
-		join_quote(user_input, input_new);
-		flag = 1;
-	}
-	if (check(*user_input, step, 2, &flag) == 1)
-	{
-		if (flag == 0)
-			join_quote(user_input, input_new);
-		return ;
-	}
-	if (flag == 1)
-		return ;
 	type = *(*user_input)++;
 	*(*input_new)++ = type;
 	while (**user_input != type)
@@ -182,7 +136,7 @@ void	alloc_redpip(char **user_input, char **input_new)
 	}
 }
 
-static char	*alloc(char *u_i, char *input_new, int step)
+static char	*alloc(char *u_i, char *input_new)
 {
 	char *start;
 
@@ -191,60 +145,28 @@ static char	*alloc(char *u_i, char *input_new, int step)
 	{
 		if (*u_i == 34 || *u_i == 39)
 		{
-			alloc_quotes(&u_i, &input_new, step, 0);
+			alloc_quotes(&u_i, &input_new);
 			continue ;
 		}
 		if (*u_i == '|' || *u_i == '<' || *u_i == '>')
 		{
 			alloc_redpip(&u_i, &input_new);
-			step = 0;
 			continue ;
 		}
 		*(input_new++) = *(u_i++);
-		step++;
 	}
 	*input_new = '\0';
 	input_new = start;
+	printf("%s\n", input_new);
 	return (input_new);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-int	thank_you_norminette(char *u, int p)
-{
-	if (p > 0 && (u[p - 1] != ' ' || u[p - 1]
-		!= '|'|| u[p - 1] != '<' || u[p - 1] != '>'))
-		return (0);
-	return (1);
-}
-
-void	check_for_quotes_after(char *u, int *p, int *size, int *flag)
-{
-	char type;
-
-	if (u[*p] != 34 && u[*p] != 39)
-		return ;
-	type = u[(*p)++];
-	(*size) -= (*flag);
-	(*flag) = 0;
-	while (u[*p] != type && u[*p] != '\0')
-	{
-		(*p)++;
-		(*size)++;
-		if (u[*p] == type && (u[*p + 1] == 34 || u[*p + 1] == 39))
-			(*p) += 2;
-	}
-	if (u[*p] == '\0')
-		error();
-	(*p)++;
-}
-
-int	skip_quotes(char *u, int *p, int flag, int size)
+int	skip_quotes(char *u, int *p, int size)
 {
 	char	type;
 
-	size = 2 *(thank_you_norminette(u, *p) == 1);
-	flag = 2 *(thank_you_norminette(u, *p) == 1);
 	type = u[(*p)++];
 	while (u[*p] != type && u[*p] != '\0')
 	{
@@ -253,29 +175,14 @@ int	skip_quotes(char *u, int *p, int flag, int size)
 	}
 	if (u[(*p)++] == '\0')
 		error();
-	check_for_quotes_after(u, p, &size, &flag);
-	if (u[*p] != '\0' && u[*p] != ' ' && u[*p] != '|' && u[*p]
-		!= '<' && u[(*p)] != '>' && u[*p] != 34 && u[*p] != 39)
-	{
-		while (u[*p] !=  ' ' && u[*p] != '\0' && u[*p] != '|' 
-			&& u[*p] != '<' && u[*p] != '>' && u[*p] != 34 && u[*p] != 39)
-		{
-			size++;
-			(*p)++;
-		}
-		size -= flag;
-	}
 	return (size);
 }
 
 int	handle_redirs(char *user_input, int pos)
 {
 	char	type;
-	int		size;
 
 	type = user_input[pos];
-	size = 0;
-
 	if (user_input[pos + 1] == type)
 		return (4);
 	else if (user_input[pos] == '|' || user_input[pos + 1] != type)
@@ -295,7 +202,7 @@ char	*put_spaces(char *user_input)
 	{
 		if (user_input[i] == 34 || user_input[i] == 39)
 		{
-			size += skip_quotes(user_input, &i, 2, 2);
+			size += skip_quotes(user_input, &i, 2);
 			continue ;
 		}
 		if (user_input[i] == '<' || user_input[i] == '>' || user_input[i] == '|')
@@ -309,7 +216,7 @@ char	*put_spaces(char *user_input)
 	}
 	input_new = (char *)malloc((size + 1) * sizeof(char));
 	printf("%d\n", size);
-	return (alloc(user_input, input_new, 0));
+	return (alloc(user_input, input_new));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
