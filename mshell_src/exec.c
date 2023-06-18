@@ -139,7 +139,3 @@ void	exec_1(t_token *token, char **env)
 	def_of_exec_a_file(token -> token, &argvv, &file, flag);
 	executing_one(flag, argvv, file, env);
 }
-void	exec_n(t_token token, char **env)
-{
-	
-}

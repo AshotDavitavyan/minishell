@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+int	ft_lstsize_token(t_token *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		lst = lst -> next;
+		i++;
+	}
+	return (i);
+}
+
 t_token	*ft_lstlast_token(t_token *lst)
 {
 	while (lst)
@@ -37,7 +50,6 @@ void	ft_lstclear_token(t_token **lst, void (*del)(char *))
 void	ft_lstadd_back_token(t_token **lst, t_token *new)
 {
 	t_token	*help;
-
 	help = *lst;
 	if (!help)
 	{
@@ -55,7 +67,7 @@ t_token	*ft_lstnew_token(char *token)
 	node = malloc(sizeof(t_token));
 	if (!node)
 		return (0);
-	node ->token = token;
+	node -> token = token;
 	node ->next = NULL;
 	return (node);
 }
@@ -80,19 +92,6 @@ void	printf_node(t_token *lst)
 		printf("%s\n", lst -> token);
 		lst = lst -> next;
 	}
-}
-
-int	ft_lstsize_token(t_token *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst != NULL)
-	{
-		lst = lst -> next;
-		i++;
-	}
-	return (i);
 }
 
 //----------------------------------------------------------------------------//
@@ -170,32 +169,69 @@ char	**ft_split_V(char *s, char c)
 
 //---------------------------------------------------------------------------//
 
+void	printf_arr(char **input)
+{
+	int i = 0;
+
+	while(input[i])
+		printf("%s\n", input[i++]);
+}
+
+void	init_env(t_token **token, char **envp)
+{
+	int	i = 0;
+	while (envp[i])
+		i++;
+	(*token) -> env = malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (envp[++i])
+	{
+		(*token) -> env[i] = ft_strdup(envp[i]);
+	}
+	(*token) -> env[i] = NULL;
+}
+
+void	do_list(char **input, t_token **token)
+{
+	t_token *tmp;
+	int i = 0;
+	*token = ft_lstnew_token(input[i]);
+	tmp = *token;
+	while(input[++i])
+	{
+		tmp -> next = ft_lstnew_token(input[i]);
+		if (tmp ->next)
+			tmp = tmp -> next;
+	}
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_token *token;
 
+	token = malloc(sizeof(t_token));
 	if (argc || argv || env)
 		;
-	int i = 1;
-	while(argc - 1)
+	char *user_input;
+	char **input;
+	while (1)
 	{
-		ft_lstadd_back_token(&token, ft_lstnew_token(argv[i]));
-		i++;
-		argc--;
+		user_input = readline("shell$ ");
+		input = ft_split_V(user_input, ' ');
+		do_list(input, &token);
+		init_env(&token, env);
+		if (ft_strncmp("env", token -> token, 4) == 0)
+			bi_env(token);
+		else if (ft_strncmp("pwd", token -> token, 4) == 0)
+			bi_pwd();
+		else if (ft_strncmp("echo", token -> token, 4) == 0)
+			bi_echo(token);
+		else if (ft_strncmp("cd", token -> token, 3) == 0)
+			bi_cd(token);
+		else if (ft_strncmp("exit", token -> token, 5) == 0)
+			bi_exit(token);
+		ft_lstclear_token(&token, (*del_token));
 	}
-	if (ft_strncmp("env", token -> token, 4) == 0)
-		bi_env(env);
-	else if (ft_strncmp("pwd", token -> token, 4) == 0)
-		bi_pwd();
-	else if (ft_strncmp("echo", token -> token, 4) == 0)
-		bi_echo(token);
-	else if (ft_lstsize_token(token) == 1)
-		exec_1(token, env);
-	else if (ft_lstsize_token(token) > 1)
-		exec_n(token, env);
-	ft_lstclear_token(&token, (*del_token));
-	while (wait(NULL) != -1)
-		;
 	return (0);
 }
 
