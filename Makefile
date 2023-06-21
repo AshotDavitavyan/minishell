@@ -1,7 +1,7 @@
 NAME = minishell
 SRC_PATH = mshell_src
 OBJ_PATH = obj
-SRCS = $(addprefix $(SRC_PATH)/, built_ins.c V_main.c exec.c)
+SRCS = $(addprefix $(SRC_PATH)/, built_ins1.c built_ins2.c V_main.c exec.c exit_utils.c export_utils.c)
 OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc

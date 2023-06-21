@@ -24,27 +24,27 @@ t_token	*ft_lstlast_token(t_token *lst)
 	return (lst);
 }
 
-void	ft_lstdelone_token(t_token *lst, void (*del)(char *))
+void	ft_lstdelone_token(t_token *token, void (*del)(char *))
 {
-	if (!lst)
+	if (!token)
 		return ;
-	(*del)(lst->token);
-	free(lst);
+	(*del)(token->token);
+	free(token);
 }
 
-void	ft_lstclear_token(t_token **lst, void (*del)(char *))
+void	ft_lstclear_token(t_token **token, void (*del)(char *))
 {
 	t_token	*i;
 	t_token	*j;
 
-	i = *lst;
+	i = *token;
 	while (i)
 	{
 		j = i->next;
 		ft_lstdelone_token(i, (*del));
 		i = j;
 	}
-	*lst = 0;
+	*token = 0;
 }
 
 void	ft_lstadd_back_token(t_token **lst, t_token *new)
@@ -60,13 +60,14 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new)
 	help -> next = new;
 }
 
-t_token	*ft_lstnew_token(char *token)
+t_token	*ft_lstnew_token(char *token, t_shell *shell)
 {
 	t_token	*node;
 
 	node = malloc(sizeof(t_token));
 	if (!node)
 		return (0);
+	node -> shell = shell; 
 	node -> token = token;
 	node ->next = NULL;
 	return (node);
@@ -132,7 +133,7 @@ char	**main_split_V(char *s, char c)
 		k = i;
 		while (s[i] != c && s[i])
 			i++;
-		if (s[i + 1] == '-')
+		if (s[i + 1] == '-' && ft_isdigit(s[i + 2]) == 0)
 		{
 			i++;
 			while (s[i] != c && s[i])
@@ -177,29 +178,32 @@ void	printf_arr(char **input)
 		printf("%s\n", input[i++]);
 }
 
-void	init_env(t_token **token, char **envp)
+void	init_env(t_shell **shell, char **envp)
 {
 	int	i = 0;
 	while (envp[i])
 		i++;
-	(*token) -> env = malloc(sizeof(char *) * (i + 1));
+	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (envp[++i])
 	{
-		(*token) -> env[i] = ft_strdup(envp[i]);
+		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
+			(*shell) -> envex[i] = ft_strdup("OLDPWD");
+		else
+			(*shell) -> envex[i] = ft_strdup(envp[i]);
 	}
-	(*token) -> env[i] = NULL;
+	(*shell) -> envex[i] = NULL;
 }
 
-void	do_list(char **input, t_token **token)
+void	do_list(char **input, t_shell **shell)
 {
 	t_token *tmp;
 	int i = 0;
-	*token = ft_lstnew_token(input[i]);
-	tmp = *token;
+	(*shell)->token = ft_lstnew_token(input[i], *shell);
+	tmp = (*shell)-> token;
 	while(input[++i])
 	{
-		tmp -> next = ft_lstnew_token(input[i]);
+		tmp -> next = ft_lstnew_token(input[i], *shell);
 		if (tmp ->next)
 			tmp = tmp -> next;
 	}
@@ -207,30 +211,34 @@ void	do_list(char **input, t_token **token)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_token *token;
-
-	token = malloc(sizeof(t_token));
-	if (argc || argv || env)
-		;
+	t_shell *shell;
 	char *user_input;
 	char **input;
+	
+	shell = malloc(sizeof(t_shell));
+	if (argc || argv || env)
+		;
+	init_env(&shell, env);
 	while (1)
 	{
 		user_input = readline("shell$ ");
 		input = ft_split_V(user_input, ' ');
-		do_list(input, &token);
-		init_env(&token, env);
-		if (ft_strncmp("env", token -> token, 4) == 0)
-			bi_env(token);
-		else if (ft_strncmp("pwd", token -> token, 4) == 0)
+		do_list(input, &shell);
+		if (ft_strncmp("env", shell -> token -> token, 4) == 0)
+			bi_env(shell);
+		else if (ft_strncmp("pwd", shell -> token -> token, 4) == 0)
 			bi_pwd();
-		else if (ft_strncmp("echo", token -> token, 4) == 0)
-			bi_echo(token);
-		else if (ft_strncmp("cd", token -> token, 3) == 0)
-			bi_cd(token);
-		else if (ft_strncmp("exit", token -> token, 5) == 0)
-			bi_exit(token);
-		ft_lstclear_token(&token, (*del_token));
+		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)
+			bi_echo(shell -> token);
+		else if (ft_strncmp("cd", shell -> token -> token, 3) == 0)
+			bi_cd(shell -> token);
+		else if (ft_strncmp("exit", shell -> token -> token, 5) == 0)
+			bi_exit(shell -> token);
+		else if (ft_strncmp("export", shell -> token -> token, 7) == 0)
+			bi_export1(shell);
+		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)
+			bi_unset(shell);
+		ft_lstclear_token(&shell -> token, (*del_token));
 	}
 	return (0);
 }
