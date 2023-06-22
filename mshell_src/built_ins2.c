@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/21 20:03:32 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:03:54 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,26 @@ void	bi_exit(t_token *token)
 	printf("minishell: exit: %s: numeric argument required\n", token -> next -> token);
 }
 
-int	unset_acheck(t_shell *shell)
+int	unset_acheck(t_shell *shell, char *str)
 {
 	int i;
 
 	i = 0;
 	while (shell -> envex[i])
 	{
-		if (shell -> envex[i] == shell -> token -> next -> token)
-			return 1;
+		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0)
+			return (1);
 		i++;
 	}
 	return 0;
 }
-void	unset_delete(t_shell *shell)
+void	unset_delete(t_shell *shell, char *str)
 {
 	char **new_arr;
 	int i;
 	int j;
-	int flag;
 	
 	i = 0;
-	flag = 1;
 	j = 0;
 	while (shell -> envex[i])
 		i++;
@@ -52,13 +50,10 @@ void	unset_delete(t_shell *shell)
 	i = 0;
 	while(shell -> envex[j])
 	{
-		if (ft_strncmp(shell -> envex[i], shell -> token -> next -> token, ft_strlen(shell -> token -> next -> token)))
-			flag = 0;
-		new_arr[i] = shell -> envex[j];
-		if (flag == 1)
+		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0)
+			new_arr[i] = shell -> envex[j];
+		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0)
 			i++;
-		else
-			flag = 1;
 		j++;
 	}
 	new_arr[i] = NULL;
@@ -69,16 +64,14 @@ void	bi_unset(t_shell *shell)
 {
 	t_token *tok;
 	
-	if (unset_acheck(shell) == 0)
-		return ;
 	tok = shell -> token -> next;
 	while (tok)
 	{
-		unset_delete(shell);
+		if (unset_acheck(shell, tok -> token) == 1)
+			unset_delete(shell, tok -> token);
 		tok = tok -> next;
 	}
 }
-
 
 
 

@@ -239,6 +239,7 @@ int	main(int argc, char **argv, char **env)
 		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)
 			bi_unset(shell);
 		ft_lstclear_token(&shell -> token, (*del_token));
+		//printf_arr(shell -> envex);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/21 20:05:45 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/06/22 18:17:15 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ typedef struct s_shell t_shell;
 typedef struct s_token
 {
 	char			*token;
-	t_shell 		*shell;
 	struct s_token	*next;
-	
+	t_shell 		*shell;
 }					t_token;
 
 typedef struct s_shell
@@ -39,7 +38,6 @@ typedef struct s_shell
 }				t_shell;
 
 
-
 void    bi_env(t_shell *shell);
 
 void	bi_pwd(void);
@@ -47,6 +45,8 @@ void	bi_pwd(void);
 void	bi_echo(t_token *token);
 
 void	bi_export1(t_shell *shell);
+
+void	my_putstr(char *str);
 
 void	bi_export2(t_shell *shell);
 

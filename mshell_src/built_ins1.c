@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/21 18:23:53 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/06/22 21:36:11 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,82 @@ void	bi_env(t_shell *shell)
 	}
 }
 
+void	new_putstr2(char *s)
+{
+	int i;
+	
+	i = 0;
+	while (s[i])
+	{
+		
+		write(1, &s[i], 1);
+		if (s[i] == '=')
+			write(1, "\"", 1);
+		i++;
+	}
+	write(1, "\"", 1);
+	
+}
+
+void	new_putstr(char *s)
+{
+	int i;
+	
+	i = 0;
+	if (!s)
+		return ;
+	if (ft_strchr(s, '\''))
+	{
+		while (s[i])
+		{
+			if (s[i] == '\'')
+			{
+				write(1, "\"\"", 2);
+				return ;
+			}
+			write(1, &s[i], 1);
+			i++;
+		}
+	}
+	else
+		new_putstr2(s);
+	
+}
+
+void	def_putstr(char *s)
+{
+	if (!s)
+		return ;
+	while(*s)
+		write(1, s++, 1);
+}
+
+void	my_putstr(char *str)
+{
+	int i;
+
+	i = 0;
+	if (!ft_strchr(str, '='))
+	{
+		def_putstr(str);
+		write(1, "=\"\"", 3);
+	}
+	else
+	{
+		if (ft_strlen(ft_strchr(str, '=')) == 1)
+		{
+			def_putstr(str);
+			def_putstr("\"\"");
+		}
+		if (ft_strchr(str, '=')[1] == '\"')
+			def_putstr(str);
+		else if (ft_strchr(str, '=')[1] == '\'')
+			new_putstr(str);
+		else if (ft_strchr(str, '=')[1] != '\0')
+			new_putstr(str);
+	}
+}
+
 void	bi_export1(t_shell *shell)
 {
 	int	i;
@@ -32,9 +108,8 @@ void	bi_export1(t_shell *shell)
 	{
 		while (shell -> envex[i])
 		{
-			printf("declare -x %s", shell -> envex[i]);
-			if (shell->envex[i] && shell->envex[i][ft_strlen(shell->envex[i]) - 1] == '=')
-				printf("\'\'");
+			def_putstr("declare -x ");
+			my_putstr(shell -> envex[i]);
 			printf("\n");
 			i++;
 		}
