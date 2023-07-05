@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/21 12:50:07 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:51:27 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,23 @@ int	find_dup(t_shell *shell, char *str)
 	return (-1);
 }
 
-void	bi_export2(t_shell *shell)
+void	bi_export2(t_shell *shell, char **arr)
 {
-	t_token *tmp;
 	int		i;
+	int		j;
 
+	j = 0;
 	i = 0;
-	tmp = shell -> token -> next;
-	while (tmp)
+	while (arr[j])
 	{
-		if ((i = find_dup(shell, tmp -> token)) != -1)
+		if ((i = find_dup(shell, arr[j])) != -1)
 		{
 			free(shell -> envex[i]);
 			shell -> envex[i] = NULL;
-			shell -> envex[i] = tmp -> token;
+			shell -> envex[i] = arr[j];
 			return ;
 		}
-		push_in_arr(shell, tmp -> token);
-		tmp = tmp -> next;
+		push_in_arr(shell, arr[j]);
+		j++;
 	}
 }

@@ -66,48 +66,6 @@ char	*true_path(char *argv, char **env)
 	return NULL;
 }
 
-int	redirects_checker(t_token *token)
-{
-	int	flag;
-
-	if (ft_strchr(token -> token, '<') || ft_strchr(token -> token, '>'))
-	{
-		if (ft_strchr(token -> token, '<'))
-			flag = 0;
-		else if(ft_strchr(token -> token, '>'))
-			flag = 1;
-		else
-			flag = -1;
-	}
-	else
-		flag = -1;
-	return (flag);
-}
-
-void	def_of_exec_a_file(char *token, char **argvv,char **file, int flag)
-{
-	char **argv;
-
-	if(flag == -1)
-	{
-		*argvv = ft_split_V(token, ' ')[0];
-		return ;
-	}
-	argv = ft_split_V(token, ' ');
-	if (ft_strchr(argv[0], '>') || ft_strchr(argv[0], '<'))
-	{
-		*argvv = argv[1];
-		*file = argv[0];
-		(*file)++;
-	}
-	else
-	{
-		*argvv = argv[0];
-		*file = argv[1];
-		(*file)++;
-	}
-}
-
 void	executing_one(int flag, char *argvv, char *file, char **env)
 {
 	int fd_file;
@@ -116,7 +74,11 @@ void	executing_one(int flag, char *argvv, char *file, char **env)
 	if (flag == 0)
 		fd_file = open(file, O_RDWR, 0777);
 	else if (flag == 1)
-		fd_file = open(file, O_RDWR | O_TRUNC, 0777);
+		fd_file = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
+	// printf("cmd - %s\n", argvv);
+	// printf("fd - %s\n", file);
+	// printf("flag - %d\n", flag);
+	// exit(0);
 	f = fork();
 	if (f == 0)
 	{
@@ -129,13 +91,17 @@ void	executing_one(int flag, char *argvv, char *file, char **env)
 	}
 }
 
-void	exec_1(t_token *token, char **env)
+void	exec_1(t_shell *shell)
 {
-	int flag;
-	char *file;
-	char *argvv;
+	if (shell -> token -> token || shell -> envex)
+		;
+	executing_one(shell -> token -> redirect_flag, shell -> token -> token, shell -> token -> redirect_fd[0], shell -> envex);
+}
 
-	flag = redirects_checker(token);
-	def_of_exec_a_file(token -> token, &argvv, &file, flag);
-	executing_one(flag, argvv, file, env);
+void	exec(t_shell *shell)
+{
+	if (!shell -> token -> next)
+		exec_1(shell);
+	else
+		return;
 }

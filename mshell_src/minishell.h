@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/22 18:17:15 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:51:13 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct s_shell t_shell;
 
 typedef struct s_token
 {
+	int				redirect_flag;
+	char			**redirect_fd;
 	char			*token;
 	struct s_token	*next;
 	t_shell 		*shell;
@@ -48,7 +50,7 @@ void	bi_export1(t_shell *shell);
 
 void	my_putstr(char *str);
 
-void	bi_export2(t_shell *shell);
+void	bi_export2(t_shell *shell, char **arr);
 
 void	push_in_arr(t_shell *shell, char *str);
 
@@ -64,7 +66,9 @@ int	long_long_check(char *number);
 
 void	bi_unset(t_shell *shell);
 
-void	exec_1(t_token *token, char **env);
+void	exec_1(t_shell *shell);
+
+void	exec(t_shell *shell);
 
 int	count_words_V(char const *s, char c);
 

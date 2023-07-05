@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/22 21:36:11 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:54:43 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,9 @@ void	my_putstr(char *str)
 void	bi_export1(t_shell *shell)
 {
 	int	i;
-
+	char **arr = ft_split_V(shell -> token -> token, ' ');
 	i = 0;
-	if (!shell -> token -> next)
+	if (!arr[1])
 	{
 		while (shell -> envex[i])
 		{
@@ -115,7 +115,7 @@ void	bi_export1(t_shell *shell)
 		}
 		return ;
 	}
-	bi_export2(shell);
+	bi_export2(shell, arr);
 }
 
 void	bi_pwd()

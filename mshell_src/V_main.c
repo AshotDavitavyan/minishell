@@ -195,14 +195,85 @@ void	init_env(t_shell **shell, char **envp)
 	(*shell) -> envex[i] = NULL;
 }
 
-void	do_list(char **input, t_shell **shell)
+char	**fd_parser(char *input)
+{
+	char	**out;
+	int		i;
+	int		count;
+
+	count = 0;
+	i = 0;
+	while (input[i])
+	{
+		if (input[i] == '>' || input[i] == '<')
+			count++;
+		i++;
+	}
+	i = 0;
+	count++;
+	out = (char **)malloc(sizeof(char *) * (count + 1));
+	while (*input)
+	{
+		if (*input != '<' && *input != '>')
+		{
+			out[i] = ft_strtrim(input, "<>");
+			i++;
+		}
+		input++;
+	}
+	out[i] = NULL;
+	return (out);
+}
+
+void	do_list(char **input, t_shell **shell, char *def_input) // первый у меня всегда НЕ редирект
 {
 	t_token *tmp;
 	int i = 0;
+	//----------------
+	if (ft_strncmp("env", input[0], 4) == 0 ||
+	ft_strncmp("pwd", input[0], 4) == 0 ||
+	ft_strncmp("echo", input[0], 4) == 0 ||
+	ft_strncmp("cd", input[0], 3) == 0 ||
+	ft_strncmp("exit", input[0], 5) == 0 ||
+	ft_strncmp("export", input[0], 7) == 0 ||
+	ft_strncmp("unset", input[0], 5) == 0)
+	{
+		(*shell)->token = ft_lstnew_token(def_input, *shell);
+		return ;
+	}
+	//----------------
 	(*shell)->token = ft_lstnew_token(input[i], *shell);
+	if (input[i + 1] && (ft_strchr(input[++i], '<') || ft_strchr(input[i], '>')))
+	{
+		if (ft_strchr(input[i], '<'))
+			(*shell)->token->redirect_flag = 0;
+		else
+			(*shell)->token->redirect_flag = 1;
+		(*shell)->token->redirect_fd = fd_parser(input[i]);
+	}
+	else
+	{
+		(*shell)->token->redirect_flag = -1;
+		(*shell)->token->redirect_fd = malloc(sizeof(char *) * 1);
+		(*shell)->token->redirect_fd[0] = malloc(sizeof(char) * 1);
+		(*shell)->token->redirect_fd[0] = NULL;
+	}
 	tmp = (*shell)-> token;
 	while(input[++i])
 	{
+		if (ft_strchr(input[i], '>') || ft_strchr(input[i], '<'))
+		{
+			if (ft_strchr(input[i], '>'))
+				(*shell)->token->redirect_flag = 1;
+			else
+				(*shell)->token->redirect_flag = 0;
+			(*shell)->token->redirect_fd = fd_parser(input[i]);
+			i++;
+		}
+		else
+			(*shell)->token->redirect_flag = -1;
+		if (!input[i])
+			break;
 		tmp -> next = ft_lstnew_token(input[i], *shell);
 		if (tmp ->next)
 			tmp = tmp -> next;
@@ -223,7 +294,9 @@ int	main(int argc, char **argv, char **env)
 	{
 		user_input = readline("shell$ ");
 		input = ft_split_V(user_input, ' ');
-		do_list(input, &shell);
+		do_list(input, &shell, user_input);
+		// printf_node(shell ->token);
+		// exit(0);
 		if (ft_strncmp("env", shell -> token -> token, 4) == 0)
 			bi_env(shell);
 		else if (ft_strncmp("pwd", shell -> token -> token, 4) == 0)
@@ -234,12 +307,15 @@ int	main(int argc, char **argv, char **env)
 			bi_cd(shell -> token);
 		else if (ft_strncmp("exit", shell -> token -> token, 5) == 0)
 			bi_exit(shell -> token);
-		else if (ft_strncmp("export", shell -> token -> token, 7) == 0)
+		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)
 			bi_export1(shell);
 		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)
 			bi_unset(shell);
+		else
+			exec(shell);
+		while (wait(NULL) != -1)
+			;
 		ft_lstclear_token(&shell -> token, (*del_token));
-		//printf_arr(shell -> envex);
 	}
 	return (0);
 }
