@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/05 16:54:43 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:16:37 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,21 +126,20 @@ void	bi_pwd()
 
 void	bi_echo(t_token *token)
 {
-	t_token *temp;
-	
-	temp = token;
+	char **arr = ft_split_V(token -> token, ' ');
 	int flag;
-	if (ft_strchr(token -> token, '-'))
+	int	i;
+
+	i = 0;
+	if (ft_strchr(arr[0], '-'))
 		flag = 1;
 	else
 		flag = 0;
-	temp = token -> next;
-	while(temp)
+	while(arr[++i])
 	{
-		printf("%s", temp -> token);
-		if (temp -> next)
+		printf("%s", arr[i]);
+		if (arr[i + 1])
 			printf(" ");
-		temp = temp -> next;
 	}
 	if (!flag)
 		printf("\n");
@@ -194,8 +193,9 @@ void	change_new_pwd(t_shell *shell)
 
 void	bi_cd(t_token *token)
 {
+	char **arr = ft_split_V(token -> token, ' ');
 	change_old_pwd(token -> shell);
-	if (chdir(token -> next -> token) != 0)
+	if (chdir(arr[1]) != 0)
         printf("minishell: cd: %s: No such file or directory\n", token -> next -> token);
 	change_new_pwd(token -> shell);
 }

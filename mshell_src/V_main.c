@@ -297,15 +297,15 @@ int	main(int argc, char **argv, char **env)
 		do_list(input, &shell, user_input);
 		// printf_node(shell ->token);
 		// exit(0);
-		if (ft_strncmp("env", shell -> token -> token, 4) == 0)
+		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
 			bi_env(shell);
-		else if (ft_strncmp("pwd", shell -> token -> token, 4) == 0)
+		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
 			bi_pwd();
-		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)
+		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
 			bi_echo(shell -> token);
-		else if (ft_strncmp("cd", shell -> token -> token, 3) == 0)
+		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
 			bi_cd(shell -> token);
-		else if (ft_strncmp("exit", shell -> token -> token, 5) == 0)
+		else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
 			bi_exit(shell -> token);
 		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)
 			bi_export1(shell);
