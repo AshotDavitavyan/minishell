@@ -306,21 +306,21 @@ int	main(int argc, char **argv, char **env)
 		do_list(input, &shell, user_input);
 		if (bi_avail(shell))
 		{
-			if (shell -> redirect_flag == 0 || shell ->redirect_flag == 1)
-			{
-				if (shell -> redirect_flag == 0)
-					dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-				if (shell -> redirect_flag == 1)
-				{
-					int i = 0;
-					while (redirect_fd[i + 1])
-					{
-						open = (redirect_fd[i], O_RDWR);
-						i++;
-					}
-					dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-				}	
-			}
+			// if (shell -> redirect_flag == 0 || shell ->redirect_flag == 1)
+			// {
+			// 	if (shell -> redirect_flag == 0)
+			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
+			// 	if (shell -> redirect_flag == 1)
+			// 	{
+			// 		int i = 0;
+			// 		while (redirect_fd[i + 1])
+			// 		{
+			// 			open = (redirect_fd[i], O_RDWR);
+			// 			i++;
+			// 		}
+			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
+			// 	}	
+			// }
 			if (ft_strncmp("env", shell -> token -> token, 3) == 0)
 				bi_env(shell);
 			else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
