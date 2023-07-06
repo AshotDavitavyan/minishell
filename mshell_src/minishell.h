@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 10:34:43 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/06 14:23:51 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_token
 
 typedef struct s_shell
 {
+	int			fd[1000][2];
 	char		**envex;
 	t_token		*token;
 }				t_shell;
@@ -79,7 +80,7 @@ void	exec_1(t_shell *shell);
 
 void	exec(t_shell *shell);
 
-void	executing_one(int flag, char *argvv, char *file, char **env);
+void	executing_one(int flag, char *argvv, char **file, char **env);
 
 int	count_words_V(char const *s, char c);
 
@@ -111,6 +112,14 @@ void	change_new_pwd(t_shell *shell);
 
 void	printf_arr(char **input);
 
+int		ft_strlen_2d_arr(char **arr);
 
+char	*path_finder(char **env);
+
+void	fn_path(char **res_split, char *argv);
+
+char	*true_path(char *argv, char **env);
+
+void	executing_one(int flag, char *argvv, char **file, char **env);
 
 #endif

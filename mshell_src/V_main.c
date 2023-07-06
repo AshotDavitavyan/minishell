@@ -73,6 +73,21 @@ t_token	*ft_lstnew_token(char *token, t_shell *shell)
 	return (node);
 }
 
+t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell)
+{
+	t_token	*node;
+
+	node = malloc(sizeof(t_token));
+	if (!node)
+		return (0);
+	node -> shell = shell; 
+	node -> token = token;
+	node -> redirect_fd = r_fd;
+	node -> redirect_flag = r_flag;
+	node ->next = NULL;
+	return (node);
+}
+
 void	del_token(char *content)
 {
 	char *a;
@@ -292,62 +307,70 @@ int	ft_strlen_2d_arr(char **arr)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell *shell;
-	char *user_input;
-	char **input;
 	
 	shell = malloc(sizeof(t_shell));
 	if (argc || argv || env)
 		;
 	init_env(&shell, env);
-	while (1)
+
+	//-----------------------------------Prompt---------------------------------------//
+
+	char *args1 = NULL;
+	char **args1_2d = ft_split(args1, ' ');
+
+	char *args2 = "a";
+	char **args2_2d = ft_split(args2, ' ');
+
+	char *args3 = "b";
+	char **args3_2d = ft_split(args3, ' ');
+
+	shell -> token = ft_lstnew_upgr("env", args2_2d, 1, shell);
+	// shell -> token -> next = ft_lstnew_upgr("wc", args1_2d, -1, shell);
+	// shell -> token -> next -> next = ft_lstnew_upgr("wc", args3_2d, 1, shell);
+
+	//-----------------------------------Prompt---------------------------------------//
+	if (bi_avail(shell))
 	{
-		user_input = readline("shell$ ");
-		input = ft_split_V(user_input, ' ');
-		do_list(input, &shell, user_input);
-		if (bi_avail(shell))
+		if (shell -> token -> redirect_flag == 0 || shell -> token -> redirect_flag == 1)
 		{
-			if (shell -> redirect_flag == 0 || shell ->redirect_flag == 1)
+			if (shell -> token -> redirect_flag == 0)
+				dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR, 0777), STDIN_FILENO);
+			if (shell -> token -> redirect_flag == 1)
 			{
-				if (shell -> redirect_flag == 0)
-					dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-				if (shell -> redirect_flag == 1)
+				int i = 0;
+				while (shell -> token -> redirect_fd[i + 1])
 				{
-					int i = 0;
-					while (redirect_fd[i + 1])
-					{
-						open = (redirect_fd[i], O_RDWR);
-						i++;
-					}
-					dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-				}	
-			}
-			if (ft_strncmp("env", shell -> token -> token, 3) == 0)
-				bi_env(shell);
-			else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-				bi_pwd();
-			else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
-				bi_echo(shell -> token);
-			else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
-				bi_cd(shell -> token);
-			else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
-				bi_exit(shell -> token);
-			else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
-				bi_export1(shell);
-			else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
-				bi_unset(shell);
-			else if(bi_avail(shell))
-			{
-				dup2(1, 1);
-				dup2(0, 0);
-			}
+					open(shell -> token -> redirect_fd[i], O_RDWR);
+					i++;
+				}
+				dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0777), STDOUT_FILENO);
+			}	
 		}
-		else
-			exec(shell);
-		while (wait(NULL) != -1)
-			;
-		ft_lstclear_token(&shell -> token, (*del_token));
+		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
+			bi_env(shell);
+		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
+			bi_pwd();
+		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
+			bi_echo(shell -> token);
+		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
+			bi_cd(shell -> token);
+		else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
+			bi_exit(shell -> token);
+		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
+			bi_export1(shell);
+		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
+			bi_unset(shell);
+		else if(bi_avail(shell))
+		{
+			dup2(1, 1);
+			dup2(0, 0);
+		}
 	}
+	else
+		exec(shell);
+	while (wait(NULL) != -1)
+		;
+	unlink("here_doc");
+	ft_lstclear_token(&shell -> token, (*del_token));
 	return (0);
 }
-
-

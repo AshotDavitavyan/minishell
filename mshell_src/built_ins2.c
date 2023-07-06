@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/05 17:53:33 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/06 11:13:16 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,27 @@ void	bi_unset(t_shell *shell)
 	}
 }
 
-
+int	bi_avail(t_shell *shell)
+{
+	if (ft_strncmp("env", shell -> token -> token, 3) == 0 ||
+		ft_strncmp("pwd", shell -> token -> token, 3) == 0 ||
+		ft_strncmp("echo", shell -> token -> token, 4) == 0 ||
+		ft_strncmp("cd", shell -> token -> token, 2) == 0 ||
+		ft_strncmp("exit", shell -> token -> token, 4) == 0 ||
+		ft_strncmp("export", shell -> token -> token, 6) == 0 ||
+		ft_strncmp("unset", shell -> token -> token, 5) == 0 ||
+		ft_strncmp("env ", shell -> token -> token, 4) == 0 ||
+		ft_strncmp("pwd ", shell -> token -> token, 4) == 0 ||
+		ft_strncmp("echo ", shell -> token -> token, 5) == 0 ||
+		ft_strncmp("cd ", shell -> token -> token, 3) == 0 ||
+		ft_strncmp("exit ", shell -> token -> token, 5) == 0 ||
+		ft_strncmp("export ", shell -> token -> token, 7) == 0 ||
+		ft_strncmp("unset ", shell -> token -> token, 6) == 0
+		)
+		{
+			return (1);
+		}
+		return (0);
+}
 
 

@@ -62,27 +62,31 @@ char	*true_path(char *argv, char **env)
 			return (res_split[i]);
 		i++;
 	}
-	f_error();
+	//f_error();
+	printf("%s: command not found\n", args[0]);
+	exit(0);
 	return NULL;
 }
 
-void	executing_one(int flag, char *argvv, char *file, char **env)
+void	executing_one(int flag, char *argvv, char **file, char **env)
 {
-	int fd_file;
 	char **args;
 	int f;
-	if (flag == 0)
-		fd_file = open(file, O_RDWR, 0777);
-	else if (flag == 1)
-		fd_file = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
+	int i;
+
+	i = -1;
 	f = fork();
 	if (f == 0)
 	{
 		args = ft_split(argvv, ' ');
 		if (flag == 0)
-			dup2(fd_file, STDIN_FILENO);
+			dup2(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR, 0777), STDIN_FILENO);
 		if (flag == 1)
-			dup2(fd_file, STDOUT_FILENO);
+		{
+			while (file[++i + 1])
+				open(file[i], O_RDWR | O_TRUNC | O_CREAT, 0777);
+			dup2(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR | O_TRUNC | O_CREAT, 0777), STDOUT_FILENO);
+		}
 		execve(true_path(argvv, env), args, env);
 	}
 }
