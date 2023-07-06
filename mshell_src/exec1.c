@@ -75,10 +75,6 @@ void	executing_one(int flag, char *argvv, char *file, char **env)
 		fd_file = open(file, O_RDWR, 0777);
 	else if (flag == 1)
 		fd_file = open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
-	// printf("cmd - %s\n", argvv);
-	// printf("fd - %s\n", file);
-	// printf("flag - %d\n", flag);
-	// exit(0);
 	f = fork();
 	if (f == 0)
 	{
@@ -91,17 +87,3 @@ void	executing_one(int flag, char *argvv, char *file, char **env)
 	}
 }
 
-void	exec_1(t_shell *shell)
-{
-	if (shell -> token -> token || shell -> envex)
-		;
-	executing_one(shell -> token -> redirect_flag, shell -> token -> token, shell -> token -> redirect_fd[0], shell -> envex);
-}
-
-void	exec(t_shell *shell)
-{
-	if (!shell -> token -> next)
-		exec_1(shell);
-	else
-		return;
-}

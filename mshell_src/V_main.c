@@ -230,12 +230,12 @@ void	do_list(char **input, t_shell **shell, char *def_input) // первый у 
 	t_token *tmp;
 	int i = 0;
 	//----------------
-	if (ft_strncmp("env", input[0], 4) == 0 ||
-	ft_strncmp("pwd", input[0], 4) == 0 ||
+	if (ft_strncmp("env", input[0], 3) == 0 ||
+	ft_strncmp("pwd", input[0], 3) == 0 ||
 	ft_strncmp("echo", input[0], 4) == 0 ||
-	ft_strncmp("cd", input[0], 3) == 0 ||
-	ft_strncmp("exit", input[0], 5) == 0 ||
-	ft_strncmp("export", input[0], 7) == 0 ||
+	ft_strncmp("cd", input[0], 2) == 0 ||
+	ft_strncmp("exit", input[0], 4) == 0 ||
+	ft_strncmp("export", input[0], 6) == 0 ||
 	ft_strncmp("unset", input[0], 5) == 0)
 	{
 		(*shell)->token = ft_lstnew_token(def_input, *shell);
@@ -280,6 +280,15 @@ void	do_list(char **input, t_shell **shell, char *def_input) // первый у 
 	}
 }
 
+int	ft_strlen_2d_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while(arr[++i]);
+	return (i);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_shell *shell;
@@ -295,22 +304,43 @@ int	main(int argc, char **argv, char **env)
 		user_input = readline("shell$ ");
 		input = ft_split_V(user_input, ' ');
 		do_list(input, &shell, user_input);
-		// printf_node(shell ->token);
-		// exit(0);
-		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
-			bi_env(shell);
-		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-			bi_pwd();
-		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
-			bi_echo(shell -> token);
-		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
-			bi_cd(shell -> token);
-		else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
-			bi_exit(shell -> token);
-		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)
-			bi_export1(shell);
-		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)
-			bi_unset(shell);
+		if (bi_avail(shell))
+		{
+			if (shell -> redirect_flag == 0 || shell ->redirect_flag == 1)
+			{
+				if (shell -> redirect_flag == 0)
+					dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
+				if (shell -> redirect_flag == 1)
+				{
+					int i = 0;
+					while (redirect_fd[i + 1])
+					{
+						open = (redirect_fd[i], O_RDWR);
+						i++;
+					}
+					dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
+				}	
+			}
+			if (ft_strncmp("env", shell -> token -> token, 3) == 0)
+				bi_env(shell);
+			else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
+				bi_pwd();
+			else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
+				bi_echo(shell -> token);
+			else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
+				bi_cd(shell -> token);
+			else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
+				bi_exit(shell -> token);
+			else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
+				bi_export1(shell);
+			else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
+				bi_unset(shell);
+			else if(bi_avail(shell))
+			{
+				dup2(1, 1);
+				dup2(0, 0);
+			}
+		}
 		else
 			exec(shell);
 		while (wait(NULL) != -1)

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/06/22 18:03:54 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:53:33 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,15 @@ void	unset_delete(t_shell *shell, char *str)
 void	bi_unset(t_shell *shell)
 {
 	t_token *tok;
-	
 	tok = shell -> token -> next;
-	while (tok)
+	int	i;
+	char **arr = ft_split(shell -> token -> token, ' ');
+
+	i = 0;
+	while (arr[++i])
 	{
-		if (unset_acheck(shell, tok -> token) == 1)
-			unset_delete(shell, tok -> token);
-		tok = tok -> next;
+		if (unset_acheck(shell, arr[i]) == 1)
+			unset_delete(shell, arr[i]);
 	}
 }
 
