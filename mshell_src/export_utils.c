@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/05 17:50:26 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/07 21:15:36 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	find_dup(t_shell *shell, char *str)
 	j = 0;
 	while(temp[j])
 	{
-		if (temp[j] == '=')
+		if (temp[j] == '=' || temp[j] == '+')
 		{
 			temp[j] = '\0';
 			break ;
@@ -72,11 +72,20 @@ void	bi_export2(t_shell *shell, char **arr)//arr = export a b
 	{
 		if ((i = find_dup(shell, arr[j])) != -1)
 		{
-			free(shell -> envex[i]);
-			shell -> envex[i] = NULL;
-			shell -> envex[i] = arr[j];
+			if (ft_strchr(arr[j], '+'))
+			{
+				shell -> envex[i] = ft_strjoin(shell -> envex[i], ft_strchr(arr[j], '+') + 2);
+			}
+			else
+			{
+				free(shell -> envex[i]);
+				shell -> envex[i] = NULL;
+				shell -> envex[i] = arr[j];
+			}
 			return ;
 		}
+		if (ft_strchr(arr[j], '+'))
+			arr[j] = bez_plus(arr[j]);
 		push_in_arr(shell, arr[j]);
 	}
 }

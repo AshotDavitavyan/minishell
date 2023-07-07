@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/07 11:25:22 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/07 20:29:42 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	bi_env(t_shell *shell)
 	}
 }
 
-void	bi_export1(t_shell *shell)
+void	bi_export1(t_shell *shell)	
 {
 	int	i;
 	char **arr = ft_split_V(shell -> token -> token, ' ');
