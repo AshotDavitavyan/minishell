@@ -1,12 +1,12 @@
 NAME = minishell
 SRC_PATH = mshell_src
 OBJ_PATH = obj
-SRCS = $(addprefix $(SRC_PATH)/, main.c)
+SRCS = $(addprefix $(SRC_PATH)/, main.c tokens.c tokens_utils.c tokens_utils2.c count_size.c alloc_usr_input.c)
 OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc
 RM = rm -rf
-CFLAGS = -Wall -Werror -Wextra #-fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=address
 LIBFTP = ./libft/
 LIBFT = $(LIBFTP)libft.a
 
