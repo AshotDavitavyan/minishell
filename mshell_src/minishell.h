@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 10:34:43 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/07 11:28:19 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,6 @@ void			bi_pwd(void);
 void			bi_echo(t_token *token);
 
 void			bi_export1(t_shell *shell);
-
-void			new_putstr2(char *s);
-
-void			new_putstr(char *s);
 
 void			def_putstr(char *s);
 

@@ -310,7 +310,7 @@ int	main(int argc, char **argv, char **env)
 			// {
 			// 	if (shell -> redirect_flag == 0)
 			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-			// 	if (shell -> redirect_flag == 1)
+			// 	if (shel l -> redirect_flag == 1)
 			// 	{
 			// 		int i = 0;
 			// 		while (redirect_fd[i + 1])

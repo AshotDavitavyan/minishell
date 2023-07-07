@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 20:44:31 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/07 11:25:22 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	bi_export1(t_shell *shell)
 		while (shell -> envex[i])
 		{
 			def_putstr("declare -x ");
-			def_putstr(shell -> envex[i]);
+			my_putstr(shell -> envex[i]);
 			printf("\n");
 			i++;
 		}
