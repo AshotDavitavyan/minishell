@@ -73,7 +73,7 @@ t_token	*ft_lstnew_token(char *token, t_shell *shell)
 	return (node);
 }
 
-t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell)
+t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell, int flag, char **sep_arr)
 {
 	t_token	*node;
 
@@ -84,6 +84,8 @@ t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell)
 	node -> token = token;
 	node -> redirect_fd = r_fd;
 	node -> redirect_flag = r_flag;
+	node -> here_doc_flag = flag;
+	node -> sep_arr = sep_arr;
 	node ->next = NULL;
 	return (node);
 }
@@ -316,26 +318,44 @@ int	main(int argc, char **argv, char **env)
 	//-----------------------------------Prompt---------------------------------------//
 
 	char *args1 = NULL;
-	char **args1_2d = ft_split(args1, ' ');
+	char **Args1 = ft_split(args1, ' ');
 
 	char *args2 = "a";
-	char **args2_2d = ft_split(args2, ' ');
+	char **Args2 = ft_split(args2, ' ');
 
 	char *args3 = "b";
-	char **args3_2d = ft_split(args3, ' ');
+	char **Args3 = ft_split(args3, ' ');
 
-	shell -> token = ft_lstnew_upgr("env", args2_2d, 1, shell);
-	// shell -> token -> next = ft_lstnew_upgr("wc", args1_2d, -1, shell);
-	// shell -> token -> next -> next = ft_lstnew_upgr("wc", args3_2d, 1, shell);
+	char *args4 = "a b";
+	char **Args4 = ft_split(args4, ' ');
 
+	// XXX ls > a XXX
+
+	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell);
+
+	// XXX yes | head XXX
+
+	//shell -> token = ft_lstnew_upgr("yes", Args1, -1, shell);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell);
+
+	// XXX  cat | wc -l XXX
+
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell);
+
+	/// XXX < a cat | wc | wc | > b XXX
+
+	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell);;shell -> token -> next -> next = ft_lstnew_upgr("wc", Args3, 1, shell);
+
+	/// XXX cat << s
+
+	shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args4);
 	//-----------------------------------Prompt---------------------------------------//
 	if (bi_avail(shell))
 	{
 		if (shell -> token -> redirect_flag == 0 || shell -> token -> redirect_flag == 1)
 		{
 			if (shell -> token -> redirect_flag == 0)
-				dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR, 0777), STDIN_FILENO);
-			if (shell -> token -> redirect_flag == 1)
+				dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR, 0644), STDIN_FILENO);
+			if (shell -> token -> redirect_flag == 1 || shell -> token -> redirect_flag == 2)
 			{
 				int i = 0;
 				while (shell -> token -> redirect_fd[i + 1])
@@ -343,8 +363,11 @@ int	main(int argc, char **argv, char **env)
 					open(shell -> token -> redirect_fd[i], O_RDWR);
 					i++;
 				}
-				dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0777), STDOUT_FILENO);
-			}	
+				if (shell -> token -> redirect_flag == 1)
+					dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+				if (shell -> token -> redirect_flag == 2)
+					dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
+			}
 		}
 		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
 			bi_env(shell);

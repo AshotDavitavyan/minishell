@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 16:03:14 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:07:02 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,17 @@ void	redirector(t_token *token)
 
 	i = -1;
 	if (token -> redirect_flag == 0)
-		dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR, 0777), STDIN_FILENO);
-	if (token -> redirect_flag == 1)
+		dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR, 0644), STDIN_FILENO);
+	if (token -> redirect_flag == 1 || token -> redirect_flag == 2)
 	{
 		while (token -> redirect_fd[++i + 1])
-			open(token -> redirect_fd[i], O_RDWR | O_TRUNC | O_CREAT, 0777);
-		dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0777), STDOUT_FILENO);
+			open(token -> redirect_fd[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
+		if (token -> redirect_flag == 1)
+			dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+		if (token -> redirect_flag == 2)
+			dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
+		// if (token -> redirect_flag == 3)
+		
 	}
 }
 
@@ -115,7 +120,7 @@ void	exec_n(t_shell *shell)
 void	exec(t_shell *shell)
 {
 	if (!shell -> token -> next)
-		executing_one(shell -> token -> redirect_flag, shell -> token -> token, shell -> token -> redirect_fd, shell -> envex);
+		executing_one(shell -> token -> token, shell -> token -> redirect_fd, shell -> envex, shell);
 	else
 		exec_n(shell);
 }

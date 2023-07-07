@@ -6,7 +6,7 @@ OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc
 RM = rm -rf
-CFLAGS = #-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -g #-Wall -Werror -Wextra -fsanitize=address
 LIBFTP = ./libft/
 LIBFT = $(LIBFTP)libft.a
 

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 14:23:51 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/07 15:54:32 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ typedef struct s_shell t_shell;
 
 typedef struct s_token
 {
+	int 			here_fd;
+
+	int				here_doc_flag;
+	char			**sep_arr;
 	int				redirect_flag;
 	char			**redirect_fd;
 	char			*token;
@@ -40,7 +44,7 @@ typedef struct s_shell
 	t_token		*token;
 }				t_shell;
 
-int	bi_avail(t_shell *shell);
+int				bi_avail(t_shell *shell);
 
 void    		bi_env(t_shell *shell);
 
@@ -70,17 +74,15 @@ void			bi_exit(t_token *token);
 
 int				ft_is_num(char *str);
 
-unsigned long long	atolli(const char *str);
+unsigned long long	atoulli(const char *str);
 
 int	long_long_check(char *number);
 
 void	bi_unset(t_shell *shell);
 
-void	exec_1(t_shell *shell);
-
 void	exec(t_shell *shell);
 
-void	executing_one(int flag, char *argvv, char **file, char **env);
+void	executing_one(char *argvv, char **file, char **env, t_shell *shell);
 
 int	count_words_V(char const *s, char c);
 
@@ -119,7 +121,5 @@ char	*path_finder(char **env);
 void	fn_path(char **res_split, char *argv);
 
 char	*true_path(char *argv, char **env);
-
-void	executing_one(int flag, char *argvv, char **file, char **env);
 
 #endif
