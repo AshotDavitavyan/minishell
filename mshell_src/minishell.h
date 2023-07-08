@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/07 15:54:32 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:15:23 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include <limits.h>
 #include <fcntl.h>
+#include <dirent.h>
+#include <errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/libft.h"
@@ -44,19 +46,17 @@ typedef struct s_shell
 	t_token		*token;
 }				t_shell;
 
-int				bi_avail(t_shell *shell);
+int					global_error;
+
+int	bi_avail(t_shell *shell);
 
 void    		bi_env(t_shell *shell);
 
-void			bi_pwd(void);
+void			bi_pwd(t_shell *shell);
 
 void			bi_echo(t_token *token);
 
 void			bi_export1(t_shell *shell);
-
-void			new_putstr2(char *s);
-
-void			new_putstr(char *s);
 
 void			def_putstr(char *s);
 
@@ -114,12 +114,12 @@ void	change_new_pwd(t_shell *shell);
 
 void	printf_arr(char **input);
 
-int		ft_strlen_2d_arr(char **arr);
+int	ft_strlen_2d_arr(char **arr);
 
-char	*path_finder(char **env);
+void	ft_free(char **arr);
 
-void	fn_path(char **res_split, char *argv);
+int	ft_strcmp(char *str1, char *str2);
 
-char	*true_path(char *argv, char **env);
+int	bi_avail(t_shell *shell);
 
 #endif

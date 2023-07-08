@@ -297,15 +297,6 @@ void	do_list(char **input, t_shell **shell, char *def_input) // первый у 
 	}
 }
 
-int	ft_strlen_2d_arr(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while(arr[++i]);
-	return (i);
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_shell *shell;
@@ -353,20 +344,39 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (shell -> token -> redirect_flag == 0 || shell -> token -> redirect_flag == 1)
 		{
-			if (shell -> token -> redirect_flag == 0)
-				dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR, 0644), STDIN_FILENO);
-			if (shell -> token -> redirect_flag == 1 || shell -> token -> redirect_flag == 2)
+			// if (shell -> redirect_flag == 0 || shell ->redirect_flag == 1)
+			// {
+			// 	if (shell -> redirect_flag == 0)
+			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
+			// 	if (shel l -> redirect_flag == 1)
+			// 	{
+			// 		int i = 0;
+			// 		while (redirect_fd[i + 1])
+			// 		{
+			// 			open = (redirect_fd[i], O_RDWR);
+			// 			i++;
+			// 		}
+			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
+			// 	}	
+			// }
+			if (ft_strncmp("env", shell -> token -> token, 3) == 0)
+				bi_env(shell);
+			else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
+				bi_pwd(shell);
+			else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
+				bi_echo(shell -> token);
+			else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
+				bi_cd(shell -> token);
+			else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
+				bi_exit(shell -> token);
+			else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
+				bi_export1(shell);
+			else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
+				bi_unset(shell);
+			else if(bi_avail(shell))
 			{
-				int i = 0;
-				while (shell -> token -> redirect_fd[i + 1])
-				{
-					open(shell -> token -> redirect_fd[i], O_RDWR);
-					i++;
-				}
-				if (shell -> token -> redirect_flag == 1)
-					dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
-				if (shell -> token -> redirect_flag == 2)
-					dup2(open(shell -> token -> redirect_fd[ft_strlen_2d_arr(shell -> token -> redirect_fd) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
+				dup2(1, 1);
+				dup2(0, 0);
 			}
 		}
 		if (ft_strncmp("env", shell -> token -> token, 3) == 0)

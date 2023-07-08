@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/05 17:50:26 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/08 12:32:55 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	find_dup(t_shell *shell, char *str)
 	j = 0;
 	while(temp[j])
 	{
-		if (temp[j] == '=')
+		if (temp[j] == '=' || temp[j] == '+')
 		{
 			temp[j] = '\0';
 			break ;
@@ -61,6 +61,27 @@ int	find_dup(t_shell *shell, char *str)
 	return (-1);
 }
 
+char *strdup_bez_pls(char *arr)
+{
+	int		i;
+	int		j;
+	char	*new_arr;
+
+	i = -1;
+	j = 0;
+	while(arr[++i]);
+	new_arr = (char *)malloc(sizeof(char ) * i);
+	while (*arr)
+	{
+		if (*arr == '+')
+			arr++;
+		new_arr[j] = *arr;
+		j++;
+		arr++;
+	}
+	new_arr[j] = '\0';
+	return (new_arr);
+}
 void	bi_export2(t_shell *shell, char **arr)//arr = export a b
 {
 	int		i;
@@ -72,11 +93,20 @@ void	bi_export2(t_shell *shell, char **arr)//arr = export a b
 	{
 		if ((i = find_dup(shell, arr[j])) != -1)
 		{
-			free(shell -> envex[i]);
-			shell -> envex[i] = NULL;
-			shell -> envex[i] = arr[j];
+			if (ft_strchr(arr[j], '+'))
+			{
+				shell -> envex[i] = ft_strjoin(shell -> envex[i], ft_strchr(arr[j], '+') + 2);
+			}
+			else
+			{
+				free(shell -> envex[i]);
+				shell -> envex[i] = NULL;
+				shell -> envex[i] = arr[j];
+			}
 			return ;
 		}
+		if (ft_strchr(arr[j], '+'))
+			arr[j] = strdup_bez_pls(arr[j]);
 		push_in_arr(shell, arr[j]);
 	}
 }

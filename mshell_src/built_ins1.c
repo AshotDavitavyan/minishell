@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 09:34:06 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:46:37 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,30 @@ void	bi_env(t_shell *shell)
 	}
 }
 
-void	bi_export1(t_shell *shell)
+int	ft_isletter(int c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	else
+		return (0);
+}
+
+int	validation(char **arr)
+{
+	int j = 0;
+	
+	if (arr[++j])
+	{
+		if (ft_isletter(arr[j][0]) == 0)
+		{
+			printf("bash: export: `%s': not a valid identifier\n", arr[j]);
+			return (1);
+		}
+	}
+	return (1);
+}
+
+void	bi_export1(t_shell *shell)	
 {
 	int	i;
 	char **arr = ft_split_V(shell -> token -> token, ' ');
@@ -39,12 +62,17 @@ void	bi_export1(t_shell *shell)
 		}
 		return ;
 	}
+	if (validation(arr) == 0)
+		return ;
 	bi_export2(shell, arr);
 }
 
-void	bi_pwd()
+void	bi_pwd(t_shell *shell)
 {
+	char **arr;
 	char cwd[PATH_MAX];
+
+	arr = ft_split(shell -> token -> token, ' ');
 	printf("%s\n", getcwd(cwd, sizeof(cwd)));
 }
 
@@ -69,11 +97,60 @@ void	bi_echo(t_token *token)
 		printf("\n");
 }
 
+void	fd_cd_print_status(char *cmd)
+{
+	if (cmd)
+		;
+	global_error = 1;
+	if (errno == 13)
+	{
+		ft_putstr_fd("minishell : cd: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": Permission denied \n", 2);
+	}
+	else
+	{        
+		ft_putstr_fd("minishell: cd: ", 2);
+        ft_putstr_fd(cmd, 2);
+        ft_putstr_fd(": Not a directory\n", 2);
+	}
+}
+
 void	bi_cd(t_token *token)
 {
 	char **arr = ft_split_V(token -> token, ' ');
-	change_old_pwd(token -> shell);
-	if (chdir(arr[1]) != 0)
-        printf("minishell: cd: %s: No such file or directory\n", token -> next -> token);
-	change_new_pwd(token -> shell);
+	DIR	*tmp;
+	
+	if (access(arr[1], F_OK))
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(arr[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return ;
+	}
+	tmp = opendir(arr[1]);		
+	if (!tmp)
+		fd_cd_print_status(arr[1]);
+	else
+	{
+		closedir(tmp);
+		if (chdir(arr[1]) != 0)
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(arr[1], 2);
+			ft_putstr_fd("/: Permission denied\n", 2);
+			return ;
+		}
+		change_old_pwd(token -> shell);
+		change_new_pwd(token -> shell);
+	}
+}
+
+int	ft_strlen_2d_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while(arr[++i]);
+	return (i);
 }
