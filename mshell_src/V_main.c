@@ -338,7 +338,7 @@ int	main(int argc, char **argv, char **env)
 
 	/// XXX cat << s
 
-	shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args4);
+	shell -> token = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);
 	//-----------------------------------Prompt---------------------------------------//
 	if (bi_avail(shell))
 	{
@@ -382,7 +382,7 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
 			bi_env(shell);
 		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-			bi_pwd();
+			bi_pwd(shell);
 		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
 			bi_echo(shell -> token);
 		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
