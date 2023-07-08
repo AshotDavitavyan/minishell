@@ -280,15 +280,6 @@ void	do_list(char **input, t_shell **shell, char *def_input) // первый у 
 	}
 }
 
-int	ft_strlen_2d_arr(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while(arr[++i]);
-	return (i);
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_shell *shell;
@@ -324,7 +315,7 @@ int	main(int argc, char **argv, char **env)
 			if (ft_strncmp("env", shell -> token -> token, 3) == 0)
 				bi_env(shell);
 			else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-				bi_pwd();
+				bi_pwd(shell);
 			else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
 				bi_echo(shell -> token);
 			else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/07 11:28:19 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:30:38 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include <limits.h>
 #include <fcntl.h>
+#include <dirent.h>
+#include <errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/libft.h"
@@ -39,11 +41,13 @@ typedef struct s_shell
 	t_token		*token;
 }				t_shell;
 
+int					global_error;
+
 int	bi_avail(t_shell *shell);
 
 void    		bi_env(t_shell *shell);
 
-void			bi_pwd(void);
+void			bi_pwd(t_shell *shell);
 
 void			bi_echo(t_token *token);
 
@@ -107,6 +111,12 @@ void	change_new_pwd(t_shell *shell);
 
 void	printf_arr(char **input);
 
+int	ft_strlen_2d_arr(char **arr);
 
+void	ft_free(char **arr);
+
+int	ft_strcmp(char *str1, char *str2);
+
+int	bi_avail(t_shell *shell);
 
 #endif

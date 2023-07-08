@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/05 17:53:33 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:42:14 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 void	bi_exit(t_token *token)
 {
-	if (!token -> next)
+	char **arr;
+
+	arr = ft_split(token -> token, ' ');
+	if (ft_strlen_2d_arr(arr) == 1)
 		exit(0);
-	else if (token -> next -> next)
-		printf("minishell: exit: too many arguments\n");
-	else if (ft_is_num(token -> next -> token) && long_long_check(token -> next -> token))
-		exit(ft_atoi(token -> next -> token));
-	printf("minishell: exit: %s: numeric argument required\n", token -> next -> token);
+	else if (ft_strlen_2d_arr(arr) > 2)
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+	else if (ft_is_num(arr[1]) && long_long_check(arr[1]))
+		exit(ft_atoi(arr[1]));
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(arr[1], 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
 }
 
 int	unset_acheck(t_shell *shell, char *str)
