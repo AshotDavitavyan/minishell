@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/08 19:15:23 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/10 16:31:01 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_shell
 
 int					global_error;
 
-int	bi_avail(t_shell *shell);
+int				bi_avail(t_token *token);
 
 void    		bi_env(t_shell *shell);
 
@@ -114,12 +114,24 @@ void	change_new_pwd(t_shell *shell);
 
 void	printf_arr(char **input);
 
-int	ft_strlen_2d_arr(char **arr);
+int		ft_strlen_2d_arr(char **arr);
 
 void	ft_free(char **arr);
 
-int	ft_strcmp(char *str1, char *str2);
+int		ft_strcmp(char *str1, char *str2);
 
-int	bi_avail(t_shell *shell);
+char	*true_path(char *argv, char **env);
+
+void	redirector(t_token *token);
+
+void	redirector_bi(t_token *token);
+
+void	bi_execution(t_shell *shell);
+
+void	close_all(t_token *token, int j);
+
+void	redirector(t_token *token);
+
+void	redirector_bi(t_token *token);
 
 #endif

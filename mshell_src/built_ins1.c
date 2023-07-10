@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/08 17:46:37 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/10 15:48:22 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	bi_echo(t_token *token)
 	int	i;
 
 	i = 0;
-	if (ft_strchr(arr[0], '-'))
+	if (ft_strcmp(arr[1], "-n") == 0)
 		flag = 1;
 	else
 		flag = 0;

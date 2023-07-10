@@ -212,89 +212,27 @@ void	init_env(t_shell **shell, char **envp)
 	(*shell) -> envex[i] = NULL;
 }
 
-char	**fd_parser(char *input)
-{
-	char	**out;
-	int		i;
-	int		count;
 
-	count = 0;
-	i = 0;
-	while (input[i])
-	{
-		if (input[i] == '>' || input[i] == '<')
-			count++;
-		i++;
-	}
-	i = 0;
-	count++;
-	out = (char **)malloc(sizeof(char *) * (count + 1));
-	while (*input)
-	{
-		if (*input != '<' && *input != '>')
-		{
-			out[i] = ft_strtrim(input, "<>");
-			i++;
-		}
-		input++;
-	}
-	out[i] = NULL;
-	return (out);
-}
-
-void	do_list(char **input, t_shell **shell, char *def_input) // первый у меня всегда НЕ редирект
+void	bi_execution(t_shell *shell)
 {
-	t_token *tmp;
-	int i = 0;
-	//----------------
-	if (ft_strncmp("env", input[0], 3) == 0 ||
-	ft_strncmp("pwd", input[0], 3) == 0 ||
-	ft_strncmp("echo", input[0], 4) == 0 ||
-	ft_strncmp("cd", input[0], 2) == 0 ||
-	ft_strncmp("exit", input[0], 4) == 0 ||
-	ft_strncmp("export", input[0], 6) == 0 ||
-	ft_strncmp("unset", input[0], 5) == 0)
-	{
-		(*shell)->token = ft_lstnew_token(def_input, *shell);
-		return ;
-	}
-	//----------------
-	(*shell)->token = ft_lstnew_token(input[i], *shell);
-	if (input[i + 1] && (ft_strchr(input[++i], '<') || ft_strchr(input[i], '>')))
-	{
-		if (ft_strchr(input[i], '<'))
-			(*shell)->token->redirect_flag = 0;
-		else
-			(*shell)->token->redirect_flag = 1;
-		(*shell)->token->redirect_fd = fd_parser(input[i]);
-	}
-	else
-	{
-		(*shell)->token->redirect_flag = -1;
-		(*shell)->token->redirect_fd = malloc(sizeof(char *) * 1);
-		(*shell)->token->redirect_fd[0] = malloc(sizeof(char) * 1);
-		(*shell)->token->redirect_fd[0] = NULL;
-	}
-	tmp = (*shell)-> token;
-	while(input[++i])
-	{
-		if (ft_strchr(input[i], '>') || ft_strchr(input[i], '<'))
+		if (shell -> token -> redirect_flag >= 0 && shell -> token -> redirect_flag <= 2)
 		{
-			if (ft_strchr(input[i], '>'))
-				(*shell)->token->redirect_flag = 1;
-			else
-				(*shell)->token->redirect_flag = 0;
-			(*shell)->token->redirect_fd = fd_parser(input[i]);
-			i++;
+			redirector_bi(shell -> token);
 		}
-		else
-			(*shell)->token->redirect_flag = -1;
-		if (!input[i])
-			break;
-		tmp -> next = ft_lstnew_token(input[i], *shell);
-		if (tmp ->next)
-			tmp = tmp -> next;
-	}
+		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
+			bi_env(shell);
+		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
+			bi_pwd(shell);
+		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
+			bi_echo(shell -> token);
+		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
+			bi_cd(shell -> token);
+		else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
+			bi_exit(shell -> token);
+		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
+			bi_export1(shell);
+		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
+			bi_unset(shell);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -322,88 +260,53 @@ int	main(int argc, char **argv, char **env)
 
 	// XXX ls > a XXX
 
-	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell);
+	//shell -> token = ft_lstnew_upgr("ls", Args2, 1, shell, -1, Args1);
 
 	// XXX yes | head XXX
 
-	//shell -> token = ft_lstnew_upgr("yes", Args1, -1, shell);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell);
+	//shell -> token = ft_lstnew_upgr("yes", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell, -1, Args1);
+
+	// XXX echo lol XXX
+
+	//shell -> token =ft_lstnew_upgr("echo  lol", Args1, -1, shell, -1, Args1);
 
 	// XXX  cat | wc -l XXX
 
-	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell);
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
 	/// XXX < a cat | wc | wc | > b XXX
 
-	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell);;shell -> token -> next -> next = ft_lstnew_upgr("wc", Args3, 1, shell);
+	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell, -1, Args1);;shell -> token -> next -> next = ft_lstnew_upgr("wc", Args3, 1, shell, -1, Args1);
 
 	/// XXX cat << s
 
-	shell -> token = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);
+	// pwd >> a
+
+	//shell -> token = ft_lstnew_upgr("pwd", Args2, 2, shell, -1, Args1);
+
+	// XXX cat | pwd | wc -l XXX ZA-PA
+
+	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
+
+	// XXX export | pwd XXX ZA-PA
+
+	shell -> token = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("export", Args1, -1, shell, -1, Args1);
+
+	// XXX ls | pwd | ls -al XXX
+
+	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next= ft_lstnew_upgr("ls -al", Args1, -1, shell, -1, Args1);
+
+	// XXX echo lol | wc XXX
+
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell, -1, Args1);
+	
+	// XXX ls | cat | grep a XXX
+
+	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("grep a", Args1, -1, shell, -1, Args1);
+
 	//-----------------------------------Prompt---------------------------------------//
-	if (bi_avail(shell))
-	{
-		if (shell -> token -> redirect_flag == 0 || shell -> token -> redirect_flag == 1)
-		{
-			// if (shell -> redirect_flag == 0 || shell ->redirect_flag == 1)
-			// {
-			// 	if (shell -> redirect_flag == 0)
-			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-			// 	if (shel l -> redirect_flag == 1)
-			// 	{
-			// 		int i = 0;
-			// 		while (redirect_fd[i + 1])
-			// 		{
-			// 			open = (redirect_fd[i], O_RDWR);
-			// 			i++;
-			// 		}
-			// 		dup2(shell -> redirect_fd[ft_strlen_2d_arr(redirect_fd) - 1], STDIN_FILENO);
-			// 	}	
-			// }
-			if (ft_strncmp("env", shell -> token -> token, 3) == 0)
-				bi_env(shell);
-			else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-				bi_pwd(shell);
-			else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
-				bi_echo(shell -> token);
-			else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
-				bi_cd(shell -> token);
-			else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
-				bi_exit(shell -> token);
-			else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
-				bi_export1(shell);
-			else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
-				bi_unset(shell);
-			else if(bi_avail(shell))
-			{
-				dup2(1, 1);
-				dup2(0, 0);
-			}
-		}
-		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
-			bi_env(shell);
-		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-			bi_pwd(shell);
-		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
-			bi_echo(shell -> token);
-		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
-			bi_cd(shell -> token);
-		else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
-			bi_exit(shell -> token);
-		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
-			bi_export1(shell);
-		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
-			bi_unset(shell);
-		else if(bi_avail(shell))
-		{
-			dup2(1, 1);
-			dup2(0, 0);
-		}
-	}
-	else
-		exec(shell);
-	while (wait(NULL) != -1)
-		;
-	unlink("here_doc");
+	
+	exec(shell);
 	ft_lstclear_token(&shell -> token, (*del_token));
 	return (0);
 }
