@@ -6,13 +6,13 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/10 15:48:22 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:48:14 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	bi_env(t_shell *shell)
+int	bi_env(t_shell *shell)
 {
 	int i = 0;
 	while (shell -> envex[i])
@@ -21,6 +21,7 @@ void	bi_env(t_shell *shell)
 			printf("%s\n", shell -> envex[i]);
 		i++;
 	}
+	return (0);
 }
 
 int	ft_isletter(int c)
@@ -46,10 +47,13 @@ int	validation(char **arr)
 	return (1);
 }
 
-void	bi_export1(t_shell *shell)	
+int	bi_export1(t_shell *shell)	
 {
 	int	i;
-	char **arr = ft_split_V(shell -> token -> token, ' ');
+	char **arr;
+	int ret_val;
+	
+	arr = ft_split_V(shell -> token -> token, ' ');
 	i = 0;
 	if (!arr[1])
 	{
@@ -60,23 +64,23 @@ void	bi_export1(t_shell *shell)
 			printf("\n");
 			i++;
 		}
-		return ;
+		return (0);
 	}
 	if (validation(arr) == 0)
-		return ;
-	bi_export2(shell, arr);
+		return (1);
+	ret_val = bi_export2(shell, arr);
+	return (ret_val);
 }
 
-void	bi_pwd(t_shell *shell)
+int	bi_pwd(void)
 {
-	char **arr;
 	char cwd[PATH_MAX];
-
-	arr = ft_split(shell -> token -> token, ' ');
+	
 	printf("%s\n", getcwd(cwd, sizeof(cwd)));
+	return (0);
 }
 
-void	bi_echo(t_token *token)
+int	bi_echo(t_token *token)
 {
 	char **arr = ft_split_V(token -> token, ' ');
 	int flag;
@@ -95,6 +99,7 @@ void	bi_echo(t_token *token)
 	}
 	if (!flag)
 		printf("\n");
+	return (0);
 }
 
 void	fd_cd_print_status(char *cmd)
@@ -116,7 +121,7 @@ void	fd_cd_print_status(char *cmd)
 	}
 }
 
-void	bi_cd(t_token *token)
+int	bi_cd(t_token *token)
 {
 	char **arr = ft_split_V(token -> token, ' ');
 	DIR	*tmp;
@@ -126,7 +131,7 @@ void	bi_cd(t_token *token)
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(arr[1], 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		return ;
+		return (1);
 	}
 	tmp = opendir(arr[1]);		
 	if (!tmp)
@@ -139,11 +144,12 @@ void	bi_cd(t_token *token)
 			ft_putstr_fd("minishell: cd: ", 2);
 			ft_putstr_fd(arr[1], 2);
 			ft_putstr_fd("/: Permission denied\n", 2);
-			return ;
+			return (1);
 		}
 		change_old_pwd(token -> shell);
 		change_new_pwd(token -> shell);
 	}
+	return (0);
 }
 
 int	ft_strlen_2d_arr(char **arr)

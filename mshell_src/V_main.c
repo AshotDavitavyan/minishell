@@ -213,26 +213,29 @@ void	init_env(t_shell **shell, char **envp)
 }
 
 
-void	bi_execution(t_shell *shell)
+int	bi_execution(t_token *token)
 {
-		if (shell -> token -> redirect_flag >= 0 && shell -> token -> redirect_flag <= 2)
+		int ret_value;
+
+		if (token -> redirect_flag >= 0 && token -> redirect_flag <= 2)
 		{
-			redirector_bi(shell -> token);
+			redirector_bi(token);
 		}
-		if (ft_strncmp("env", shell -> token -> token, 3) == 0)
-			bi_env(shell);
-		else if (ft_strncmp("pwd", shell -> token -> token, 3) == 0)//
-			bi_pwd(shell);
-		else if (ft_strncmp("echo", shell -> token -> token, 4) == 0)//
-			bi_echo(shell -> token);
-		else if (ft_strncmp("cd", shell -> token -> token, 2) == 0)//
-			bi_cd(shell -> token);
-		else if (ft_strncmp("exit", shell -> token -> token, 4) == 0)//
-			bi_exit(shell -> token);
-		else if (ft_strncmp("export", shell -> token -> token, 6) == 0)//
-			bi_export1(shell);
-		else if (ft_strncmp("unset", shell -> token -> token, 5) == 0)//
-			bi_unset(shell);
+		if (ft_strncmp("env", token -> token, 3) == 0)
+			ret_value = bi_env(token -> shell);
+		else if (ft_strncmp("pwd", token -> token, 3) == 0)
+			ret_value = bi_pwd();
+		else if (ft_strncmp("echo", token -> token, 4) == 0)
+			ret_value = bi_echo(token);
+		else if (ft_strncmp("cd", token -> token, 2) == 0)
+			ret_value = bi_cd(token);
+		else if (ft_strncmp("exit", token -> token, 4) == 0)
+			ret_value = bi_exit(token);
+		else if (ft_strncmp("export", token -> token, 6) == 0)
+			ret_value = bi_export1(token -> shell);
+		else if (ft_strncmp("unset", token -> token, 5) == 0)
+			ret_value = bi_unset(token -> shell);
+		return (ret_value);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -280,6 +283,8 @@ int	main(int argc, char **argv, char **env)
 
 	/// XXX cat << s
 
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);
+
 	// pwd >> a
 
 	//shell -> token = ft_lstnew_upgr("pwd", Args2, 2, shell, -1, Args1);
@@ -288,9 +293,9 @@ int	main(int argc, char **argv, char **env)
 
 	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-	// XXX export | pwd XXX ZA-PA
+	// XXX env | pwd XXX 
 
-	shell -> token = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("export", Args1, -1, shell, -1, Args1);
+	//shell -> token = ft_lstnew_upgr("env", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);
 
 	// XXX ls | pwd | ls -al XXX
 
@@ -303,6 +308,10 @@ int	main(int argc, char **argv, char **env)
 	// XXX ls | cat | grep a XXX
 
 	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("grep a", Args1, -1, shell, -1, Args1);
+
+	// XXX cat << a | wc -l XXX
+
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
 	//-----------------------------------Prompt---------------------------------------//
 	

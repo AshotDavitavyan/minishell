@@ -68,12 +68,12 @@ char	*true_path(char *argv, char **env)
 	return NULL;
 }
 
-void	here_d(t_shell *shell, int j)
+void	here_d(t_token *token, int j)
 {
 	char *str;
 
-	shell -> token -> here_fd = open("here_doc", O_RDWR | O_CREAT | O_TRUNC, 0664);
-	if (shell -> token -> here_fd == -1)
+	token -> here_fd = open("here_doc", O_RDWR | O_CREAT | O_TRUNC, 0664);
+	if (token -> here_fd == -1)
 		exit(1);
 	while (1)
 	{
@@ -84,26 +84,27 @@ void	here_d(t_shell *shell, int j)
 			write(1, "\n", 1);
 			break ;
 		}
-		if (ft_strncmp(str, shell -> token -> sep_arr[j], ft_strlen(shell -> token -> token)) == 0)
+		if (ft_strncmp(str, token -> sep_arr[j], ft_strlen(token -> token)) == 0)
 		{
 			free(str);
 			break;
 		}
-		write(shell -> token  -> here_fd, str, ft_strlen(str));
-		write(shell -> token  -> here_fd, "\n", 1);
+		write(token  -> here_fd, str, ft_strlen(str));
+		write(token  -> here_fd, "\n", 1);
 		free(str);
 	}
+	close(token -> here_fd);
 }
 
-void	here_doc_looper(t_shell *shell)
+void	here_doc_looper(t_token *token)
 {
 	int	j;
 
 	j = 0;
 
-	while (shell -> token -> here_doc_flag == 1 && shell -> token -> sep_arr[j])
+	while (token -> here_doc_flag == 1 && token -> sep_arr[j])
 	{
-		here_d(shell, j);
+		here_d(token, j);
 		j++;
 	}
 }
@@ -114,24 +115,24 @@ void	executing_one(char *argvv, char **file, char **env, t_shell *shell)
 	int f;
 	int i;
 
+	here_doc_looper(shell -> token);
 	i = -1;
 	f = fork();
 	if (f == 0)
 	{
 		args = ft_split(argvv, ' ');
-		here_doc_looper(shell);
 		if (shell -> token -> redirect_flag == 0)
 			dup2(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR, 0644), STDIN_FILENO);
-		if (shell -> token -> here_doc_flag == 1)
-		{
-			shell -> token -> here_fd = open("here_doc", O_RDWR, 0644);
-			dup2(shell -> token -> here_fd , STDIN_FILENO);
-		}
 		if (shell -> token -> redirect_flag == 1)
 		{
 			while (file[++i + 1])
 				open(file[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
 			dup2(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+		}
+		if (shell -> token -> here_doc_flag == 1)
+		{
+			shell -> token -> here_fd = open("here_doc", O_RDWR, 0644);
+			dup2(shell -> token -> here_fd , STDIN_FILENO);
 		}
 		execve(true_path(argvv, env), args, env);
 	}

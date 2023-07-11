@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/10 16:31:01 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:15:06 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ int					global_error;
 
 int				bi_avail(t_token *token);
 
-void    		bi_env(t_shell *shell);
+int				bi_env(t_shell *shell);
 
-void			bi_pwd(t_shell *shell);
+int			bi_pwd(void);
 
-void			bi_echo(t_token *token);
+int			bi_echo(t_token *token);
 
-void			bi_export1(t_shell *shell);
+int			bi_export1(t_shell *shell);
 
 void			def_putstr(char *s);
 
@@ -64,13 +64,13 @@ void			my_putstr(char *str);
 
 void			my_putstr(char *str);
 
-void			bi_export2(t_shell *shell, char **arr);
+int			bi_export2(t_shell *shell, char **arr);
 
-void			push_in_arr(t_shell *shell, char *str);
+int			push_in_arr(t_shell *shell, char *str);
 
 int				find_dup(t_shell *shell, char *str);
 
-void			bi_exit(t_token *token);
+int			bi_exit(t_token *token);
 
 int				ft_is_num(char *str);
 
@@ -78,7 +78,7 @@ unsigned long long	atoulli(const char *str);
 
 int	long_long_check(char *number);
 
-void	bi_unset(t_shell *shell);
+int	bi_unset(t_shell *shell);
 
 void	exec(t_shell *shell);
 
@@ -106,7 +106,7 @@ void	printf_node(t_token *lst);
 
 int		ft_lstsize_token(t_token *lst);
 
-void	bi_cd(t_token *token);
+int	bi_cd(t_token *token);
 
 void	change_old_pwd(t_shell *shell);
 
@@ -126,12 +126,16 @@ void	redirector(t_token *token);
 
 void	redirector_bi(t_token *token);
 
-void	bi_execution(t_shell *shell);
+int		bi_execution(t_token *token);
 
 void	close_all(t_token *token, int j);
 
 void	redirector(t_token *token);
 
 void	redirector_bi(t_token *token);
+
+void	here_doc_looper(t_token *token);
+
+void	here_d(t_token *token, int j);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/10 21:52:04 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:19:41 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,41 @@ int	count_exec(t_shell *shell)
 	return (i);
 }
 
+void	pipes_dups(t_token *token, int j)
+{
+	if (j == 0)
+	{
+		dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
+	}
+	else if (!token -> next)
+	{
+		dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+	}
+	else
+	{
+		dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
+		dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+	}
+}
+
 void	piping(t_token *token, int j)
 {
 	char **args;
 	int	f;
 	
+	here_doc_looper(token);
 	f = fork();
 	if (f == 0)
 	{
 		args = ft_split(token -> token, ' ');
-		if (j == 0)
+		pipes_dups(token, j);
+		if (token -> here_doc_flag == 1)
 		{
-			dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
-		}
-		else if (!token -> next)
-		{
-			dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
-		}
-		else
-		{
-			dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
-			dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+			token -> here_fd = open("here_doc", O_RDWR, 0644);
+			dup2(token -> here_fd , STDIN_FILENO);
 		}
 		if (bi_avail(token))
-		{
-			fprintf(stderr, "%s\n", token->token);
-			bi_execution(token -> shell);
-			close_all(token, j + 1);
-			exit(0);
-		}
+			exit(bi_execution(token));
 		else
 		{
 			close_all(token, j + 1);
@@ -92,9 +98,6 @@ void	exec_n(t_shell *shell)
 		tmp = tmp -> next;
 	}
 	close_all(tmp1, j);
-	while (wait(NULL) != -1)
-		;
-	unlink("here_doc");
 }
 
 void	exec(t_shell *shell)
@@ -102,10 +105,13 @@ void	exec(t_shell *shell)
 	if (!shell -> token -> next)
 	{
 		if (bi_avail(shell -> token))
-			bi_execution(shell);
+			bi_execution(shell -> token);
 		else
 			executing_one(shell -> token -> token, shell -> token -> redirect_fd, shell -> envex, shell);
 	}
 	else
 		exec_n(shell);
+	while (wait(NULL) != -1)
+		;
+	unlink("here_doc");
 }
