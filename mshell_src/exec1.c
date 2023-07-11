@@ -38,6 +38,13 @@ void	fn_path(char **res_split, char *argv)
 	}
 }
 
+void	true_path_error(char *argv)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(argv, 2);
+	ft_putstr_fd(": command not found\n", 2);
+}
+
 char	*true_path(char *argv, char **env)
 {
 	int				i;
@@ -62,9 +69,7 @@ char	*true_path(char *argv, char **env)
 			return (res_split[i]);
 		i++;
 	}
-	//f_error();
-	printf("%s: command not found\n", args[0]);
-	exit(0);
+	true_path_error(argv);
 	return NULL;
 }
 
@@ -122,19 +127,29 @@ void	executing_one(char *argvv, char **file, char **env, t_shell *shell)
 	{
 		args = ft_split(argvv, ' ');
 		if (shell -> token -> redirect_flag == 0)
-			dup2(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR, 0644), STDIN_FILENO);
+			dup2_check(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR, 0644), STDIN_FILENO);
 		if (shell -> token -> redirect_flag == 1)
 		{
 			while (file[++i + 1])
 				open(file[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
-			dup2(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+			dup2_check(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
 		}
 		if (shell -> token -> here_doc_flag == 1)
 		{
 			shell -> token -> here_fd = open("here_doc", O_RDWR, 0644);
-			dup2(shell -> token -> here_fd , STDIN_FILENO);
+			dup2_check(shell -> token -> here_fd , STDIN_FILENO);
 		}
 		execve(true_path(argvv, env), args, env);
 	}
+}
+
+void	dup2_check(int fd1, int fd2)
+{
+	if (fd1 == -1 || fd2 == -1)
+	{
+		perror("");
+		exit(0);
+	}
+	dup2(fd1, fd2);
 }
 

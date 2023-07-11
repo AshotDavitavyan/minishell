@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 17:19:41 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/11 18:37:20 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ void	pipes_dups(t_token *token, int j)
 {
 	if (j == 0)
 	{
-		dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
+		dup2_check(token -> shell -> fd[j][1], STDOUT_FILENO);
 	}
 	else if (!token -> next)
 	{
-		dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+		dup2_check(token -> shell -> fd[j - 1][0], STDIN_FILENO);
 	}
 	else
 	{
-		dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
-		dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+		dup2_check(token -> shell -> fd[j][1], STDOUT_FILENO);
+		dup2_check(token -> shell -> fd[j - 1][0], STDIN_FILENO);
 	}
 }
 
@@ -67,7 +67,7 @@ void	piping(t_token *token, int j)
 		if (token -> here_doc_flag == 1)
 		{
 			token -> here_fd = open("here_doc", O_RDWR, 0644);
-			dup2(token -> here_fd , STDIN_FILENO);
+			dup2_check(token -> here_fd , STDIN_FILENO);
 		}
 		if (bi_avail(token))
 			exit(bi_execution(token));

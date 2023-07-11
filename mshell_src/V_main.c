@@ -267,7 +267,7 @@ int	main(int argc, char **argv, char **env)
 
 	// XXX yes | head XXX
 
-	//shell -> token = ft_lstnew_upgr("yes", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell, -1, Args1);
+	//shell -> token = ft_lstnew_upgr("yess", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell, -1, Args1);
 
 	// XXX echo lol XXX
 
@@ -312,6 +312,12 @@ int	main(int argc, char **argv, char **env)
 	// XXX cat << a | wc -l XXX
 
 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
+
+	//shell -> token = ft_lstnew_upgr("ls -a -l", Args1, -1, shell, -1, Args1);
+
+	// XXX cat | ls XXX
+
+	shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
 
 	//-----------------------------------Prompt---------------------------------------//
 	
