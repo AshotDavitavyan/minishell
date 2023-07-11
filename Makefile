@@ -1,12 +1,12 @@
 NAME = minishell
 SRC_PATH = mshell_src
 OBJ_PATH = obj
-SRCS = $(addprefix $(SRC_PATH)/, main.c)
+SRCS = $(addprefix $(SRC_PATH)/, built_ins1.c built_ins2.c V_main.c exec1.c exit_utils.c export_utils.c custom_putstr.c cd_utils.c exec2.c bi_checker.c redirect.c)
 OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc
 RM = rm -rf
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -g #-Wall -Werror -Wextra -fsanitize=address
 LIBFTP = ./libft/
 LIBFT = $(LIBFTP)libft.a
 
@@ -33,5 +33,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all fclean clean re
-
-

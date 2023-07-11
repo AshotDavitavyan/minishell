@@ -1,31 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   custom_putstr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/05 15:11:18 by adavitav          #+#    #+#             */
-/*   Updated: 2023/07/05 11:33:20 by vgribkov         ###   ########.fr       */
+/*   Created: 2023/07/06 09:33:47 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/07/07 11:28:07 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strchr(const char *s, int c)
+void	new_putstr(char *s)
 {
-	char	loc;
-
-	loc = (char)c;
-	if (!s)
-		return (NULL);
-	while (*s != '\0')
+	int i;
+	
+	i = 0;
+	while (s[i])
 	{
-		if (*s == loc)
-			return ((char *)s);
-		s++;
+		
+		write(1, &s[i], 1);
+		if (s[i] == '=')
+			write(1, "\"", 1);
+		i++;
 	}
-	if (*s == loc)
-		return ((char *)s);
-	return (NULL);
+	write(1, "\"", 1);
+}
+
+void	def_putstr(char *s)
+{
+	if (!s)
+		return ;
+	while(*s)
+		write(1, s++, 1);
+}
+
+void	my_putstr(char *str)
+{
+	int i;
+
+	i = 0;
+	if (!ft_strchr(str, '='))
+	{
+		def_putstr(str);
+		write(1, "=\"\"", 3);
+	}
+	else
+		new_putstr(str);
 }
