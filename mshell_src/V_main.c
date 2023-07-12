@@ -235,6 +235,7 @@ int	bi_execution(t_token *token)
 			ret_value = bi_export1(token -> shell);
 		else if (ft_strncmp("unset", token -> token, 5) == 0)
 			ret_value = bi_unset(token -> shell);
+		global_error = ret_value;
 		return (ret_value);
 }
 
@@ -265,9 +266,17 @@ int	main(int argc, char **argv, char **env)
 
 	//shell -> token = ft_lstnew_upgr("ls", Args2, 1, shell, -1, Args1);
 
-	// XXX yes | head XXX
+	// XXX cat < a XXX
 
-	//shell -> token = ft_lstnew_upgr("yess", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell, -1, Args1);
+	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);
+
+	// XXX < a cat | wc -l  XXX
+
+	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
+
+	// XXX < a yes | headd XXX
+
+	//shell -> token = ft_lstnew_upgr("yes", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("headы", Args1, -1, shell, -1, Args1);
 
 	// XXX echo lol XXX
 
@@ -317,10 +326,10 @@ int	main(int argc, char **argv, char **env)
 
 	// XXX cat | ls XXX
 
-	shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
 
 	//-----------------------------------Prompt---------------------------------------//
-	
+	global_error = 0;
 	exec(shell);
 	ft_lstclear_token(&shell -> token, (*del_token));
 	return (0);
