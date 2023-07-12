@@ -1,7 +1,8 @@
 NAME = minishell
 SRC_PATH = mshell_src
 OBJ_PATH = obj
-SRCS = $(addprefix $(SRC_PATH)/, main.c tokens.c tokens_utils.c tokens_utils2.c count_size.c alloc_usr_input.c)
+SRCS = $(addprefix $(SRC_PATH)/, main.c tokens.c tokens_utils.c tokens_utils2.c count_size.c alloc_usr_input.c \
+env.c env_2.c env_utils.c)
 OBJS = $(patsubst $(SRC_PATH)/%.c, $(OBJ_PATH)/%.o, $(SRCS))
 
 CC = cc

@@ -55,6 +55,9 @@ void	add_quote_token(char **user_input, char type, int pos, t_token **tokens)
 void	add_token(char **user_input, int i, t_token **tokens)
 {
 	char	*token;
+	int		s;
+
+	s = i;
 	if (i == 1 && **user_input == '\0')
 		return ;
 	token = (char *)malloc((i + 1) * sizeof(char));
@@ -63,7 +66,8 @@ void	add_token(char **user_input, int i, t_token **tokens)
 		(*user_input)--;
 		i--;
 	}
-	while (**user_input != ' ' && **user_input != '\0')
+	printf("%s\n", *user_input);
+	while (i < s)
 	{
 		token[i++] = **user_input;
 		(*user_input)++;
@@ -75,7 +79,7 @@ void	add_token(char **user_input, int i, t_token **tokens)
 
 int qch_usd(char *user_input, int i)
 {
-	while (i >= 0)
+	while (i > 0)
 	{
 		if (*user_input == '$')
 			return (1);
@@ -104,9 +108,10 @@ int	qcheck(char **user_input, int *i, char type, int s)
 			(*user_input)++;
 			(*i)++;
 		}
-		return (1);
+		if (qch_usd(*user_input, (*i) + 2) == 1)
+			return (1);
 	}
-	if (s > 0 && *(user_input[s - 1]) != ' ')
+	if (s > 0 && save[s - 1] != ' ' && qch_usd(*user_input, (*i) + 2) == 1)
 		return (1);
 	*user_input = save;
 	*i = s;
@@ -120,7 +125,7 @@ void	get_tokens(char *user_input, t_token **tokens, int i)
 	{
 		if (*user_input == 34 || *user_input == 39)
 		{
-			if (qcheck(&user_input, &i, 0, i) == 1 && qch_usd(user_input, i + 2) == 1)
+			if (qcheck(&user_input, &i, 0, i) == 1)
 				add_token(&user_input, i + 2, tokens);
 			add_quote_token(&user_input, *user_input, i, tokens);
 			user_input = space_skip(user_input);

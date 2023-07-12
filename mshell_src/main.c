@@ -5,82 +5,11 @@ void	error(void)
 	write(2, "Error\n", 6);
 	exit (1);
 }
-
 char	*space_skip(char *user_input)
 {
 	while (*user_input == ' ' && *user_input)
 		user_input++;
 	return (user_input);
-}
-
-char	*replace_var(char *var_name, char **var_arr)
-{
-	char	*to_return;
-
-	while (*var_arr)
-	{
-		if (ft_strncmp(*var_arr, var_name, ft_strchr_num(*var_arr, '=')) == 0)
-			break ;
-		var_arr++;
-	}
-	while (**var_arr != '=')
-		*var_arr++;
-	to_return = ft_strdup(ft_strtrim(*var_arr, '\''));
-	free(var_name);
-	return (to_return);
-}
-
-int	ft_strchr_num(const char *s, int c)
-{
-	char	loc;
-	int		i;
-
-	loc = (char)c;
-	i = 0;
-	while (*s != '\0')
-	{
-		if (*s == loc)
-			return (i);
-		s++;
-		i++;
-	}
-	if (*s == loc)
-		return (i);
-	return (-1);
-}
-
-void	check_var(t_token **ptr, int dollar_index, int i)
-{
-	char	*new_name;
-	char	*var_name;
-	char	*sep;
-
-	if (dollar_index == -1)
-		return ;
-	new_name = &(*ptr)->name[dollar_index + 1];
-	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
-	while (*new_name)
-	{
-		if (ft_strchr(sep, *new_name) != NULL)
-			break ;
-		new_name++;
-		i++;
-	}
-	var_name = ft_substr((*ptr)->name, dollar_index, i + 1);
-	if (squote_check()== 0)
-		var_name = replace_var(var_name + 1, (*ptr)->shell->envex);
-}
-
-void	handle_dollar_signs(t_token **tokens)
-{
-	t_token *ptr;
-
-	ptr = *tokens;
-	while (ptr != NULL)
-	{
-		check_var(&ptr, ft_strchr_num((ptr)->name, '$'), 0);
-		ptr = ptr->next;
-	}
 }
 
 void	print_tokens(t_token *tokens)
@@ -94,16 +23,25 @@ void	print_tokens(t_token *tokens)
 	}
 	printf("size:[%d]\n", i);
 }
-
-void	lexing(char *user_input, t_token **tokens)
+void	print_env(char **envp)
 {
-	user_input = put_spaces(user_input);
-	get_tokens(user_input, tokens, 0);
-	print_tokens(*tokens);
-	handle_dollar_signs(tokens);
-
+	while(*envp)
+	{
+		printf("%s\n", *envp);
+		envp++;
+	}
 }
-
+void	init_shell(t_token **tokens, t_shell **shell)
+{
+	t_token *ptr;
+	(*shell)->token = *tokens;
+	ptr = *tokens;
+	while (ptr != NULL)
+	{
+		ptr->shell = *shell;
+		ptr = ptr->next;
+	}
+}
 void	init_env(t_shell **shell, char **envp)
 {
 	int	i = 0;
@@ -121,30 +59,33 @@ void	init_env(t_shell **shell, char **envp)
 	(*shell) -> envex[i] = NULL;
 }
 
-void	init_shell(t_token **tokens, t_shell **shell)
+void	parse_tokens()
+
+void	lexing(char *user_input, t_token **tokens, t_shell **shell)
 {
-	t_token *ptr;
-	(*shell)->token = *tokens;
-	ptr = *tokens;
-	while (ptr != NULL)
-	{
-		ptr->shell = *shell;
-		ptr = ptr->next;
-	}
+	user_input = put_spaces(user_input);
+	get_tokens(user_input, tokens, 0);
+	init_shell(tokens, shell);
+	// print_env((*tokens)->shell->envex);
+	handle_dollar_signs(tokens);
+	print_tokens(*tokens);
+	parse_tokens(*tokens);
 }
 
-void	print_env(char **envp)
+void	parse_tokens(t_token *tokens, t_token_big *token_final)
 {
-	while(*envp)
+	while (tokens != NULL)
 	{
-		printf("%s\n", *envp);
-		envp++;
+		if (token -> name = )
+		
+		token = token -> next;
 	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_token *tokens;
+	t_token_big *token_final;
 	t_shell *shell;
 	tokens = NULL;
 
@@ -156,10 +97,10 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		user_input = readline("shell$ ");
-		lexing(user_input, &tokens);
-		init_shell(&tokens, &shell);
+		lexing(user_input, &tokens, &shell);
 		// print_env(tokens->shell->envex);
 		free_tokens(&tokens);
+		//print_env(shell->envex);
 	}
 	return (0);
 }
