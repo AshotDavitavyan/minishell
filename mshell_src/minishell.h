@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 18:46:08 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/12 13:34:22 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,6 @@ void	here_doc_looper(t_token *token);
 
 void	here_d(t_token *token, int j);
 
-void	dup2_check(int fd1, int fd2);
+int	open_0(char *argv);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 18:37:20 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/12 16:23:05 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,16 @@ void	pipes_dups(t_token *token, int j)
 {
 	if (j == 0)
 	{
-		dup2_check(token -> shell -> fd[j][1], STDOUT_FILENO);
+		dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
 	}
 	else if (!token -> next)
 	{
-		dup2_check(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+		dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
 	}
 	else
 	{
-		dup2_check(token -> shell -> fd[j][1], STDOUT_FILENO);
-		dup2_check(token -> shell -> fd[j - 1][0], STDIN_FILENO);
+		dup2(token -> shell -> fd[j][1], STDOUT_FILENO);
+		dup2(token -> shell -> fd[j - 1][0], STDIN_FILENO);
 	}
 }
 
@@ -62,12 +62,13 @@ void	piping(t_token *token, int j)
 	f = fork();
 	if (f == 0)
 	{
+		global_error = 0;
 		args = ft_split(token -> token, ' ');
 		pipes_dups(token, j);
 		if (token -> here_doc_flag == 1)
 		{
 			token -> here_fd = open("here_doc", O_RDWR, 0644);
-			dup2_check(token -> here_fd , STDIN_FILENO);
+			dup2(token -> here_fd , STDIN_FILENO);
 		}
 		if (bi_avail(token))
 			exit(bi_execution(token));
@@ -100,6 +101,28 @@ void	exec_n(t_shell *shell)
 	close_all(tmp1, j);
 }
 
+void	waiter(int count)
+{
+	int	j;
+	int	pid;
+	int	temp;
+	int	status;
+
+	temp = 1;
+	j = 0;
+	while (j < count)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid > temp)
+		{
+			temp = pid;
+			global_error = status / 256;
+		}
+		j++;
+	}
+	printf("%d\n", global_error);
+}
+
 void	exec(t_shell *shell)
 {
 	if (!shell -> token -> next)
@@ -111,7 +134,6 @@ void	exec(t_shell *shell)
 	}
 	else
 		exec_n(shell);
-	while (wait(NULL) != -1)
-		;
+	waiter(ft_lstsize_token(shell -> token));
 	unlink("here_doc");
 }
