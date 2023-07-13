@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   V_main.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/07/13 15:07:02 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_lstsize_token(t_token *lst)
@@ -73,7 +85,7 @@ t_token	*ft_lstnew_token(char *token, t_shell *shell)
 	return (node);
 }
 
-t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell, int flag, char **sep_arr)
+t_token	*ft_lstnew_upgr(char *token, char **r_fd_out, char **r_fd_in,  int flag_out, int flag_in, int h_flag, char **sep_arr, t_shell *shell)
 {
 	t_token	*node;
 
@@ -82,9 +94,11 @@ t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell, i
 		return (0);
 	node -> shell = shell; 
 	node -> token = token;
-	node -> redirect_fd = r_fd;
-	node -> redirect_flag = r_flag;
-	node -> here_doc_flag = flag;
+	node -> redirect_fd_out = r_fd_out;
+	node -> redirect_fd_in = r_fd_in;
+	node -> redirect_flag_out = flag_out;
+	node -> redirect_flag_in = flag_in;
+	node -> here_doc_flag = h_flag;
 	node -> sep_arr = sep_arr;
 	node ->next = NULL;
 	return (node);
@@ -217,7 +231,7 @@ int	bi_execution(t_token *token)
 {
 		int ret_value;
 
-		if (token -> redirect_flag >= 0 && token -> redirect_flag <= 2)
+		if (token -> redirect_flag_out + token -> redirect_flag_outout + token -> redirect_flag_in)
 		{
 			redirector_bi(token);
 		}
@@ -264,7 +278,7 @@ int	main(int argc, char **argv, char **env)
 
 	// XXX ls > a XXX
 
-	//shell -> token = ft_lstnew_upgr("ls", Args2, 1, shell, -1, Args1);
+	//shell -> token = ft_lstnew_upgr("cat", Args3, Args2, 1, 1, 0, Args1, shell);
 
 	// XXX cat < a XXX
 
@@ -274,9 +288,9 @@ int	main(int argc, char **argv, char **env)
 
 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-	// XXX < a yes | headd XXX
+	// XXX < a yes | head XXX
 
-	//shell -> token = ft_lstnew_upgr("yes", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("headы", Args1, -1, shell, -1, Args1);
+	//shell -> token = ft_lstnew_upgr("yes", Args1, Args1, 0, 0, 0, Args1, shell);shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
 
 	// XXX echo lol XXX
 

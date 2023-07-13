@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/12 13:34:22 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:20:30 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ typedef struct s_token
 
 	int				here_doc_flag;
 	char			**sep_arr;
-	int				redirect_flag;
-	char			**redirect_fd;
+	int				redirect_flag_out;
+	int				redirect_flag_in;
+	int				redirect_flag_outout;
+	char			**redirect_fd_out;
+	char			**redirect_fd_in;
 	char			*token;
 	struct s_token	*next;
 	t_shell 		*shell;
@@ -82,7 +85,7 @@ int	bi_unset(t_shell *shell);
 
 void	exec(t_shell *shell);
 
-void	executing_one(char *argvv, char **file, char **env, t_shell *shell);
+void	executing_one(t_shell *shell);
 
 int	count_words_V(char const *s, char c);
 
@@ -129,8 +132,6 @@ void	redirector_bi(t_token *token);
 int		bi_execution(t_token *token);
 
 void	close_all(t_token *token, int j);
-
-void	redirector(t_token *token);
 
 void	redirector_bi(t_token *token);
 

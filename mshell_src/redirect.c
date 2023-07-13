@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:29:27 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/12 13:56:25 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:47:29 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,24 @@ void	redirector(t_token *token)
 	int i;
 	
 	i = -1;
-	if (token -> redirect_flag == 0)
-		dup2(open_0(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1]), STDIN_FILENO);
-	if (token -> redirect_flag == 1 || token -> redirect_flag == 2)
+	if (token -> redirect_flag_out == 1)
+		dup2(open_0(token -> redirect_fd_out[ft_strlen_2d_arr(token -> redirect_fd_out) - 1]), STDIN_FILENO);
+	if (token -> redirect_flag_out == 1 || token -> redirect_flag_outout == 1)
 	{
-		if (token -> redirect_flag == 1)
+		if (token -> redirect_flag_out == 1)
 		{
-			while (token -> redirect_fd[++i + 1])
-				open(token -> redirect_fd[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
+			while (token -> redirect_fd_out[++i + 1])
+				open(token -> redirect_fd_out[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
 		}
-		else if (token -> redirect_flag == 2)
+		else if (token -> redirect_flag_outout == 2)
 		{
-			while (token -> redirect_fd[++i + 1])
-				open(token -> redirect_fd[i], O_RDWR | O_CREAT, 0644);
+			while (token -> redirect_fd_out[++i + 1])
+				open(token -> redirect_fd_out[i], O_RDWR | O_CREAT, 0644);
 		}
-		if (token -> redirect_flag == 1)
-			dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
-		if (token -> redirect_flag == 2)
-			dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
+		if (token -> redirect_flag_out == 1)
+			dup2(open(token -> redirect_fd_out[ft_strlen_2d_arr(token -> redirect_fd_out) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+		if (token -> redirect_flag_outout == 1)
+			dup2(open(token -> redirect_fd_out[ft_strlen_2d_arr(token -> redirect_fd_out) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
 	}
 }
 
@@ -56,23 +56,23 @@ void	redirector_bi(t_token *token)
 	int i;
 
 	i = -1;
-	if (token -> redirect_flag == 0)
-		dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR, 0644), STDIN_FILENO);
-	if (token -> redirect_flag == 1 || token -> redirect_flag == 2)
+	if (token -> redirect_flag_out == 0)
+		dup2(open(token -> redirect_fd_out[ft_strlen_2d_arr(token -> redirect_fd_out) - 1], O_RDWR, 0644), STDIN_FILENO);
+	if (token -> redirect_flag_out == 1 || token -> redirect_flag_outout == 1)
 	{
-		if (token -> redirect_flag == 1)
+		if (token -> redirect_flag_out == 1)
 		{
-			while (token -> redirect_fd[++i])
-				open(token -> redirect_fd[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
+			while (token -> redirect_fd_out[++i])
+				open(token -> redirect_fd_out[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
 		}
-		else if (token -> redirect_flag == 2)
+		else if (token -> redirect_flag_outout == 1)
 		{
-			while (token -> redirect_fd[++i])
-				open(token -> redirect_fd[i], O_RDWR | O_CREAT, 0644);
+			while (token -> redirect_fd_out[++i])
+				open(token -> redirect_fd_out[i], O_RDWR | O_CREAT, 0644);
 		}
-		if (token -> redirect_flag == 1)
-			dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_TRUNC , 0644), STDOUT_FILENO);
-		else if (token -> redirect_flag == 2)
-			dup2(open(token -> redirect_fd[ft_strlen_2d_arr(token -> redirect_fd) - 1], O_RDWR | O_APPEND, 0644), STDOUT_FILENO);
+		if (token -> redirect_flag_out == 1)
+			dup2(open(token -> redirect_fd_out[ft_strlen_2d_arr(token -> redirect_fd_out) - 1], O_RDWR | O_TRUNC , 0644), STDOUT_FILENO);
+		else if (token -> redirect_flag_outout == 1)
+			dup2(open(token -> redirect_fd_out[ft_strlen_2d_arr(token -> redirect_fd_out) - 1], O_RDWR | O_APPEND, 0644), STDOUT_FILENO);
 	}
 }

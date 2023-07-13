@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/12 16:23:05 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:25:03 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void	waiter(int count)
 		}
 		j++;
 	}
-	printf("%d\n", global_error);
 }
 
 void	exec(t_shell *shell)
@@ -130,7 +129,7 @@ void	exec(t_shell *shell)
 		if (bi_avail(shell -> token))
 			bi_execution(shell -> token);
 		else
-			executing_one(shell -> token -> token, shell -> token -> redirect_fd, shell -> envex, shell);
+			executing_one(shell);
 	}
 	else
 		exec_n(shell);
