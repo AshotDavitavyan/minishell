@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/13 15:07:02 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:10:21 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,8 +289,8 @@ int	main(int argc, char **argv, char **env)
 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
 	// XXX < a yes | head XXX
-
-	//shell -> token = ft_lstnew_upgr("yes", Args1, Args1, 0, 0, 0, Args1, shell);shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
+	char *lol = "\0";
+	shell -> token = ft_lstnew_upgr(lol, Args1, Args1, 0, 0, 0, Args1, shell);//shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
 
 	// XXX echo lol XXX
 
