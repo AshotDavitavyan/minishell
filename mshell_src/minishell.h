@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/13 14:20:30 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/15 11:36:25 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ typedef struct s_token
 
 	int				here_doc_flag;
 	char			**sep_arr;
-	int				redirect_flag_out;
-	int				redirect_flag_in;
-	int				redirect_flag_outout;
-	char			**redirect_fd_out;
-	char			**redirect_fd_in;
+	int				redir_flag_out;
+	int				redir_flag_in;
+	int				redir_flag_outout;
+	char			**redir_fd_out;
+	char			**redir_fd_in;
 	char			*token;
 	struct s_token	*next;
 	t_shell 		*shell;

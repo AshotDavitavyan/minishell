@@ -162,19 +162,19 @@ void	executing_one(t_shell *shell)
 	{
 		global_error = 0;
 		args = ft_split(shell -> token -> token, ' ');
-		if (shell -> token -> redirect_flag_in == 1)
-			dup2(open_0(shell -> token -> redirect_fd_in[ft_strlen_2d_arr(shell -> token -> redirect_fd_in) - 1]), STDIN_FILENO);
-		if (shell -> token -> redirect_flag_out == 1)
+		if (shell -> token -> redir_flag_in == 1)
+			dup2(open_0(shell -> token -> redir_fd_in[ft_strlen_2d_arr(shell -> token -> redir_fd_in) - 1]), STDIN_FILENO);
+		if (shell -> token -> redir_flag_out == 1)
 		{
-			while (shell -> token -> redirect_fd_out[++i + 1])
-				open(shell -> token -> redirect_fd_out[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
-			dup2(open(shell -> token -> redirect_fd_out[ft_strlen_2d_arr(shell -> token -> redirect_fd_out) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+			while (shell -> token -> redir_fd_out[++i + 1])
+				open(shell -> token -> redir_fd_out[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
+			dup2(open(shell -> token -> redir_fd_out[ft_strlen_2d_arr(shell -> token -> redir_fd_out) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
 		}
-		if (shell -> token -> redirect_flag_outout == 1)
+		if (shell -> token -> redir_flag_outout == 1)
 		{
-			while (shell -> token -> redirect_fd_out[++i + 1])
-				open(shell -> token -> redirect_fd_out[i], O_RDWR | O_CREAT, 0644);
-			dup2(open(shell -> token -> redirect_fd_out[ft_strlen_2d_arr(shell -> token -> redirect_fd_out) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
+			while (shell -> token -> redir_fd_out[++i + 1])
+				open(shell -> token -> redir_fd_out[i], O_RDWR | O_CREAT, 0644);
+			dup2(open(shell -> token -> redir_fd_out[ft_strlen_2d_arr(shell -> token -> redir_fd_out) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
 		}
 		if (shell -> token -> here_doc_flag == 1)
 		{
