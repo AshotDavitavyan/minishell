@@ -6,7 +6,11 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/07/13 15:10:21 by vgribkov         ###   ########.fr       */
+=======
+/*   Updated: 2023/07/15 11:36:25 by vgribkov         ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +98,10 @@ t_token	*ft_lstnew_upgr(char *token, char **r_fd_out, char **r_fd_in,  int flag_
 		return (0);
 	node -> shell = shell; 
 	node -> token = token;
-	node -> redirect_fd_out = r_fd_out;
-	node -> redirect_fd_in = r_fd_in;
-	node -> redirect_flag_out = flag_out;
-	node -> redirect_flag_in = flag_in;
+	node -> redir_fd_out = r_fd_out;
+	node -> redir_fd_in = r_fd_in;
+	node -> redir_flag_out = flag_out;
+	node -> redir_flag_in = flag_in;
 	node -> here_doc_flag = h_flag;
 	node -> sep_arr = sep_arr;
 	node ->next = NULL;
@@ -231,7 +235,7 @@ int	bi_execution(t_token *token)
 {
 		int ret_value;
 
-		if (token -> redirect_flag_out + token -> redirect_flag_outout + token -> redirect_flag_in)
+		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in)
 		{
 			redirector_bi(token);
 		}
