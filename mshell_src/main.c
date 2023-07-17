@@ -24,7 +24,7 @@ char	*space_skip(char *user_input)
 	return (user_input);
 }
 
-void	lexing(char *u_i, t_token **tokens, t_shell **shell, t_token_big **tbig)
+void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
 	u_i = put_spaces(u_i);
 	get_tokens(u_i, tokens, 0);
@@ -45,8 +45,8 @@ void	sighandler(int signum)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_token *tokens;
-	t_token_big *token_final;
+	t_token_small *tokens;
+	t_token *token_final;
 	t_shell *shell;
 	tokens = NULL;
 	token_final = NULL;

@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-void    free_tokens(t_token	**tokens)
+void    free_tokens(t_token_small	**tokens)
 {
-	t_token	*tmp;
+	t_token_small	*tmp;
 
 	tmp = *tokens;
 	if (!tmp)
@@ -30,9 +30,9 @@ void	free_arr(char **to_free)
 	}
 }
 
-void	free_big_tokens(t_token_big **tokens)
+void	free_big_tokens(t_token **tokens)
 {
-	t_token_big	*ptr;
+	t_token	*ptr;
 	while (*tokens != NULL)
 	{
 		ptr = (*tokens);

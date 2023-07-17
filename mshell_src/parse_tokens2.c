@@ -15,7 +15,7 @@ void	arrcpy(char **to_be, char **current, char *to_add)
 	to_be[i] = NULL;
 }
 
-int	check_for_special_signs(t_token *tokens)
+int	check_for_special_signs(t_token_small *tokens)
 {
 	if (ft_strnstr(tokens->name, "<", 1) && ft_strlen(tokens->name) == 1)
 		return (1);
@@ -30,7 +30,7 @@ int	check_for_special_signs(t_token *tokens)
 	return (0);
 }
 
-char	**add_fd(char **current, t_token *tokens, int size, char **to_return)
+char	**add_fd(char **current, t_token_small *tokens, int size, char **to_return)
 {
 	char	**ptr;
 
@@ -59,7 +59,7 @@ char	**add_fd(char **current, t_token *tokens, int size, char **to_return)
 	return (to_return);
 }
 
-void	add_redirs(t_token **tokens, t_token_big **tokfin)
+void	add_redirs(t_token_small **tokens, t_token **tokfin)
 {
 	while (*tokens != NULL)
 	{
@@ -87,11 +87,11 @@ void	add_redirs(t_token **tokens, t_token_big **tokfin)
 	}
 }
 
-t_token_big **tokenfinaladd(t_token_big **str, t_token *tokens)
+t_token **tokenfinaladd(t_token **str, t_token_small *tokens)
 {
-	t_token_big	*to_add;
+	t_token	*to_add;
 
-	to_add = (t_token_big *)malloc(sizeof(t_token_big));
+	to_add = (t_token *)malloc(sizeof(t_token));
 	to_add->here_fd = 0;
 	to_add->here_doc_flag = 0;
 	to_add->sep_arr = NULL;

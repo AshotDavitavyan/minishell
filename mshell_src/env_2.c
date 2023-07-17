@@ -82,7 +82,7 @@ void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_
 		}
 	}
 }
-void	put_vars(char *new_name, t_token **ptr)
+void	put_vars(char *new_name, t_token_small **ptr)
 {
 	char	*name_ptr;
 

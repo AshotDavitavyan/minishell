@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	print_tokens(t_token *tokens)
+void	print_tokens(t_token_small *tokens)
 {
 	int i = 0;
 	while (tokens != NULL)
@@ -39,7 +39,7 @@ void	print_arr(char **to_print, char *name)
 	printf("\n");
 }
 
-void	print_big_token(t_token_big *tokfin)
+void	print_big_token(t_token *tokfin)
 {
 	while (tokfin != NULL)
 	{
