@@ -8,6 +8,7 @@ t_token	*tokenadd_new(char *name, int type)
 	token->name = name;
 	token->type = type;
 	token->next = NULL;
+	token->prev = NULL;
 	return (token);
 }
 
@@ -17,8 +18,8 @@ void	tokenadd_back(t_token *token, t_token *to_add)
 	save = token;
 	while (token->next != NULL)
 		token = token->next;
-
 	token->next = to_add;
+	token->next->prev = token;
 	token = save;
 }
 
@@ -30,21 +31,5 @@ t_token *create_token(t_token *token, char *name, int type)
 	{
 		tokenadd_back(token, tokenadd_new(name, type));
 		return (token);
-	}
-}
-
-void    free_tokens(t_token	**tokens)
-{
-	t_token	*tmp;
-
-	tmp = *tokens;
-	if (!tmp)
-		return ;
-	while (*tokens != NULL)
-	{
-		tmp = *tokens;
-		*tokens = (*tokens)->next;
-		free(tmp->name);
-		free(tmp);
 	}
 }

@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+void	init_shell(t_token **tokens, t_shell **shell)
+{
+	t_token *ptr;
+	(*shell)->token = *tokens;
+	ptr = *tokens;
+	while (ptr != NULL)
+	{
+		ptr->shell = *shell;
+		ptr = ptr->next;
+	}
+}
+
 int	comp_vars(char **name, char **var_arr, int i, int to_return)
 {
 	char	*sep;

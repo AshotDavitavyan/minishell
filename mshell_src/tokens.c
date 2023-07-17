@@ -66,7 +66,6 @@ void	add_token(char **user_input, int i, t_token **tokens)
 		(*user_input)--;
 		i--;
 	}
-	printf("%s\n", *user_input);
 	while (i < s)
 	{
 		token[i++] = **user_input;
