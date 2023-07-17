@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 18:46:08 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/15 11:36:25 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int	bi_unset(t_shell *shell);
 
 void	exec(t_shell *shell);
 
-void	executing_one(char *argvv, char **file, char **env, t_shell *shell);
+void	executing_one(t_shell *shell);
 
 int	count_words_V(char const *s, char c);
 
@@ -186,14 +186,12 @@ int		bi_execution(t_token *token);
 
 void	close_all(t_token *token, int j);
 
-void	redirector(t_token *token);
-
 void	redirector_bi(t_token *token);
 
 void	here_doc_looper(t_token *token);
 
 void	here_d(t_token *token, int j);
 
-void	dup2_check(int fd1, int fd2);
+int	open_0(char *argv);
 
 #endif
