@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/15 11:36:25 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:08:05 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_shell
 {
 	int			fd[1000][2];
 	char		**envex;
-	t_token		*token;
+	t_token		*big_token;
 }				t_shell;
 
 int		check(char *user_input, char type, int i, int todo);
