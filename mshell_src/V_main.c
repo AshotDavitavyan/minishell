@@ -6,13 +6,10 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/07/13 15:10:21 by vgribkov         ###   ########.fr       */
-=======
-/*   Updated: 2023/07/15 11:36:25 by vgribkov         ###   ########.fr       */
->>>>>>> master
+/*   Updated: 2023/07/15 14:03:31 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "minishell.h"
 
@@ -282,7 +279,7 @@ int	main(int argc, char **argv, char **env)
 
 	// XXX ls > a XXX
 
-	//shell -> token = ft_lstnew_upgr("cat", Args3, Args2, 1, 1, 0, Args1, shell);
+	shell -> token = ft_lstnew_upgr("ls -l-l", Args1, Args1, 0, 0, 0, Args1, shell);
 
 	// XXX cat < a XXX
 
@@ -293,8 +290,8 @@ int	main(int argc, char **argv, char **env)
 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
 	// XXX < a yes | head XXX
-	char *lol = "\0";
-	shell -> token = ft_lstnew_upgr(lol, Args1, Args1, 0, 0, 0, Args1, shell);//shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
+	//char *lol = "\0";
+	//shell -> token = ft_lstnew_upgr(lol, Args1, Args1, 0, 0, 0, Args1, shell);//shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
 
 	// XXX echo lol XXX
 
