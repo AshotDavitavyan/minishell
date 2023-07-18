@@ -38,7 +38,7 @@ typedef struct s_token
 	int					redir_flag_outout;
 	char				**redir_fd_out;
 	char				**redir_fd_in;
-	char				*token;
+	char				**token;
 	struct s_token		*next;
 	t_shell 			*shell;
 }						t_token;

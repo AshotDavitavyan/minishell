@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//"echo asd" should not work
 //single pipe error
 //check tokens if they're empty
 //check big tokens if they're empty
@@ -31,10 +32,11 @@ void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
 	u_i = put_spaces(u_i);
 	get_tokens(u_i, tokens, 0);
+	// print_tokens(*tokens);
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
 	parse_tokens(*tokens, tbig, *tokens);
-	print_big_token(*tbig);
+	// print_big_token(*tbig);
 }
 
 void	sighandler(int signum)
@@ -80,7 +82,7 @@ int	main(int argc, char **argv, char **env)
 		add_history(user_input);
 		lexing(user_input, &tokens, &shell, &token_final);
 		shell_token(token_final, shell);
-		exec(shell);
+		// exec(shell);
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
 	}
