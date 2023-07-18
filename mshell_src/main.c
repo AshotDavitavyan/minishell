@@ -1,6 +1,7 @@
 #include "minishell.h"
 
 //single pipe error
+//echo $?
 //check tokens if they're empty
 //check big tokens if they're empty
 //$"USER" prints adavitav, should print USER
