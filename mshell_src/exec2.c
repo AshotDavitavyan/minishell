@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/13 14:25:03 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 16:44:49 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,8 @@ void	waiter(int count)
 
 void	exec(t_shell *shell)
 {
+	if (shell -> token -> token[0] == '\0')
+		return ;
 	if (!shell -> token -> next)
 	{
 		if (bi_avail(shell -> token))

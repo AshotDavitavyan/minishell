@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/15 14:03:31 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 14:44:02 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,7 +281,7 @@ int	bi_execution(t_token *token)
 
 	// XXX ls > a XXX
 
-	shell -> token = ft_lstnew_upgr("ls -l-l", Args1, Args1, 0, 0, 0, Args1, shell);
+	//shell -> token = ft_lstnew_upgr("ls -l-l", Args1, Args1, 0, 0, 0, Args1, shell);
 
 	// XXX cat < a XXX
 

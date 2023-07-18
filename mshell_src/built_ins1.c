@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 15:48:14 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 17:18:30 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	bi_pwd(void)
 
 int	bi_echo(t_token *token)
 {
-	char **arr = ft_split_V(token -> token, ' ');
+	char **arr = ft_split(token -> token, ' ');
 	int flag;
 	int	i;
 
@@ -91,6 +91,8 @@ int	bi_echo(t_token *token)
 		flag = 1;
 	else
 		flag = 0;
+	if (flag)
+		arr++;
 	while(arr[++i])
 	{
 		printf("%s", arr[i]);

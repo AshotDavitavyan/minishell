@@ -54,7 +54,7 @@ char	*true_path(char *argv, char **env)
 	char			**args;
 	char			*path;
 
-	if (access(argv, F_OK) == 0)
+	if (access(ft_split(argv, ' ')[0], F_OK) == 0)
 		return (argv);
 	if (ft_strchr (argv, '/') != NULL)
 		f_error();
@@ -130,18 +130,18 @@ int	open_0(char *argv)
 	}
 	return (fd);
 }
-int	open_1(char *argv)
-{
-	int fd  = -1;
-	fd = open(argv, O_RDWR | O_TRUNC | O_CREAT, 0644);
-	if (fd == -1)
-	{
-		global_error = 1;
-		ft_putstr_fd("aga", 2);
-		exit(1);
-	}
-	return (fd);
-}
+// int	open_1(char *argv)
+// {
+// 	int fd  = -1;
+// 	fd = open(argv, O_RDWR | O_TRUNC | O_CREAT, 0644);
+// 	if (fd == -1)
+// 	{
+// 		global_error = 1;
+// 		ft_putstr_fd("aga", 2);
+// 		exit(1);
+// 	}
+// 	return (fd);
+// }
 
 void	openh_dup2(int fd)
 {
@@ -180,7 +180,7 @@ void	executing_one(t_shell *shell)
 		{
 			openh_dup2(shell -> token -> here_fd);
 		}
-		execve(true_path(shell -> token -> token, shell -> envex), args, shell -> envex);
+		execve(true_path(args[0], shell -> envex), args, shell -> envex);
 	}
 }
 

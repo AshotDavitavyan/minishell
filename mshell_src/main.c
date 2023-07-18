@@ -34,7 +34,7 @@ void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
 	parse_tokens(*tokens, tbig, *tokens);
-	print_big_token(*tbig);
+	//print_big_token(*tbig);
 }
 
 void	sighandler(int signum)
