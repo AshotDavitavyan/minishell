@@ -210,28 +210,30 @@ void	printf_arr(char **input)
 		printf("%s\n", input[i++]);
 }
 
-void	init_env(t_shell **shell, char **envp)
-{
-	int	i = 0;
-	while (envp[i])
-		i++;
-	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (envp[++i])
-	{
-		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
-			(*shell) -> envex[i] = ft_strdup("OLDPWD");
-		else
-			(*shell) -> envex[i] = ft_strdup(envp[i]);
-	}
-	(*shell) -> envex[i] = NULL;
-}
+// void	init_env(t_shell **shell, char **envp)
+// {
+// 	int	i = 0;
+// 	while (envp[i])
+// 		i++;
+// 	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
+// 	i = -1;
+// 	while (envp[++i])
+// 	{
+// 		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
+// 			(*shell) -> envex[i] = ft_strdup("OLDPWD");
+// 		else
+// 			(*shell) -> envex[i] = ft_strdup(envp[i]);
+// 	}
+// 	(*shell) -> envex[i] = NULL;
+// }
 
 
 int	bi_execution(t_token *token)
 {
 		int ret_value;
-
+///////
+		ret_value = 0;
+///////
 		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in)
 		{
 			redirector_bi(token);
@@ -254,28 +256,28 @@ int	bi_execution(t_token *token)
 		return (ret_value);
 }
 
-int	main(int argc, char **argv, char **env)
-{
-	t_shell *shell;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	t_shell *shell;
 	
-	shell = malloc(sizeof(t_shell));
-	if (argc || argv || env)
-		;
-	init_env(&shell, env);
+// 	shell = malloc(sizeof(t_shell));
+// 	if (argc || argv || env)
+// 		;
+// 	init_env(&shell, env);
 
-	//-----------------------------------Prompt---------------------------------------//
+// 	//-----------------------------------Prompt---------------------------------------//
 
-	char *args1 = NULL;
-	char **Args1 = ft_split(args1, ' ');
+// 	char *args1 = NULL;
+// 	char **Args1 = ft_split(args1, ' ');
 
-	char *args2 = "a";
-	char **Args2 = ft_split(args2, ' ');
+// 	char *args2 = "a";
+// 	char **Args2 = ft_split(args2, ' ');
 
-	char *args3 = "b";
-	char **Args3 = ft_split(args3, ' ');
+// 	char *args3 = "b";
+// 	char **Args3 = ft_split(args3, ' ');
 
-	char *args4 = "a b";
-	char **Args4 = ft_split(args4, ' ');
+// 	char *args4 = "a b";
+// 	char **Args4 = ft_split(args4, ' ');
 
 	// XXX ls > a XXX
 
@@ -344,8 +346,8 @@ int	main(int argc, char **argv, char **env)
 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
 
 	//-----------------------------------Prompt---------------------------------------//
-	global_error = 0;
-	exec(shell);
-	ft_lstclear_token(&shell -> token, (*del_token));
-	return (0);
-}
+// 	global_error = 0;
+// 	exec(shell);
+// 	ft_lstclear_token(&shell -> token, (*del_token));
+// 	return (0);
+// }
