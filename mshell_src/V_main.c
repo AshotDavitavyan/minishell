@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   V_main.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/07/17 16:23:46 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_lstsize_token(t_token *lst)
@@ -73,7 +85,7 @@ t_token	*ft_lstnew_token(char *token, t_shell *shell)
 	return (node);
 }
 
-t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell, int flag, char **sep_arr)
+t_token	*ft_lstnew_upgr(char *token, char **r_fd_out, char **r_fd_in,  int flag_out, int flag_in, int h_flag, char **sep_arr, t_shell *shell)
 {
 	t_token	*node;
 
@@ -82,9 +94,11 @@ t_token	*ft_lstnew_upgr(char *token, char **r_fd,  int r_flag, t_shell *shell, i
 		return (0);
 	node -> shell = shell; 
 	node -> token = token;
-	node -> redirect_fd = r_fd;
-	node -> redirect_flag = r_flag;
-	node -> here_doc_flag = flag;
+	node -> redir_fd_out = r_fd_out;
+	node -> redir_fd_in = r_fd_in;
+	node -> redir_flag_out = flag_out;
+	node -> redir_flag_in = flag_in;
+	node -> here_doc_flag = h_flag;
 	node -> sep_arr = sep_arr;
 	node ->next = NULL;
 	return (node);
@@ -195,29 +209,31 @@ void	printf_arr(char **input)
 		printf("%s\n", input[i++]);
 }
 
-void	init_env(t_shell **shell, char **envp)
-{
-	int	i = 0;
-	while (envp[i])
-		i++;
-	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (envp[++i])
-	{
-		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
-			(*shell) -> envex[i] = ft_strdup("OLDPWD");
-		else
-			(*shell) -> envex[i] = ft_strdup(envp[i]);
-	}
-	(*shell) -> envex[i] = NULL;
-}
+// void	init_env(t_shell **shell, char **envp)
+// {
+// 	int	i = 0;
+// 	while (envp[i])
+// 		i++;
+// 	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
+// 	i = -1;
+// 	while (envp[++i])
+// 	{
+// 		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
+// 			(*shell) -> envex[i] = ft_strdup("OLDPWD");
+// 		else
+// 			(*shell) -> envex[i] = ft_strdup(envp[i]);
+// 	}
+// 	(*shell) -> envex[i] = NULL;
+// }
 
 
 int	bi_execution(t_token *token)
 {
 		int ret_value;
-
-		if (token -> redirect_flag >= 0 && token -> redirect_flag <= 2)
+///////
+		ret_value = 0;
+///////
+		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in)
 		{
 			redirector_bi(token);
 		}
@@ -235,12 +251,13 @@ int	bi_execution(t_token *token)
 			ret_value = bi_export1(token -> shell);
 		else if (ft_strncmp("unset", token -> token, 5) == 0)
 			ret_value = bi_unset(token -> shell);
+		ret_value = global_error;
 		return (ret_value);
 }
 
-int	main(int argc, char **argv, char **env)
-{
-	t_shell *shell;
+// int	main(int argc, char **argv, char **env)
+// {
+// 	t_shell *shell;
 	
 	shell = malloc(sizeof(t_shell));
 	if (argc || argv || env)
@@ -261,66 +278,74 @@ int	main(int argc, char **argv, char **env)
 	char *args4 = "a b";
 	char **Args4 = ft_split(args4, ' ');
 
-	// XXX ls > a XXX
+// 	//shell -> token = ft_lstnew_upgr("cat", Args3, Args2, 1, 1, 0, Args1, shell);
 
-	//shell -> token = ft_lstnew_upgr("ls", Args2, 1, shell, -1, Args1);
+// 	// XXX cat < a XXX
 
-	// XXX yes | head XXX
+// 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("yess", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell, -1, Args1);
+// 	// XXX < a cat | wc -l  XXX
 
-	// XXX echo lol XXX
+// 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-	//shell -> token =ft_lstnew_upgr("echo  lol", Args1, -1, shell, -1, Args1);
+// 	// XXX < a yes | head XXX
 
-	// XXX  cat | wc -l XXX
+// 	//shell -> token = ft_lstnew_upgr("yes", Args1, Args1, 0, 0, 0, Args1, shell);shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
 
-	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
+// 	// XXX echo lol XXX
 
-	/// XXX < a cat | wc | wc | > b XXX
+// 	//shell -> token =ft_lstnew_upgr("echo  lol", Args1, -1, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell, -1, Args1);;shell -> token -> next -> next = ft_lstnew_upgr("wc", Args3, 1, shell, -1, Args1);
+// 	// XXX  cat | wc -l XXX
 
-	/// XXX cat << s
+// 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);
+// 	/// XXX < a cat | wc | wc | > b XXX
 
-	// pwd >> a
+// 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell, -1, Args1);;shell -> token -> next -> next = ft_lstnew_upgr("wc", Args3, 1, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("pwd", Args2, 2, shell, -1, Args1);
+// 	/// XXX cat << s
 
-	// XXX cat | pwd | wc -l XXX ZA-PA
+// 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);
 
-	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
+// 	// pwd >> a
 
-	// XXX env | pwd XXX 
+// 	//shell -> token = ft_lstnew_upgr("pwd", Args2, 2, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("env", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);
+// 	// XXX cat | pwd | wc -l XXX ZA-PA
 
-	// XXX ls | pwd | ls -al XXX
+// 	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next= ft_lstnew_upgr("ls -al", Args1, -1, shell, -1, Args1);
+// 	// XXX env | pwd XXX 
 
-	// XXX echo lol | wc XXX
+// 	//shell -> token = ft_lstnew_upgr("env", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell, -1, Args1);
+// 	// XXX ls | pwd | ls -al XXX
+
+// 	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("pwd", Args1, -1, shell, -1, Args1);shell -> token -> next -> next= ft_lstnew_upgr("ls -al", Args1, -1, shell, -1, Args1);
+
+// 	// XXX echo lol | wc XXX
+
+// 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc", Args1, -1, shell, -1, Args1);
 	
-	// XXX ls | cat | grep a XXX
+// 	// XXX ls | cat | grep a XXX
 
-	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("grep a", Args1, -1, shell, -1, Args1);
+// 	//shell -> token = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next -> next = ft_lstnew_upgr("grep a", Args1, -1, shell, -1, Args1);
 
-	// XXX cat << a | wc -l XXX
+// 	// XXX cat << a | wc -l XXX
 
-	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
+// 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, 1, Args2);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-	//shell -> token = ft_lstnew_upgr("ls -a -l", Args1, -1, shell, -1, Args1);
+// 	//shell -> token = ft_lstnew_upgr("ls -a -l", Args1, -1, shell, -1, Args1);
 
-	// XXX cat | ls XXX
+// 	// XXX cat | ls XXX
 
-	shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
+// 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
+
+	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
 
 	//-----------------------------------Prompt---------------------------------------//
-	
+	global_error = 0;
 	exec(shell);
 	ft_lstclear_token(&shell -> token, (*del_token));
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:29:58 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/10 15:01:51 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:13:56 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	ft_free(char **arr)
 
 int	ft_strcmp(char *str1, char *str2)
 {
+	if (!str1 || !str2)
+		return (-1);
 	while (*str1 && *str1 - *str2 == 0)
 	{
 		str1++;

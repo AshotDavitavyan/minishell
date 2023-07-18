@@ -43,6 +43,8 @@ void	true_path_error(char *argv)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(argv, 2);
 	ft_putstr_fd(": command not found\n", 2);
+	global_error = 127;
+	exit(127);
 }
 
 char	*true_path(char *argv, char **env)
@@ -114,7 +116,40 @@ void	here_doc_looper(t_token *token)
 	}
 }
 
-void	executing_one(char *argvv, char **file, char **env, t_shell *shell)
+int	open_0(char *argv)
+{
+	int fd;
+	fd = open(argv, O_RDWR, 0644);
+	if (fd == -1)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		global_error = 1;
+		exit(1);
+	}
+	return (fd);
+}
+int	open_1(char *argv)
+{
+	int fd  = -1;
+	fd = open(argv, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	if (fd == -1)
+	{
+		global_error = 1;
+		ft_putstr_fd("aga", 2);
+		exit(1);
+	}
+	return (fd);
+}
+
+void	openh_dup2(int fd)
+{
+	fd = open("here_doc", O_RDWR, 0644);
+	dup2(fd, STDIN_FILENO);
+}
+
+void	executing_one(t_shell *shell)
 {
 	char **args;
 	int f;
@@ -125,31 +160,28 @@ void	executing_one(char *argvv, char **file, char **env, t_shell *shell)
 	f = fork();
 	if (f == 0)
 	{
-		args = ft_split(argvv, ' ');
-		if (shell -> token -> redirect_flag == 0)
-			dup2_check(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR, 0644), STDIN_FILENO);
-		if (shell -> token -> redirect_flag == 1)
+		global_error = 0;
+		args = ft_split(shell -> token -> token, ' ');
+		if (shell -> token -> redir_flag_in == 1)
+			dup2(open_0(shell -> token -> redir_fd_in[ft_strlen_2d_arr(shell -> token -> redir_fd_in) - 1]), STDIN_FILENO);
+		if (shell -> token -> redir_flag_out == 1)
 		{
-			while (file[++i + 1])
-				open(file[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
-			dup2_check(open(file[ft_strlen_2d_arr(file) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+			while (shell -> token -> redir_fd_out[++i + 1])
+				open(shell -> token -> redir_fd_out[i], O_RDWR | O_TRUNC | O_CREAT, 0644);
+			dup2(open(shell -> token -> redir_fd_out[ft_strlen_2d_arr(shell -> token -> redir_fd_out) - 1], O_RDWR | O_TRUNC | O_CREAT, 0644), STDOUT_FILENO);
+		}
+		if (shell -> token -> redir_flag_outout == 1)
+		{
+			while (shell -> token -> redir_fd_out[++i + 1])
+				open(shell -> token -> redir_fd_out[i], O_RDWR | O_CREAT, 0644);
+			dup2(open(shell -> token -> redir_fd_out[ft_strlen_2d_arr(shell -> token -> redir_fd_out) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
 		}
 		if (shell -> token -> here_doc_flag == 1)
 		{
-			shell -> token -> here_fd = open("here_doc", O_RDWR, 0644);
-			dup2_check(shell -> token -> here_fd , STDIN_FILENO);
+			openh_dup2(shell -> token -> here_fd);
 		}
-		execve(true_path(argvv, env), args, env);
+		execve(true_path(shell -> token -> token, shell -> envex), args, shell -> envex);
 	}
 }
 
-void	dup2_check(int fd1, int fd2)
-{
-	if (fd1 == -1 || fd2 == -1)
-	{
-		perror("");
-		exit(0);
-	}
-	dup2(fd1, fd2);
-}
 

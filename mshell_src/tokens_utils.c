@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-t_token	*tokenadd_new(char *name, int type)
+t_token_small	*tokenadd_new(char *name, int type)
 {
-	t_token *token;
+	t_token_small *token;
 
-	token = malloc(sizeof(t_token));
+	token = malloc(sizeof(t_token_small));
 	token->name = name;
 	token->type = type;
 	token->next = NULL;
@@ -12,9 +12,9 @@ t_token	*tokenadd_new(char *name, int type)
 	return (token);
 }
 
-void	tokenadd_back(t_token *token, t_token *to_add)
+void	tokenadd_back(t_token_small *token, t_token_small *to_add)
 {
-	t_token *save;
+	t_token_small *save;
 	save = token;
 	while (token->next != NULL)
 		token = token->next;
@@ -23,7 +23,7 @@ void	tokenadd_back(t_token *token, t_token *to_add)
 	token = save;
 }
 
-t_token *create_token(t_token *token, char *name, int type)
+t_token_small *create_token(t_token_small *token, char *name, int type)
 {
 	if (token == NULL)
 		return (tokenadd_new(name, type));

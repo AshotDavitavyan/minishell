@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void	init_shell(t_token **tokens, t_shell **shell)
+void	init_shell(t_token_small **tokens, t_shell **shell)
 {
-	t_token *ptr;
-	(*shell)->token = *tokens;
+	t_token_small *ptr;
+	(*shell)->token_small = *tokens;
 	ptr = *tokens;
 	while (ptr != NULL)
 	{
@@ -66,7 +66,7 @@ int	quote_dollar(char **name, char **var_arr)
 	return (i);
 }
 
-void	check_var(t_token **ptr, int dollar_index, int i)
+void	check_var(t_token_small **ptr, int dollar_index, int i)
 {
 	char	*name_ptr;
 
@@ -92,9 +92,9 @@ void	check_var(t_token **ptr, int dollar_index, int i)
 	put_vars(name_ptr, ptr);
 }
 
-void	handle_dollar_signs(t_token **tokens)
+void	handle_dollar_signs(t_token_small **tokens)
 {
-	t_token *ptr;
+	t_token_small *ptr;
 
 	ptr = *tokens;
 	while (ptr != NULL)

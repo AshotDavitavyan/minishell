@@ -23,7 +23,7 @@ char	*add_after_quotes(char **user_input, char *token, char type)
 	return (token);
 }
 
-void	add_quote_token(char **user_input, char type, int pos, t_token **tokens)
+void	add_quote_token(char **user_input, char type, int pos, t_token_small **tokens)
 {
 	char	*token;
 	char	*save;
@@ -52,7 +52,7 @@ void	add_quote_token(char **user_input, char type, int pos, t_token **tokens)
 	*tokens = create_token(*tokens, token, type);
 }
 
-void	add_token(char **user_input, int i, t_token **tokens)
+void	add_token(char **user_input, int i, t_token_small **tokens)
 {
 	char	*token;
 	int		s;
@@ -117,7 +117,7 @@ int	qcheck(char **user_input, int *i, char type, int s)
 	return (0);
 }
 
-void	get_tokens(char *user_input, t_token **tokens, int i)
+void	get_tokens(char *user_input, t_token_small **tokens, int i)
 {
 	user_input = space_skip(user_input);
 	while (*user_input)
