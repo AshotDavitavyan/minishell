@@ -3,8 +3,6 @@
 //single pipe error
 //check tokens if they're empty
 //check big tokens if they're empty
-//check tokens if they're empty
-//check big tokens if they're empty
 //$"USER" prints adavitav, should print USER
 //$$USER.1 malloc error 
 //$USER1 malloc error prints davitav instead of adavitav or avitav if $USER12
@@ -13,8 +11,7 @@
 //Numbers with dollar signs
 //Errors, parse errors etc
 //leaks, buffer overflows
-//leaks, buffer overflows
-//create env variable which is special sign and execute with it and execute with it
+//create env variable which is special sign and execute with it
 //add history
 
 
@@ -60,17 +57,6 @@ void	shell_token(t_token *token_final, t_shell *shell)
 	}
 }
 
-void	shell_token(t_token *token_final, t_shell *shell)
-{
-	if (token_final)
-	shell->token = token_final;
-	while (token_final)
-	{
-		token_final->shell = shell;
-		token_final = token_final->next;
-	}
-}
-
 int	main(int argc, char **argv, char **env)
 {
 	t_token_small *tokens;
@@ -78,16 +64,13 @@ int	main(int argc, char **argv, char **env)
 	t_shell *shell;
 	char *user_input;
 	
-	char *user_input;
-	
 	tokens = NULL;
 	token_final = NULL;
-		
+	
 	(void)argv;
 	(void)argc;
 	shell = malloc(sizeof(t_shell));
 	init_env(&shell, env);
-	global_error = 0;
 	global_error = 0;
 	while (1)
 	{
@@ -96,11 +79,6 @@ int	main(int argc, char **argv, char **env)
 		user_input = readline("shell$ ");
 		add_history(user_input);
 		lexing(user_input, &tokens, &shell, &token_final);
-		//free_tokens(&tokens);
-		//free_big_tokens(&token_final);
-		printf("%s\n", shell -> token -> token);
-		exit(0);
-		exec(shell);
 		shell_token(token_final, shell);
 		exec(shell);
 		free_tokens(&tokens);
