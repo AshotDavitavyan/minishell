@@ -6,7 +6,19 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/17 16:23:46 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:39:07 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   V_main.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/07/15 11:36:25 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +263,6 @@ int	bi_execution(t_token *token)
 			ret_value = bi_export1(token -> shell);
 		else if (ft_strncmp("unset", token -> token, 5) == 0)
 			ret_value = bi_unset(token -> shell);
-		ret_value = global_error;
 		return (ret_value);
 }
 
@@ -259,24 +270,24 @@ int	bi_execution(t_token *token)
 // {
 // 	t_shell *shell;
 	
-	shell = malloc(sizeof(t_shell));
-	if (argc || argv || env)
-		;
-	init_env(&shell, env);
+// 	shell = malloc(sizeof(t_shell));
+// 	if (argc || argv || env)
+// 		;
+// 	init_env(&shell, env);
 
-	//-----------------------------------Prompt---------------------------------------//
+// 	//-----------------------------------Prompt---------------------------------------//
 
-	char *args1 = NULL;
-	char **Args1 = ft_split(args1, ' ');
+// 	char *args1 = NULL;
+// 	char **Args1 = ft_split(args1, ' ');
 
-	char *args2 = "a";
-	char **Args2 = ft_split(args2, ' ');
+// 	char *args2 = "a";
+// 	char **Args2 = ft_split(args2, ' ');
 
-	char *args3 = "b";
-	char **Args3 = ft_split(args3, ' ');
+// 	char *args3 = "b";
+// 	char **Args3 = ft_split(args3, ' ');
 
-	char *args4 = "a b";
-	char **Args4 = ft_split(args4, ' ');
+// 	char *args4 = "a b";
+// 	char **Args4 = ft_split(args4, ' ');
 
 // 	//shell -> token = ft_lstnew_upgr("cat", Args3, Args2, 1, 1, 0, Args1, shell);
 
@@ -288,11 +299,11 @@ int	bi_execution(t_token *token)
 
 // 	//shell -> token = ft_lstnew_upgr("cat", Args2, 0, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("wc -l", Args1, -1, shell, -1, Args1);
 
-// 	// XXX < a yes | head XXX
+	//shell -> token = ft_lstnew_upgr("ls", Args2, 1, shell, -1, Args1);
 
-// 	//shell -> token = ft_lstnew_upgr("yes", Args1, Args1, 0, 0, 0, Args1, shell);shell -> token -> next = ft_lstnew_upgr("head", Args1, Args1, 0, 0, 0, Args1, shell);
+	// XXX yes | head XXX
 
-// 	// XXX echo lol XXX
+	//shell -> token = ft_lstnew_upgr("yess", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("head", Args1, -1, shell, -1, Args1);
 
 // 	//shell -> token =ft_lstnew_upgr("echo  lol", Args1, -1, shell, -1, Args1);
 
@@ -345,7 +356,7 @@ int	bi_execution(t_token *token)
 	//shell -> token = ft_lstnew_upgr("cat", Args1, -1, shell, -1, Args1);shell -> token -> next = ft_lstnew_upgr("ls", Args1, -1, shell, -1, Args1);
 
 	//-----------------------------------Prompt---------------------------------------//
-	global_error = 0;
+	
 	exec(shell);
 	ft_lstclear_token(&shell -> token, (*del_token));
 	return (0);
