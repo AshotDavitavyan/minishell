@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/18 16:44:49 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:55:26 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	piping(t_token *token, int j)
 		else
 		{
 			close_all(token, j + 1);
+			//ft_putstr_fd("enter\n", 2);
 			redirector(token);
 			execve(true_path(token -> token, token -> shell -> envex), args, token -> shell -> envex);
 		}

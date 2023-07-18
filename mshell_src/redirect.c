@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:29:27 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/15 11:36:02 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 19:10:19 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ void	redirector(t_token *token)
 	int i;
 	
 	i = -1;
-	if (token -> redir_flag_out == 1)
-		dup2(open_0(token -> redir_fd_out[ft_strlen_2d_arr(token -> redir_fd_out) - 1]), STDIN_FILENO);
+	if (token -> redir_flag_in == 1)
+		dup2(open_0(token -> redir_fd_in[ft_strlen_2d_arr(token -> redir_fd_in) - 1]), STDIN_FILENO);
 	if (token -> redir_flag_out == 1 || token -> redir_flag_outout == 1)
 	{
 		if (token -> redir_flag_out == 1)
@@ -56,7 +56,7 @@ void	redirector_bi(t_token *token)
 	int i;
 
 	i = -1;
-	if (token -> redir_flag_out == 0)
+	if (token -> redir_flag_in == 1)
 		dup2(open(token -> redir_fd_out[ft_strlen_2d_arr(token -> redir_fd_out) - 1], O_RDWR, 0644), STDIN_FILENO);
 	if (token -> redir_flag_out == 1 || token -> redir_flag_outout == 1)
 	{
