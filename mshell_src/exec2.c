@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/18 18:55:26 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/18 19:30:59 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,13 @@ void	waiter(int count)
 }
 
 void	exec(t_shell *shell)
-{
+{	
+	
+	if(!shell -> token -> token)
+	{
+		ft_putstr_fd("redir error\n", 2);
+		exit(1);
+	}
 	if (shell -> token -> token[0] == '\0')
 		return ;
 	if (!shell -> token -> next)

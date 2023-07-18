@@ -155,6 +155,7 @@ void	executing_one(t_shell *shell)
 	int f;
 	int i;
 
+	//ft_putstr_fd("some\n", 2);
 	here_doc_looper(shell -> token);
 	i = -1;
 	f = fork();
