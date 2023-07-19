@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/17 15:08:05 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:23:43 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_token
 	int					redir_flag_outout;
 	char				**redir_fd_out;
 	char				**redir_fd_in;
-	char				*token;
+	char				**token;
 	struct s_token		*next;
 	t_shell 			*shell;
 }						t_token;
