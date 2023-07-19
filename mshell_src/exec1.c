@@ -91,7 +91,7 @@ void	here_d(t_token *token, int j)
 			write(1, "\n", 1);
 			break ;
 		}
-		if (ft_strncmp(str, token -> sep_arr[j], ft_strlen(token -> token)) == 0)
+		if (ft_strcmp(str, token -> sep_arr[j]) == 0)
 		{
 			free(str);
 			break;
@@ -149,20 +149,20 @@ void	openh_dup2(int fd)
 	dup2(fd, STDIN_FILENO);
 }
 
+
 void	executing_one(t_shell *shell)
 {
 	char **args;
 	int f;
 	int i;
 
-	//ft_putstr_fd("some\n", 2);
 	here_doc_looper(shell -> token);
 	i = -1;
 	f = fork();
 	if (f == 0)
 	{
 		global_error = 0;
-		args = ft_split(shell -> token -> token, ' ');
+		//args = ft_split(shell -> token -> token, ' ');
 		if (shell -> token -> redir_flag_in == 1)
 			dup2(open_0(shell -> token -> redir_fd_in[ft_strlen_2d_arr(shell -> token -> redir_fd_in) - 1]), STDIN_FILENO);
 		if (shell -> token -> redir_flag_out == 1)
@@ -181,7 +181,7 @@ void	executing_one(t_shell *shell)
 		{
 			openh_dup2(shell -> token -> here_fd);
 		}
-		execve(true_path(args[0], shell -> envex), args, shell -> envex);
+		execve(true_path(token -> token[0], shell -> envex), token -> token, shell -> envex);
 	}
 }
 

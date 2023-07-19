@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/18 17:18:30 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:59:19 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	bi_export1(t_shell *shell)
 	char **arr;
 	int ret_val;
 	
-	arr = ft_split_V(shell -> token -> token, ' ');
+	arr = token -> token;
 	i = 0;
 	if (!arr[1])
 	{
@@ -82,10 +82,11 @@ int	bi_pwd(void)
 
 int	bi_echo(t_token *token)
 {
-	char **arr = ft_split(token -> token, ' ');
+	char **arr;
 	int flag;
 	int	i;
 
+	arr = token -> token;
 	i = 0;
 	if (ft_strcmp(arr[1], "-n") == 0)
 		flag = 1;
@@ -125,9 +126,10 @@ void	fd_cd_print_status(char *cmd)
 
 int	bi_cd(t_token *token)
 {
-	char **arr = ft_split_V(token -> token, ' ');
+	char **arr;
 	DIR	*tmp;
 	
+	arr = token -> token;
 	if (access(arr[1], F_OK))
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
