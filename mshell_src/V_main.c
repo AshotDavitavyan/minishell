@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 13:15:13 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:22:07 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,25 +231,27 @@ void	printf_arr(char **input)
 int	bi_execution(t_token *token)
 {
 		int ret_value;
+		char **arr;
 
+		arr = token -> token;
 		ret_value = 0;
 		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in)
 		{
 			redirector_bi(token);
 		}
-		if (ft_strncmp("env", token -> token[0], 3) == 0)
+		if (ft_strcmp("env", arr) == 0)
 			ret_value = bi_env(token -> shell);
-		else if (ft_strncmp("pwd", token -> token[0], 3) == 0)
+		else if (ft_strncmp("pwd", arr[0]) == 0)
 			ret_value = bi_pwd();
-		else if (ft_strncmp("echo", token -> token[0], 4) == 0)
+		else if (ft_strncmp("echo", arr[0]) == 0)
 			ret_value = bi_echo(token);
-		else if (ft_strncmp("cd", token -> token[0], 2) == 0)
+		else if (ft_strncmp("cd", arr[0]) == 0)
 			ret_value = bi_cd(token);
-		else if (ft_strncmp("exit", token -> token[0], 4) == 0)
+		else if (ft_strncmp("exit", arr[0]) == 0)
 			ret_value = bi_exit(token);
-		else if (ft_strncmp("export", token -> token[0], 6) == 0)
+		else if (ft_strncmp("export", arr[0]) == 0)
 			ret_value = bi_export1(token -> shell);
-		else if (ft_strncmp("unset", token -> token[0], 5) == 0)
+		else if (ft_strncmp("unset", arr[0]) == 0)
 			ret_value = bi_unset(token -> shell);
 		global_error = ret_value;
 		return (ret_value);
