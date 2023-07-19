@@ -12,40 +12,60 @@ void	init_shell(t_token_small **tokens, t_shell **shell)
 	}
 }
 
-int	comp_vars(char **name, char **var_arr, int i, int to_return)
+int	env_len(char *str)
 {
-	char	*sep;
-	char	*arr_ptr;
+	int i;
 
-	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
-	while (ft_strchr(sep, **name) == NULL && **name != '\0')
-	{
-		to_return++;
-		(*name)++;
-	}
-	while (*var_arr)
-	{
-		i = 0;
-		arr_ptr = *var_arr;
-		while (*arr_ptr != '=' && *arr_ptr)
-		{
-			arr_ptr++;
-			i++;
-		}
-		if (ft_strnncmp(var_arr, name, i, &to_return) == 0)
-			return (ft_strlen(arr_ptr));
-		var_arr++;
-	}
-	return (to_return);
+	i = 0;
+	while (*str != '=' && *str)
+		str++;
+	if (*str == '=')
+		str++;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-int	quote_dollar(char **name, char **var_arr)
+int	comp_vars_util(char **name, char **var_arr, int i, int j)
 {
-	char	type;
-	int		i;
-
-	type = *(*name)++;
+	if (i != j)
+		return (0);
 	i = 0;
+	while (i < j)
+	{
+		if (*name[i] != *var_arr[i])
+			return 0;
+		i++;
+	}
+	return (1);
+}
+
+int	comp_vars(char **name, char **var_arr)
+{
+	int		j;
+	int		i;
+	char	*sep;
+
+	j = 0;
+	i = 1;
+	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
+	if (*name[1] = '?')
+		return ()
+	while (ft_strchr(sep, *name[i]) == NULL && *name[i] != '\0')
+		i++;
+	i--;
+	while (*var_arr)
+	{
+		while (*var_arr[j] != '=')
+			j++;
+		if (comp_vars_util(name, var_arr, i, j) == 1)
+			return (env_len(*var_arr));
+		var_arr++;
+	}
+}
+
+int	quote_dollar(char **name, char **var_arr, int i, char type)
+{
 	if (type == 39)
 	{
 		while (**name != type)
@@ -58,7 +78,7 @@ int	quote_dollar(char **name, char **var_arr)
 	while (**name != type)
 	{
 		if (**name == '$')
-			i += comp_vars(name, var_arr, 0, 0);
+			i += comp_vars(name, var_arr);
 		(*name)++;
 		i++;
 	}
@@ -77,12 +97,12 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 	{
 		if (*name_ptr == 34 || *name_ptr == 39)
 		{
-			i += quote_dollar(&name_ptr, (*ptr)->shell->envex);
+			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *name_ptr++);
 			continue ;
 		}
 		if (*name_ptr == '$')
 		{
-			i += comp_vars(&name_ptr, (*ptr)->shell->envex, 0, 0);
+			i += comp_vars(&name_ptr, (*ptr)->shell->envex);
 			continue ;
 		}
 		name_ptr++;
