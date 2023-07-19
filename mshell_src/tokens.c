@@ -78,7 +78,7 @@ void	add_token(char **user_input, int i, t_token_small **tokens)
 
 int qch_usd(char *user_input, int i)
 {
-	while (i > 0)
+	while (i >= 0)
 	{
 		if (*user_input == '$')
 			return (1);
