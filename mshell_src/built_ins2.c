@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 15:57:02 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:01:50 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	bi_exit(t_token *token)
 {
 	char **arr;
 
-	arr = ft_split(token -> token, ' ');
+	arr = token -> token;
 	if (ft_strlen_2d_arr(arr) == 1)
 		exit(0);
 	else if (ft_strlen_2d_arr(arr) > 2)
@@ -73,11 +73,10 @@ void	unset_delete(t_shell *shell, char *str)
 
 int	bi_unset(t_shell *shell)
 {
-	t_token *tok;
-	tok = shell -> token -> next;
 	int	i;
-	char **arr = ft_split(shell -> token -> token, ' ');
+	char **arr;
 
+	arr = shell -> token -> token;
 	i = 0;
 	while (arr[++i])
 	{
@@ -87,5 +86,4 @@ int	bi_unset(t_shell *shell)
 			return (1);
 	}
 	return (0);
-	
 }

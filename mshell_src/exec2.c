@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/13 14:25:03 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:11:47 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	piping(t_token *token, int j)
 	if (f == 0)
 	{
 		global_error = 0;
-		args = ft_split(token -> token, ' ');
+		//args = ft_split(token -> token, ' ');
 		pipes_dups(token, j);
 		if (token -> here_doc_flag == 1)
 		{
@@ -76,7 +76,7 @@ void	piping(t_token *token, int j)
 		{
 			close_all(token, j + 1);
 			redirector(token);
-			execve(true_path(token -> token, token -> shell -> envex), args, token -> shell -> envex);
+			execve(true_path(token -> token[0], token -> shell -> envex), token -> token, token -> shell -> envex);
 		}
 	}
 }
@@ -123,7 +123,15 @@ void	waiter(int count)
 }
 
 void	exec(t_shell *shell)
-{
+{	
+	
+	if(!shell -> token -> token)
+	{
+		ft_putstr_fd("redir error\n", 2);
+		exit(1);
+	}
+	if (shell -> token -> token[0] == '\0')
+		return ;
 	if (!shell -> token -> next)
 	{
 		if (bi_avail(shell -> token))

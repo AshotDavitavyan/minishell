@@ -53,5 +53,6 @@ void	print_big_token(t_token *tokfin)
 		print_arr(tokfin->redir_fd_in, "Redir_fd_in");
 		print_arr(tokfin->token, "Token");
 		tokfin = tokfin->next;
+		printf("------------------------------------------------------------\n");
 	}
 }
