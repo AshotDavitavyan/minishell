@@ -36,10 +36,10 @@ void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 	get_tokens(u_i, tokens, 0);
 	// print_tokens(*tokens);
 	init_shell(tokens, shell);
-	handle_dollar_signs(tokens);
+//	handle_dollar_signs(tokens);
 	parse_tokens(*tokens, tbig, *tokens);
 	
-	print_big_token(*tbig);
+
 }
 
 void	sighandler(int signum)
@@ -59,6 +59,35 @@ void	shell_token(t_token *token_final, t_shell *shell)
 	{
 		token_final->shell = shell;
 		token_final = token_final->next;
+	}
+}
+
+void	init_env(t_shell **shell, char **envp)
+{
+	int	i = 0;
+	while (envp[i])
+		i++;
+	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (envp[++i])
+	{
+		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
+			(*shell) -> envex[i] = ft_strdup("OLDPWD");
+		else
+			(*shell) -> envex[i] = ft_strdup(envp[i]);
+	}
+	(*shell) -> envex[i] = NULL;
+}
+
+void	init_shell(t_token_small **tokens, t_shell **shell)
+{
+	t_token_small *ptr;
+	(*shell)->token_small = *tokens;
+	ptr = *tokens;
+	while (ptr != NULL)
+	{
+		ptr->shell = *shell;
+		ptr = ptr->next;
 	}
 }
 
@@ -86,7 +115,8 @@ int	main(int argc, char **argv, char **env)
 		add_history(user_input);
 		lexing(user_input, &tokens, &shell, &token_final);
 		shell_token(token_final, shell);
-		// exec(shell);
+		//print_big_token(token_final);
+		exec(shell);
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
 	}

@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-void	init_env(t_shell **shell, char **envp)
-{
-	int	i = 0;
-	while (envp[i])
-		i++;
-	(*shell) -> envex = malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (envp[++i])
-	{
-		if (ft_strncmp("OLDPWD", envp[i], 6) == 0)
-			(*shell) -> envex[i] = ft_strdup("OLDPWD");
-		else
-			(*shell) -> envex[i] = ft_strdup(envp[i]);
-	}
-	(*shell) -> envex[i] = NULL;
-}
-
 void	no_vars_match(char *new_name, char *name_ptr)
 {
 	char *sep;

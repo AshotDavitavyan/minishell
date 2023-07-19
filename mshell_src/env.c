@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-void	init_shell(t_token_small **tokens, t_shell **shell)
-{
-	t_token_small *ptr;
-	(*shell)->token_small = *tokens;
-	ptr = *tokens;
-	while (ptr != NULL)
-	{
-		ptr->shell = *shell;
-		ptr = ptr->next;
-	}
-}
-
 int	env_len(char *str)
 {
 	int i;

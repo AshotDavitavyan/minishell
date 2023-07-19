@@ -51,20 +51,19 @@ char	*true_path(char *argv, char **env)
 {
 	int				i;
 	char			**res_split;
-	char			**args;
+	//char			**args;
 	char			*path;
 
-	if (access(ft_split(argv, ' ')[0], F_OK) == 0)
+	if (access(argv, F_OK) == 0)
 		return (argv);
-	if (ft_strchr (argv, '/') != NULL)
+	if (ft_strchr (argv, '/'))
 		f_error();
 	path = "PATH=";
 	i = 0;
-	args = ft_split(argv, ' ');
 	path = path_finder(env);
-	i = 0;
+	i 	= 0;
 	res_split = ft_split(path, ':');
-	fn_path(res_split, args[0]);
+	fn_path(res_split, argv);
 	while (res_split[i])
 	{
 		if (access(res_split[i], F_OK) == 0)
@@ -152,7 +151,6 @@ void	openh_dup2(int fd)
 
 void	executing_one(t_shell *shell)
 {
-	char **args;
 	int f;
 	int i;
 
@@ -162,7 +160,6 @@ void	executing_one(t_shell *shell)
 	if (f == 0)
 	{
 		global_error = 0;
-		//args = ft_split(shell -> token -> token, ' ');
 		if (shell -> token -> redir_flag_in == 1)
 			dup2(open_0(shell -> token -> redir_fd_in[ft_strlen_2d_arr(shell -> token -> redir_fd_in) - 1]), STDIN_FILENO);
 		if (shell -> token -> redir_flag_out == 1)
@@ -181,7 +178,8 @@ void	executing_one(t_shell *shell)
 		{
 			openh_dup2(shell -> token -> here_fd);
 		}
-		execve(true_path(token -> token[0], shell -> envex), token -> token, shell -> envex);
+
+		execve(true_path(shell -> token -> token[0], shell -> envex),shell -> token -> token, shell -> envex);
 	}
 }
 

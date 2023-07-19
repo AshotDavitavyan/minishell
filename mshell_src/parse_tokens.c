@@ -43,7 +43,6 @@ void	check_tokfin(t_token **tokfin, t_token_small *tokens)
 void	add_funct_name(t_token **tokfin, t_token_small **tokens)
 {
 	(*tokfin)->token = add_fd((*tokfin)->token, *tokens, 0, NULL);
-	print_arr((*tokfin)->token, "tokenarr");
 }
 
 void	parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *head)

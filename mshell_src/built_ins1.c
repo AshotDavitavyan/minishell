@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 13:59:19 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:36:42 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	bi_export1(t_shell *shell)
 	char **arr;
 	int ret_val;
 	
-	arr = token -> token;
+	arr = shell -> token -> token;
 	i = 0;
 	if (!arr[1])
 	{
