@@ -17,15 +17,15 @@ void	arrcpy(char **to_be, char **current, char *to_add)
 
 int	check_for_special_signs(t_token_small *tokens)
 {
-	if (ft_strnstr(tokens->name, "<", 1) && ft_strlen(tokens->name) == 1)
+	if (ft_strnstr(tokens->name, "<", 1) && ft_strlen(tokens->name) == 1 && tokens->var_flag == 0)
 		return (1);
-	else if (ft_strnstr(tokens->name, "<<", 2) && ft_strlen(tokens->name) == 2)
+	else if (ft_strnstr(tokens->name, "<<", 2) && ft_strlen(tokens->name) == 2 && tokens->var_flag == 0)
 		return (2);
-	else if (ft_strnstr(tokens->name, ">", 1) && ft_strlen(tokens->name) == 1)
+	else if (ft_strnstr(tokens->name, ">", 1) && ft_strlen(tokens->name) == 1 && tokens->var_flag == 0)
 		return (3);
-	else if (ft_strnstr(tokens->name, ">>", 2) && ft_strlen(tokens->name) == 2)
+	else if (ft_strnstr(tokens->name, ">>", 2) && ft_strlen(tokens->name) == 2 && tokens->var_flag == 0)
 		return (4);
-	else if (ft_strnstr(tokens->name, "|", 1) && ft_strlen(tokens->name) == 1)
+	else if (ft_strnstr(tokens->name, "|", 1) && ft_strlen(tokens->name) == 1 && tokens->var_flag == 0)
 		return (5);
 	return (0);
 }

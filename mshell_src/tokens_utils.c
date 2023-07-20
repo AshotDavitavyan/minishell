@@ -1,5 +1,29 @@
 #include "minishell.h"
 
+t_token_small	*tokendelone(t_token_small *to_remove, t_token_small **tokens)
+{
+	t_token_small	*bus;
+	t_token_small	*bul;
+
+	if (to_remove->prev != NULL)
+	{
+		bus = to_remove->prev;
+		bul = to_remove->next;
+		free(to_remove->name);
+		free(to_remove);
+		bus->next = bul;
+		return (bul);
+	}
+	else
+	{
+		bus = to_remove->next;
+		free(to_remove->name);
+		free(to_remove);
+		*tokens = bus;
+		return (bus);
+	}
+}
+
 t_token_small	*tokenadd_new(char *name, int type)
 {
 	t_token_small *token;
@@ -9,6 +33,7 @@ t_token_small	*tokenadd_new(char *name, int type)
 	token->type = type;
 	token->next = NULL;
 	token->prev = NULL;
+	token->var_flag = 0;
 	return (token);
 }
 
