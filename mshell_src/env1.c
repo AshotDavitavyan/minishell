@@ -150,8 +150,6 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 		name_ptr++;
 		i++;
 	}
-	printf("%d\n", i);
-	printf("%s\n", (*ptr)->name);
 	name_ptr = (char *)malloc((i + 1) * sizeof(char));
 	put_vars(name_ptr, ptr);
 }

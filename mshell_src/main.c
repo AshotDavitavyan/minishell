@@ -55,6 +55,7 @@ void	shell_token(t_token *token_final, t_shell *shell)
 	}
 }
 
+
 int	main(int argc, char **argv, char **env)
 {
 	t_token_small *tokens;
@@ -79,7 +80,10 @@ int	main(int argc, char **argv, char **env)
 		add_history(user_input);
 		lexing(user_input, &tokens, &shell, &token_final);
 		shell_token(token_final, shell);
-		// exec(shell);
+		//print_big_token(token_final);
+		if ((tokens) == NULL)
+			continue ;
+		exec(shell);
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
 	}

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 13:11:47 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:27:12 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	pipes_dups(t_token *token, int j)
 
 void	piping(t_token *token, int j)
 {
-	char **args;
+	//char **args;
 	int	f;
 	
 	here_doc_looper(token);
@@ -63,7 +63,6 @@ void	piping(t_token *token, int j)
 	if (f == 0)
 	{
 		global_error = 0;
-		//args = ft_split(token -> token, ' ');
 		pipes_dups(token, j);
 		if (token -> here_doc_flag == 1)
 		{
@@ -124,14 +123,6 @@ void	waiter(int count)
 
 void	exec(t_shell *shell)
 {	
-	
-	if(!shell -> token -> token)
-	{
-		ft_putstr_fd("redir error\n", 2);
-		exit(1);
-	}
-	if (shell -> token -> token[0] == '\0')
-		return ;
 	if (!shell -> token -> next)
 	{
 		if (bi_avail(shell -> token))

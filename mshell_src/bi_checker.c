@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:29:58 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 14:05:19 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/19 16:35:49 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,9 @@ int	ft_strcmp(char *str1, char *str2)
 int	bi_avail(t_token *token)
 {
 	char **arr;
-	
 	arr = token -> token;
+	if (!arr)
+		return (0);
 	if (ft_strcmp("env", arr[0]) == 0 ||
 		ft_strcmp("pwd", arr[0]) == 0 ||
 		ft_strcmp("echo", arr[0]) == 0 ||
@@ -56,9 +57,9 @@ int	bi_avail(t_token *token)
 		ft_strcmp("unset ", arr[0]) == 0
 		)
 		{
-			ft_free(arr);
+			//ft_free(arr);
 			return (1);
 		}
-		ft_free(arr);
+		//ft_free(arr);
 		return (0);
 }
