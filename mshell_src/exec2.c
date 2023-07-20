@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/20 17:43:44 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/20 21:16:29 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	pipes_dups(t_token *token, int j)
 	}
 }
 
-void	piping(t_token *token, int j)
+void	piping(t_token *token, int j, int i)
 {
 	int	f;
 	
@@ -72,7 +72,7 @@ void	piping(t_token *token, int j)
 			exit(bi_execution(token));
 		else
 		{
-			close_all(token, j + 1);
+			close_all(token, i);
 			redirector(token);
 			execve(true_path(token -> token[0], token -> shell -> envex), token -> token, token -> shell -> envex);
 		}
@@ -93,7 +93,7 @@ void	exec_n(t_shell *shell)
 	do_pipes(shell, i);	
 	while (tmp)
 	{
-		piping(tmp, j++);
+		piping(tmp, j++, i);
 		tmp = tmp -> next;
 	}
 	close_all(tmp1, j);
