@@ -17,44 +17,81 @@ void	init_env(t_shell **shell, char **envp)
 	(*shell) -> envex[i] = NULL;
 }
 
-void	no_vars_match(char *new_name, char *name_ptr)
+int	put_global_error(char **new_name, char **name_ptr)
 {
-	char *sep;
+	char	*num;
+	char	*save;
 
-	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
-	if (ft_strchr(sep, *name_ptr))
+	num = ft_itoa(global_error);
+	save = num;
+	(*name_ptr) += 2;
+	while (*num != '\0' && *new_name)
 	{
-		*new_name = '$';
-		return ;
+		**new_name = *num;
+		(*new_name)++;
+		num++;
 	}
+	free(save);
+	return (0);
 }
-void	alloc_var(char **new_name, char **name_ptr, char **var_arr, int i)
-{
-	char	*sep;
-	char	*var_ptr;
 
-	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
-	var_ptr = *var_arr;
-	if (**name_ptr == '$')
-		(*name_ptr)++;
+char	*move_env(char *env)
+{
+	while (*env != '=' && env)
+		env++;
+	env++;
+	return (env);
+}
+
+size_t	ft_strlcat_dollar(char **name_new, const char *src, size_t destsize, char **name_ptr)
+{
+	size_t	destlen;
+	size_t	srclen;
+	char	*dest;
+
+	dest = *name_new;
+	if ((!dest && destsize == 0) || (!src && destsize == 0))
+		return (0);
+	destlen = ft_strlen(dest);
+	srclen = ft_strlen(src);
+	if (destlen >= destsize)
+		return (destsize + srclen);
+	if (destsize - destlen <= srclen)
+	{
+		ft_memcpy(dest + destlen, src, srclen);
+		dest[destsize - 1] = 0;
+	}
+	else
+		ft_memcpy(dest + destlen, src, srclen + 1);
+	move_ptr(name_ptr);
+	(*name_new) += ft_strlen(src);
+	return (destlen + srclen);
+}
+
+int	alloc_vars(char **name, char **var_arr, char **new_name, char *sep)
+{
+	int	j;
+	int	i;
+
+	i = 1;
+	if (isnum(name) == 1)
+		return (0);
+	if ((*name)[1] == '?')
+		return (put_global_error(new_name, name));
+	while (ft_strchr(sep, (*name)[i]) == NULL && (*name)[i] != '\0')
+		i++;
+	i--;
 	while (*var_arr)
 	{
-		i = 0;
-		while (*var_ptr != '=' && *var_ptr != '\0')
-		{
-			i++;
-			var_ptr++;
-		}
-		var_ptr++;
-		if (ft_strnncmp(var_arr, name_ptr, i, NULL) == 0)
-		{		
-			ft_strlcat(*new_name, var_ptr, ft_strlen(var_ptr) + 1);
-			return ;
-		}
+		j = 0;
+		while ((*var_arr)[j] != '=')
+			j++;
+		if (comp_vars_util(name, var_arr, i, j) == 1)
+			return (ft_strlcat_dollar(new_name, move_env(*var_arr), ft_strlen(move_env(*var_arr)) + 1, name));
 		var_arr++;
-		var_ptr = *var_arr;
 	}
-	no_vars_match(*new_name, *name_ptr);
+	move_ptr(name);
+	return (0);
 }
 
 void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_arr)
@@ -75,7 +112,7 @@ void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_
 		while (**name_ptr != type && **name_ptr != '\0')
 		{
 			if (**name_ptr == '$')
-				alloc_var(new_name, name_ptr, var_arr, 0);
+				alloc_vars(name_ptr, var_arr, new_name, " <>|&./?@#$%^*-=+,[]{}\'\"");
 			**new_name = **name_ptr;
 			(*new_name)++;
 			(*name_ptr)++;
@@ -85,8 +122,10 @@ void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_
 void	put_vars(char *new_name, t_token_small **ptr)
 {
 	char	*name_ptr;
+	char	*save;
 
 	name_ptr = (*ptr)->name;
+	save = new_name;
 	while (*name_ptr)
 	{
 		if (*name_ptr == 34 || *name_ptr == 39)
@@ -96,14 +135,15 @@ void	put_vars(char *new_name, t_token_small **ptr)
 		}
 		if (*name_ptr == '$')
 		{
-			alloc_var(&new_name, &name_ptr, (*ptr)->shell->envex, 0);
+			alloc_vars(&name_ptr, (*ptr)->shell->envex, &new_name, " <>|&./?@#$%^*-=+,[]{}\'\"");
 			continue ;
 		}
 		*new_name = *name_ptr;
 		name_ptr++;
 		new_name++;
 	}
+	new_name = save;
 	free((*ptr)->name);
 	(*ptr)->name = new_name;
-	printf("%s\n", new_name);
+	(*ptr)->var_flag = 1;
 }

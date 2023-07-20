@@ -12,11 +12,23 @@ void	init_shell(t_token_small **tokens, t_shell **shell)
 	}
 }
 
-int	env_len(char *str)
+
+void	move_ptr(char **name)
+{
+	char *sep;
+
+	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
+	if (**name == '$')
+		(*name)++;
+	while (ft_strchr(sep, **name) == NULL && **name != '\0')
+		(*name)++;
+}
+int	env_len(char *str, char **name)
 {
 	int i;
 
 	i = 0;
+	move_ptr(name);
 	while (*str != '=' && *str)
 		str++;
 	if (*str == '=')
@@ -26,6 +38,18 @@ int	env_len(char *str)
 	return (i);
 }
 
+int	intlen(int to_count)
+{
+	int i;
+
+	i = 1;
+	while (to_count > 9)
+	{
+		to_count /= 10;
+		i++;
+	}
+	return (i);
+}
 int	comp_vars_util(char **name, char **var_arr, int i, int j)
 {
 	if (i != j)
@@ -33,35 +57,49 @@ int	comp_vars_util(char **name, char **var_arr, int i, int j)
 	i = 0;
 	while (i < j)
 	{
-		if (*name[i] != *var_arr[i])
+		if ((*name)[i + 1] != (*var_arr)[i])
 			return 0;
 		i++;
 	}
 	return (1);
 }
 
-int	comp_vars(char **name, char **var_arr)
+
+int	isnum(char **name)
+{
+	if ((*name)[1] >= '0' && (*name)[1] <= '9')
+	{
+		(*name)+=2;
+		return (1);
+	}
+	return (0);
+}
+
+int	comp_vars(char **name, char **var_arr, int i, char *sep)
 {
 	int		j;
-	int		i;
-	char	*sep;
 
-	j = 0;
-	i = 1;
-	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
-	if (*name[1] = '?')
-		return ()
-	while (ft_strchr(sep, *name[i]) == NULL && *name[i] != '\0')
+	if (isnum(name) == 1)
+		return (0);
+	if ((*name)[1] == '?')
+	{
+		(*name) += 2;
+		return (intlen(global_error));
+	}
+	while (ft_strchr(sep, (*name)[i]) == NULL && (*name)[i] != '\0')
 		i++;
 	i--;
 	while (*var_arr)
 	{
-		while (*var_arr[j] != '=')
+		j = 0;
+		while ((*var_arr)[j] != '=')
 			j++;
 		if (comp_vars_util(name, var_arr, i, j) == 1)
-			return (env_len(*var_arr));
+			return (env_len(*var_arr, name));
 		var_arr++;
 	}
+	move_ptr(name);
+	return (0);
 }
 
 int	quote_dollar(char **name, char **var_arr, int i, char type)
@@ -78,9 +116,13 @@ int	quote_dollar(char **name, char **var_arr, int i, char type)
 	while (**name != type)
 	{
 		if (**name == '$')
-			i += comp_vars(name, var_arr);
-		(*name)++;
-		i++;
+			i += comp_vars(name, var_arr, 1, " <>|&./?@#$%^*-=+,[]{}\'\"");
+		printf("%c\n", *((*name)+1));
+		if (**name != type)
+		{
+			(*name)++;
+			i++;
+		}
 	}
 	(*name)++;
 	return (i);
@@ -102,12 +144,14 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 		}
 		if (*name_ptr == '$')
 		{
-			i += comp_vars(&name_ptr, (*ptr)->shell->envex);
+			i += comp_vars(&name_ptr, (*ptr)->shell->envex, 1, " <>|&./?@#$%^*-=+,[]{}\'\"");
 			continue ;
 		}
 		name_ptr++;
 		i++;
 	}
+	printf("%d\n", i);
+	printf("%s\n", (*ptr)->name);
 	name_ptr = (char *)malloc((i + 1) * sizeof(char));
 	put_vars(name_ptr, ptr);
 }
@@ -121,6 +165,11 @@ void	handle_dollar_signs(t_token_small **tokens)
 	{
 		if (ptr->type != 39)
 			check_var(&ptr, ft_strchr_num((ptr)->name, '$'), 0);
+		if (ft_strlen(ptr->name) == 0)
+		{
+			ptr = tokendelone(ptr, tokens);
+			continue ;
+		}
 		ptr = ptr->next;
 	}
 }

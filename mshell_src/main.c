@@ -1,21 +1,13 @@
 #include "minishell.h"
 
-//should i strtrim variables?
 //single pipe error
-//echo $?
 //check tokens if they're empty
 //check big tokens if they're empty
-//$"USER" prints adavitav, should print USER
-//$$USER.1 malloc error 
-//$USER1 malloc error prints davitav instead of adavitav or avitav if $USER12
-//remove token if variable does not exist
 //Signals
-//Numbers with dollar signs
 //Errors, parse errors etc
 //leaks, buffer overflows
-//create env variable which is special sign and execute with it
-//add history
 
+//single dollar sign
 
 void	error(void)
 {
@@ -37,8 +29,9 @@ void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 	// print_tokens(*tokens);
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
+	if ((*tokens) == NULL)
+		return ;
 	parse_tokens(*tokens, tbig, *tokens);
-	
 	print_big_token(*tbig);
 }
 
