@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 14:36:42 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/20 16:06:05 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,21 @@ int	bi_echo(t_token *token)
 	int	i;
 
 	arr = token -> token;
+	// int temp_i;
+
+	// temp_i = 0;
+	// while(arr[temp_i])
+	// {
+	// 	printf("%s\n", arr[temp_i]);
+	// 	temp_i++;
+	// }
 	i = 0;
 	if (ft_strcmp(arr[1], "-n") == 0)
 		flag = 1;
 	else
 		flag = 0;
 	if (flag)
-		arr++;
+		i++;
 	while(arr[++i])
 	{
 		printf("%s", arr[i]);
