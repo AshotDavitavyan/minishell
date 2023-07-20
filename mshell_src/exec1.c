@@ -172,7 +172,7 @@ void	executing_one(t_shell *shell)
 		{
 			while (shell -> token -> redir_fd_out[++i + 1])
 				open(shell -> token -> redir_fd_out[i], O_RDWR | O_CREAT, 0644);
-			dup2(open(shell -> token -> redir_fd_out[ft_strlen_2d_arr(shell -> token -> redir_fd_out) - 1], O_RDWR | O_CREAT, 0644), STDOUT_FILENO);
+			dup2(open(shell -> token -> redir_fd_out[ft_strlen_2d_arr(shell -> token -> redir_fd_out) - 1], O_RDWR | O_CREAT | O_APPEND, 0644), STDOUT_FILENO);
 		}
 		if (shell -> token -> here_doc_flag == 1)
 		{
