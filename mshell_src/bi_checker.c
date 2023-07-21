@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:29:58 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 12:50:09 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 18:37:12 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,37 @@ int	ft_strcmp(char *str1, char *str2)
 	return ((unsigned char)*str1 - (unsigned char)*str2);
 }
 
+char *str_to_lower(char *strr)
+{
+	int i;
+
+	i = -1;
+	char *str = ft_strdup(strr);
+	while(str[++i])
+		str[i] = ft_tolower(str[i]);
+	return (str);
+}
+
 int	bi_avail(t_token *token)
 {
 	char **arr;
 	arr = token -> token;
 	if (!arr)
 		return (0);
-	if (ft_strcmp("env", arr[0]) == 0 ||
-		ft_strcmp("pwd", arr[0]) == 0 ||
-		ft_strcmp("echo", arr[0]) == 0 ||
-		ft_strcmp("cd", arr[0]) == 0 ||
-		ft_strcmp("exit", arr[0]) == 0 ||
-		ft_strcmp("export", arr[0]) == 0 ||
-		ft_strcmp("unset", arr[0]) == 0 ||
-		ft_strcmp("env", arr[0]) == 0 ||
-		ft_strcmp("pwd", arr[0]) == 0 ||
-		ft_strcmp("echo", arr[0]) == 0 ||
-		ft_strcmp("cd", arr[0]) == 0 ||
-		ft_strcmp("exit ", arr[0]) == 0 ||
-		ft_strcmp("export", arr[0]) == 0 ||
-		ft_strcmp("unset", arr[0]) == 0
+	if (ft_strcmp("env", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("pwd", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("echo", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("cd", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("exit", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("export", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("unset", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("env", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("pwd", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("echo", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("cd", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("exit ", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("export", str_to_lower(arr[0])) == 0 ||
+		ft_strcmp("unset", str_to_lower(arr[0])) == 0
 		)
 		{
 			//ft_free(arr);

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 15:15:43 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 15:19:11 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ int	push_in_arr(t_shell *shell, char *str)
 
 int	find_dup(t_shell *shell, char *str)
 {
-	int 	i;
+	int		i;
 	int		j;
 	char	*temp;
-	
+
 	temp = ft_strdup(str);
 	i = 0;
 	j = 0;
-	while(temp[j])
+	while (temp[j])
 	{
 		if (temp[j] == '=' || temp[j] == '+')
 		{
@@ -63,7 +63,7 @@ int	find_dup(t_shell *shell, char *str)
 	return (-1);
 }
 
-char *strdup_bez_pls(char *arr)
+char	*strdup_bez_pls(char *arr)
 {
 	int		i;
 	int		j;
@@ -71,7 +71,8 @@ char *strdup_bez_pls(char *arr)
 
 	i = -1;
 	j = 0;
-	while(arr[++i]);
+	while (arr[++i])
+		;
 	new_arr = (char *)malloc(sizeof(char ) * i);
 	while (*arr)
 	{
@@ -84,6 +85,7 @@ char *strdup_bez_pls(char *arr)
 	new_arr[j] = '\0';
 	return (new_arr);
 }
+
 int	bi_export2(t_shell *shell, char **arr)
 {
 	int		i;
@@ -107,7 +109,7 @@ int	bi_export2(t_shell *shell, char **arr)
 		}
 		if (ft_strchr(arr[j], '+'))
 			arr[j] = strdup_bez_pls(arr[j]);
-		return(push_in_arr(shell, arr[j]));
+		return (push_in_arr(shell, arr[j]));
 	}
-	return 1;
+	return (1);
 }

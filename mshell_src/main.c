@@ -39,7 +39,7 @@ void	sighandler(int signum)
 {
 	printf("\n");
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	//rl_replace_line("", 0);
 	rl_redisplay();
 	(void)signum;
 }
@@ -89,3 +89,9 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
+
+// int main()
+// {
+// 	char *str = "PwD";
+// 	printf("%s\n", str_to_lower(str));
+// }
