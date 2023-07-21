@@ -189,5 +189,3 @@ void	executing_one(t_shell *shell)
 		execve(true_path(shell -> token -> token[0], shell -> envex),shell -> token -> token, shell -> envex);
 	}
 }
-
-

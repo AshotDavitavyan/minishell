@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:29:58 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 18:37:12 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 20:56:07 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	ft_free(char **arr)
 {
-	int	i = 0;
+	int	i;
+
+	i = 0;
 	while (arr[i])
 	{
 		free(arr[i]);
@@ -35,42 +37,40 @@ int	ft_strcmp(char *str1, char *str2)
 	return ((unsigned char)*str1 - (unsigned char)*str2);
 }
 
-char *str_to_lower(char *strr)
+char	*str_to_lower(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	char *str = ft_strdup(strr);
-	while(str[++i])
+	while (str[++i])
 		str[i] = ft_tolower(str[i]);
 	return (str);
 }
 
 int	bi_avail(t_token *token)
 {
-	char **arr;
+	char	**arr;
+
 	arr = token -> token;
 	if (!arr)
 		return (0);
-	if (ft_strcmp("env", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("pwd", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("echo", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("cd", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("exit", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("export", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("unset", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("env", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("pwd", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("echo", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("cd", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("exit ", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("export", str_to_lower(arr[0])) == 0 ||
-		ft_strcmp("unset", str_to_lower(arr[0])) == 0
-		)
-		{
-			//ft_free(arr);
-			return (1);
-		}
-		//ft_free(arr);
-		return (0);
+	if (ft_strcmp("env", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("pwd", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("echo", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("cd", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("exit", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("export", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("unset", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("env", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("pwd", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("echo", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("cd", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("exit ", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("export", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("unset", str_to_lower(arr[0])) == 0
+	)
+	{
+		return (1);
+	}
+	return (0);
 }
