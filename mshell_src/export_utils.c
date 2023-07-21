@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/11 15:51:05 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 15:15:43 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	push_in_arr(t_shell *shell, char *str)
 {
-	int i;
-	int j;
+	int		i;
+	int		j;
+	char	**new_arr;
 
 	i = 0;
 	while (shell -> envex[i])
 		i++;
-	char **new_arr = (char **)malloc(sizeof(char *) * (i + 2));
+	new_arr = (char **)malloc(sizeof(char *) * (i + 2));
 	j = 0;
 	while (j < i)
 	{
