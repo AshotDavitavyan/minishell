@@ -89,9 +89,3 @@ int	main(int argc, char **argv, char **env)
 	}
 	return (0);
 }
-
-// int main()
-// {
-// 	char *str = "PwD";
-// 	printf("%s\n", str_to_lower(str));
-// }

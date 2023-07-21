@@ -1,8 +1,10 @@
 #include "minishell.h"
 
-void	f_error(void)
+void	f_error(char *str)
 {
-	perror("Error");
+	ft_putstr_fd("minishell: /adfa", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	exit(0);
 }
 
@@ -57,7 +59,7 @@ char	*true_path(char *argv, char **env)
 	if (access(argv, F_OK) == 0)
 		return (argv);
 	if (ft_strchr (argv, '/'))
-		f_error();
+		f_error(argv);
 	path = "PATH=";
 	i = 0;
 	path = path_finder(env);

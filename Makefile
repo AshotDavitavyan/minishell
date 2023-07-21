@@ -13,9 +13,9 @@ LIBFTP = ./libft/
 LIBFT = $(LIBFTP)libft.a
 
 CFLAGS = -Wall -Werror -Wextra -I$(RLDIR) -g #-fsanitize=address
-LIBS = -lreadline -lncurses -L$(RLDIR) #-lft
+LIBS = -lreadline  -lncurses -L$(RLDIR)
 
-all: $(NAME) $(LIBPF)
+all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(RL_A)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LIBS) -o $(NAME)
@@ -28,7 +28,6 @@ $(LIBFT):
 	@ make -C $(LIBFTP)
 
 $(RL_A):
-	echo lol
 	@cd $(RLDIR) && exec ./configure
 	@make -C $(RLDIR)
 
