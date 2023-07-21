@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:29:58 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 16:35:49 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 12:50:09 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ int	bi_avail(t_token *token)
 		ft_strcmp("exit", arr[0]) == 0 ||
 		ft_strcmp("export", arr[0]) == 0 ||
 		ft_strcmp("unset", arr[0]) == 0 ||
-		ft_strcmp("env ", arr[0]) == 0 ||
-		ft_strcmp("pwd ", arr[0]) == 0 ||
-		ft_strcmp("echo ", arr[0]) == 0 ||
-		ft_strcmp("cd ", arr[0]) == 0 ||
+		ft_strcmp("env", arr[0]) == 0 ||
+		ft_strcmp("pwd", arr[0]) == 0 ||
+		ft_strcmp("echo", arr[0]) == 0 ||
+		ft_strcmp("cd", arr[0]) == 0 ||
 		ft_strcmp("exit ", arr[0]) == 0 ||
-		ft_strcmp("export ", arr[0]) == 0 ||
-		ft_strcmp("unset ", arr[0]) == 0
+		ft_strcmp("export", arr[0]) == 0 ||
+		ft_strcmp("unset", arr[0]) == 0
 		)
 		{
 			//ft_free(arr);

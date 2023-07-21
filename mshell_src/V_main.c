@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/20 17:29:57 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 12:59:53 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,12 +258,23 @@ int	bi_execution(t_token *token)
 		int f;
 		
 		arr = token -> token;
+		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in == 1
+			&& (ft_strcmp("exit", arr[0]) == 0))
+		{
+			ret_value = bi_check_exec(token);
+			return (ret_value);
+		}	
 		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in == 0)
 		{
 			ret_value = bi_check_exec(token);
 			return (ret_value);
 		}
 		f = fork();
+		if (f == -1)
+		{
+			ft_putstr_fd("minishell: fork: Resource temporarily unavailable\n", 2);
+			exit(1);
+		}
 		if (f != 0)	
 			return (0);
 		ret_value = 0;

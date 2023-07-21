@@ -84,7 +84,7 @@ void	here_d(t_token *token, int j)
 	while (1)
 	{
 		str = readline("> ");
-		if (!str || !*str)
+		if (!str)
 		{
 			free(str);
 			write(1, "\n", 1);
@@ -157,6 +157,11 @@ void	executing_one(t_shell *shell)
 	here_doc_looper(shell -> token);
 	i = -1;
 	f = fork();
+	if (f == -1)
+	{
+		ft_putstr_fd("minishell: fork: Resource temporarily unavailable\n", 2);
+		exit(1);
+	}
 	if (f == 0)
 	{
 		global_error = 0;

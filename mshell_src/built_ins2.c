@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 14:01:50 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 12:45:21 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,21 @@ int	bi_exit(t_token *token)
 	exit(255);
 }
 
+size_t	strlen_bef_eq(char *str)
+{
+	int i;
+
+	i = -1;
+	if (!str)
+		return (0);
+	while(str[++i])
+	{
+		if(str[i] == '=')
+			break;
+	}
+	return (i);
+}
+
 int	unset_acheck(t_shell *shell, char *str)
 {
 	int i;
@@ -41,7 +56,7 @@ int	unset_acheck(t_shell *shell, char *str)
 		return (-1);
 	while (shell -> envex[i])
 	{
-		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0)
+		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0 && strlen_bef_eq(shell -> envex[i]) == ft_strlen(str))
 			return (1);
 		i++;
 	}
@@ -61,10 +76,11 @@ void	unset_delete(t_shell *shell, char *str)
 	i = 0;
 	while(shell -> envex[j])
 	{
-		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0)
+		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0 && strlen_bef_eq(shell -> envex[i]) != ft_strlen(str))
+		{
 			new_arr[i] = shell -> envex[j];
-		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0)
 			i++;
+		}
 		j++;
 	}
 	new_arr[i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/20 17:01:23 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/21 12:29:03 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ int	bi_cd(t_token *token)
 	DIR	*tmp;
 	
 	arr = token -> token;
+	if (!arr[1])
+		return (0);
 	if (access(arr[1], F_OK))
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
