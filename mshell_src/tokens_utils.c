@@ -12,7 +12,8 @@ t_token_small	*tokendelone(t_token_small *to_remove, t_token_small **tokens)
 		free(to_remove->name);
 		free(to_remove);
 		bus->next = bul;
-		bul->prev = bus;
+		if (bul != NULL)
+			bul->prev = bus;
 		return (bul);
 	}
 	else

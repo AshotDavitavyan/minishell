@@ -18,7 +18,7 @@ $(OBJ_PATH)/%.o : $(SRC_PATH)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) -lreadline $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS)  $(OBJS) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT):
 	@ make -C $(LIBFTP)

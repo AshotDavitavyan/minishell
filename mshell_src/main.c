@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-//single pipe error
-//check tokens if they're empty
-//check big tokens if they're empty
+// shell$ echo "'"$USER"'"
+// 'adavitav"'
+// echo "$USER"'''''' handle quotes pair by pair
+
 //Signals
 //Errors, parse errors etc
 //leaks, buffer overflows
 
-//single dollar sign
 
 void	error(void)
 {
@@ -32,14 +32,14 @@ void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 	if ((*tokens) == NULL)
 		return ;
 	parse_tokens(*tokens, tbig, *tokens);
-	print_big_token(*tbig);
+	//print_big_token(*tbig);
 }
 
 void	sighandler(int signum)
 {
 	printf("\n");
 	rl_on_new_line();
-//	rl_replace_line("", 0);
+	// rl_replace_line("", 0);
 	rl_redisplay();
 	(void)signum;
 }

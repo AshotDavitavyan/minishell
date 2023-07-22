@@ -2,6 +2,7 @@
 *.out
 #Visual Studio Code
 *.vscode
+minishell.code-workspace
 #debugger
 *.dSYM
 #Exec

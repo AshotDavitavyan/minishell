@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 16:31:00 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:29:57 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,35 +227,48 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new)
 // 	(*shell) -> envex[i] = NULL;
 // }
 
+int bi_check_exec(t_token *token)
+{
+	char **arr;
+	int	ret_value;
+	
+	ret_value = 0;
+	arr = token -> token;
+	if (ft_strcmp("env", arr[0]) == 0)
+		ret_value = bi_env(token -> shell);
+	else if (ft_strcmp("pwd", arr[0]) == 0)
+		ret_value = bi_pwd();
+	else if (ft_strcmp("echo", arr[0]) == 0)
+		ret_value = bi_echo(token);
+	else if (ft_strcmp("cd", arr[0]) == 0)
+		ret_value = bi_cd(token);
+	else if (ft_strcmp("export", arr[0]) == 0)
+		ret_value = bi_export1(token -> shell);
+	else if (ft_strcmp("unset", arr[0]) == 0)
+		ret_value = bi_unset(token -> shell);
+	else if (ft_strcmp("exit", arr[0]) == 0)
+		ret_value = bi_exit(token);
+	return (ret_value);
+}
 
 int	bi_execution(t_token *token)
 {
 		int ret_value;
 		char **arr;
 		int f;
-		f = fork();
-		if (!f)	
-			return (0);
+		
 		arr = token -> token;
-		ret_value = 0;
-		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in)
+		if (token -> redir_flag_out + token -> redir_flag_outout + token -> redir_flag_in == 0)
 		{
-			redirector(token);
+			ret_value = bi_check_exec(token);
+			return (ret_value);
 		}
-		if (ft_strcmp("env", arr[0]) == 0)
-			ret_value = bi_env(token -> shell);
-		else if (ft_strcmp("pwd", arr[0]) == 0)
-			ret_value = bi_pwd();
-		else if (ft_strcmp("echo", arr[0]) == 0)
-			ret_value = bi_echo(token);
-		else if (ft_strcmp("cd", arr[0]) == 0)
-			ret_value = bi_cd(token);
-		else if (ft_strcmp("exit", arr[0]) == 0)
-			ret_value = bi_exit(token);
-		else if (ft_strcmp("export", arr[0]) == 0)
-			ret_value = bi_export1(token -> shell);
-		else if (ft_strcmp("unset", arr[0]) == 0)
-			ret_value = bi_unset(token -> shell);
+		f = fork();
+		if (f != 0)	
+			return (0);
+		ret_value = 0;
+		redirector(token);
+		ret_value = bi_check_exec(token);
 		global_error = ret_value;
-		return (ret_value);
+		exit(ret_value);
 }

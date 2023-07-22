@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 16:27:12 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:43:44 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	pipes_dups(t_token *token, int j)
 
 void	piping(t_token *token, int j)
 {
-	//char **args;
 	int	f;
 	
 	here_doc_looper(token);

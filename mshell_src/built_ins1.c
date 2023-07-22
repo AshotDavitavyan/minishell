@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/19 14:36:42 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:01:23 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	bi_echo(t_token *token)
 	else
 		flag = 0;
 	if (flag)
-		arr++;
+		i++;
 	while(arr[++i])
 	{
 		printf("%s", arr[i]);

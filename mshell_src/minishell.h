@@ -68,6 +68,7 @@ int		ft_strnncmp(char **s1, char **s2, size_t n, int *to_return);
 int		check_for_special_signs(t_token_small *tokens);
 int		comp_vars_util(char **name, char **var_arr, int i, int j);
 int		isnum(char **name);
+int		single_dollar(char **name, char **new_name);
 
 char	*space_skip(char *user_input);
 char	*put_spaces(char *user_input);

@@ -75,10 +75,36 @@ int	isnum(char **name)
 	return (0);
 }
 
+int	single_dollar(char **name, char **new_name)
+{
+	char *sep;
+
+	sep = " <>|&./@#$%^*-=+,[]{}\'\"";
+	if (ft_strchr(sep, (*name)[1]) != NULL || (*name)[1] == '\0')
+	{
+		if (new_name == NULL)
+		{
+			(*name)++;
+			return (1);
+		}
+		else
+		{
+			**new_name = **name;
+			(*new_name)++;
+			(*name)++;
+			return (1);
+		}
+	}
+	return (0);
+
+}
+
 int	comp_vars(char **name, char **var_arr, int i, char *sep)
 {
 	int		j;
 
+	if (single_dollar(name, NULL) == 1)
+		return (1);
 	if (isnum(name) == 1)
 		return (0);
 	if ((*name)[1] == '?')
@@ -106,18 +132,18 @@ int	quote_dollar(char **name, char **var_arr, int i, char type)
 {
 	if (type == 39)
 	{
-		while (**name != type)
+		while (**name != type && **name != '\0')
 		{
 			(*name)++;
 			i++;
 		}
+		(*name)++;
 		return (i);
 	}
 	while (**name != type)
 	{
 		if (**name == '$')
 			i += comp_vars(name, var_arr, 1, " <>|&./?@#$%^*-=+,[]{}\'\"");
-		printf("%c\n", *((*name)+1));
 		if (**name != type)
 		{
 			(*name)++;
@@ -137,9 +163,9 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 		return ;
 	while (*name_ptr)
 	{
-		if (*name_ptr == 34 || *name_ptr == 39)
+		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
 		{
-			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *name_ptr++);
+			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *(name_ptr++));
 			continue ;
 		}
 		if (*name_ptr == '$')
@@ -150,6 +176,7 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 		name_ptr++;
 		i++;
 	}
+	printf("%d\n", i);
 	name_ptr = (char *)malloc((i + 1) * sizeof(char));
 	put_vars(name_ptr, ptr);
 }

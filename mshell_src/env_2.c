@@ -59,7 +59,7 @@ size_t	ft_strlcat_dollar(char **name_new, const char *src, size_t destsize, char
 	if (destsize - destlen <= srclen)
 	{
 		ft_memcpy(dest + destlen, src, srclen);
-		dest[destsize - 1] = 0;
+		dest[destsize - 1] = '\0';
 	}
 	else
 		ft_memcpy(dest + destlen, src, srclen + 1);
@@ -74,6 +74,8 @@ int	alloc_vars(char **name, char **var_arr, char **new_name, char *sep)
 	int	i;
 
 	i = 1;
+	if (single_dollar(name, new_name) == 1)
+		return (0);
 	if (isnum(name) == 1)
 		return (0);
 	if ((*name)[1] == '?')
@@ -105,6 +107,7 @@ void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_
 			(*new_name)++;
 			(*name_ptr)++;
 		}
+		(*name_ptr)++;
 		return ;
 	}
 	else if (type == 34)
@@ -128,7 +131,7 @@ void	put_vars(char *new_name, t_token_small **ptr)
 	save = new_name;
 	while (*name_ptr)
 	{
-		if (*name_ptr == 34 || *name_ptr == 39)
+		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
 		{
 			alloc_quote_dollar(&new_name, &name_ptr, 0, (*ptr)->shell->envex);
 			continue ;
@@ -142,6 +145,7 @@ void	put_vars(char *new_name, t_token_small **ptr)
 		name_ptr++;
 		new_name++;
 	}
+	*new_name = '\0';
 	new_name = save;
 	free((*ptr)->name);
 	(*ptr)->name = new_name;
