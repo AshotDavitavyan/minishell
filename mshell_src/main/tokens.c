@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 char	*add_after_quotes(char **user_input, char *token, char type)
 {

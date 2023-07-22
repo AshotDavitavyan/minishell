@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 t_token_small	*tokendelone(t_token_small *to_remove, t_token_small **tokens)
 {

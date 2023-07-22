@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 int	check(char *user_input, char type, int i, int todo)
 {

@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 void	init_shell(t_token_small **tokens, t_shell **shell)
 {
