@@ -76,6 +76,8 @@ int	main(int argc, char **argv, char **env)
 		signal(SIGINT, sighandler);
 		signal(SIGQUIT, SIG_IGN);
 		user_input = readline("\033[35;1;4mminishell$\033[0m ");
+		if (user_input == NULL)
+			exit(global_error);
 		if (!user_input || *user_input == '\0')
 			continue ;
 		add_history(user_input);
