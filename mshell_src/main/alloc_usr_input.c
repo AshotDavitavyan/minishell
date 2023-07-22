@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 void	alloc_quotes(char **user_input, char **input_new)
 {

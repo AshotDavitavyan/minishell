@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../includes/minishell.h"
 
 void	arrcpy(char **to_be, char **current, char *to_add)
 {
