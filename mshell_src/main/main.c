@@ -41,6 +41,7 @@ void	sighandler(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	global_error = 1;
 	(void)signum;
 }
 
