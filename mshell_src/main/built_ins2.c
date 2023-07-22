@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 16:04:55 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/22 14:38:45 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,21 @@ size_t	strlen_bef_eq(char *str)
 int	unset_acheck(t_shell *shell, char *str)
 {
 	int i;
-
 	i = 0;
-	if (ft_isdigit(str[0]))
-		return (-1);
+	char *del = "<>|&./?@#$%^*-=+,[]{}\'\"";
+
+	while(*del)
+	{
+		if (ft_strchr(str, *del) || ft_isdigit(str[0]) == 1)
+		{
+			ft_putstr_fd("minishell: \'", 2);
+			ft_putstr_fd(str, 2);
+			ft_putstr_fd("\': not a valid identifier\n", 2);
+			global_error = 1;
+			return (-1);
+		}
+		del++;
+	}
 	while (shell -> envex[i])
 	{
 		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0 && strlen_bef_eq(shell -> envex[i]) == ft_strlen(str))
@@ -98,7 +109,7 @@ int	bi_unset(t_shell *shell)
 	{
 		if (unset_acheck(shell, arr[i]) == 1)
 			unset_delete(shell, arr[i]);
-		else if (unset_acheck(shell, arr[i]) == -1)
+		else
 			return (1);
 	}
 	return (0);

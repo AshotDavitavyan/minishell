@@ -5,7 +5,8 @@ void	f_error(char *str)
 	ft_putstr_fd("minishell: /adfa", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
-	exit(0);
+	global_error = 127;
+	exit(global_error);
 }
 
 char	*path_finder(char **env)

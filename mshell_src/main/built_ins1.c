@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 12:29:03 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/22 14:36:22 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,31 @@ int	ft_isletter(int c)
 		return (0);
 }
 
-int	validation(char **arr)
+int	validation(char **str)
 {
-	int j = 0;
+	int	i;
+	int j;
+	char *del;
 	
-	if (arr[++j])
+	del = "<>|&./?@#$%^*-=+,[]{}\'\"";
+	i = 0;
+	j = 0;
+	while(str[i])
 	{
-		if (ft_isletter(arr[j][0]) == 0)
+		j = 0;
+		while(del[j])
 		{
-			printf("bash: export: `%s': not a valid identifier\n", arr[j]);
-			return (1);
+			if (ft_strchr(str[i], del[j]) ||  ft_isdigit(str[i][0]) == 1)
+			{
+				ft_putstr_fd("minishell: \'", 2);
+				ft_putstr_fd(str[i], 2);
+				ft_putstr_fd("\': not a valid identifier\n", 2);
+				global_error = 1;
+				return (-1);
+			}
+			j++;
 		}
+		i++;
 	}
 	return (1);
 }
