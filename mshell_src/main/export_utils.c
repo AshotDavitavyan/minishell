@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 15:19:11 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:36:29 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,13 @@ char	*strdup_bez_pls(char *arr)
 	return (new_arr);
 }
 
+void	help_exp(t_shell *shell, int i, char *arr)
+{
+	free(shell -> envex[i]);
+	shell -> envex[i] = NULL;
+	shell -> envex[i] = arr;
+}
+
 int	bi_export2(t_shell *shell, char **arr)
 {
 	int		i;
@@ -95,15 +102,15 @@ int	bi_export2(t_shell *shell, char **arr)
 	i = 0;
 	while (arr[++j])
 	{
-		if ((i = find_dup(shell, arr[j])) != -1)
+		i = find_dup(shell, arr[j]);
+		if ((find_dup(shell, arr[j])) != -1)
 		{
 			if (ft_strchr(arr[j], '+'))
-				shell -> envex[i] = ft_strjoin(shell -> envex[i], ft_strchr(arr[j], '+') + 2);
+				shell -> envex[i] = ft_strjoin(shell -> envex[i],
+						ft_strchr(arr[j], '+') + 2);
 			else
 			{
-				free(shell -> envex[i]);
-				shell -> envex[i] = NULL;
-				shell -> envex[i] = arr[j];
+				help_exp(shell, i, arr[j]);
 			}
 			return (0);
 		}

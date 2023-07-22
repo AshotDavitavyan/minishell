@@ -56,6 +56,7 @@ void	shell_token(t_token *token_final, t_shell *shell)
 	}
 }
 
+int	global_error = 0;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -63,19 +64,18 @@ int	main(int argc, char **argv, char **env)
 	t_token *token_final;
 	t_shell *shell;
 	char *user_input;
-	
+
 	tokens = NULL;
 	token_final = NULL;
 	(void)argv;
 	(void)argc;
 	shell = malloc(sizeof(t_shell));
 	init_env(&shell, env);
-	global_error = 0;
 	while (1)
 	{
 		signal(SIGINT, sighandler);
 		signal(SIGQUIT, SIG_IGN);
-		user_input = readline("\033[35;1;4mminishell$\033[0m ");
+		user_input = readline("\033[94mminishell$\033[0m ");
 		if (user_input == NULL)
 			exit(global_error);
 		if (!user_input || *user_input == '\0')
@@ -83,7 +83,6 @@ int	main(int argc, char **argv, char **env)
 		add_history(user_input);
 		lexing(user_input, &tokens, &shell, &token_final);
 		shell_token(token_final, shell);
-		//print_big_token(token_final);
 		if ((tokens) == NULL)
 			continue ;
 		exec(shell);

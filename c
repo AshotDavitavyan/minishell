@@ -1,0 +1,11 @@
+Makefile
+a
+b
+c
+includes
+libft
+minishell
+mshell_src
+obj
+readline
+readline-main

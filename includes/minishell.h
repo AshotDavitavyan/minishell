@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/21 18:31:03 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/22 17:14:43 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void	printf_node(t_token *lst);
 
 int		ft_lstsize_token(t_token *lst);
 
-int	bi_cd(t_token *token);
+int		bi_cd(t_token *token);
 
 void	change_old_pwd(t_shell *shell);
 
@@ -196,8 +196,24 @@ void	here_doc_looper(t_token *token);
 
 void	here_d(t_token *token, int j);
 
-int	open_0(char *argv);
+int		open_0(char *argv);
 
-char *str_to_lower(char *str);
+char	*str_to_lower(char *str);
+
+int		fork_with_check(void);
+
+void	openh_dup2(int fd);
+
+void	exec_n(t_shell *shell);
+
+void	error_no_dir(char *str);
+
+void	fd_cd_print_status(char *cmd);
+
+void	error_perm_denied(char *str);
+
+void	change_old_new(t_shell *shell);
+
+void	change_old_pwd(t_shell *shell);
 
 #endif

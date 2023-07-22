@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 14:38:45 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:34:32 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	bi_exit(t_token *token)
 {
-	char **arr;
+	char	**arr;
 
 	arr = token -> token;
 	if (ft_strlen_2d_arr(arr) == 1)
@@ -34,26 +34,27 @@ int	bi_exit(t_token *token)
 
 size_t	strlen_bef_eq(char *str)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (!str)
 		return (0);
-	while(str[++i])
+	while (str[++i])
 	{
-		if(str[i] == '=')
-			break;
+		if (str[i] == '=')
+			break ;
 	}
 	return (i);
 }
 
 int	unset_acheck(t_shell *shell, char *str)
 {
-	int i;
-	i = 0;
-	char *del = "<>|&./?@#$%^*-=+,[]{}\'\"";
+	int		i;
+	char	*del;
 
-	while(*del)
+	del = "<>|&./?@#$%^*-=+,[]{}\'\"";
+	i = 0;
+	while (*del)
 	{
 		if (ft_strchr(str, *del) || ft_isdigit(str[0]) == 1)
 		{
@@ -67,27 +68,30 @@ int	unset_acheck(t_shell *shell, char *str)
 	}
 	while (shell -> envex[i])
 	{
-		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0 && strlen_bef_eq(shell -> envex[i]) == ft_strlen(str))
+		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0
+			&& strlen_bef_eq(shell -> envex[i]) == ft_strlen(str))
 			return (1);
 		i++;
 	}
 	return (0);
 }
+
 void	unset_delete(t_shell *shell, char *str)
 {
-	char **new_arr;
-	int i;
-	int j;
-	
+	char	**new_arr;
+	int		i;
+	int		j;
+
 	i = 0;
 	j = 0;
 	while (shell -> envex[i])
 		i++;
 	new_arr = malloc(sizeof(char *) * i);
 	i = 0;
-	while(shell -> envex[j])
+	while (shell -> envex[j])
 	{
-		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0 && strlen_bef_eq(shell -> envex[i]) != ft_strlen(str))
+		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0
+			&& strlen_bef_eq(shell -> envex[i]) != ft_strlen(str))
 		{
 			new_arr[i] = shell -> envex[j];
 			i++;
@@ -100,8 +104,8 @@ void	unset_delete(t_shell *shell, char *str)
 
 int	bi_unset(t_shell *shell)
 {
-	int	i;
-	char **arr;
+	int		i;
+	char	**arr;
 
 	arr = shell -> token -> token;
 	i = 0;

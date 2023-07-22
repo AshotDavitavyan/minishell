@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env1.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/22 16:06:54 by vgribkov          #+#    #+#             */
+/*   Updated: 2023/07/22 16:08:27 by vgribkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 void	init_shell(t_token_small **tokens, t_shell **shell)
 {
 	t_token_small *ptr;
+	
 	(*shell)->token_small = *tokens;
 	ptr = *tokens;
 	while (ptr != NULL)
@@ -14,7 +27,7 @@ void	init_shell(t_token_small **tokens, t_shell **shell)
 
 int	count_quotes(char *name, char type)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	while (*name && name)
@@ -28,7 +41,7 @@ int	count_quotes(char *name, char type)
 
 void	move_ptr(char **name)
 {
-	char *sep;
+	char	*sep;
 
 	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
 	if (**name == '$')
@@ -38,9 +51,10 @@ void	move_ptr(char **name)
 	if ((**name == 34 || **name == 39) && count_quotes(*name, **name)%2 == 0)
 		(*name)--;
 }
+
 int	env_len(char *str, char **name)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	move_ptr(name);
@@ -55,7 +69,7 @@ int	env_len(char *str, char **name)
 
 int	intlen(int to_count)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (to_count > 9)
@@ -73,7 +87,7 @@ int	comp_vars_util(char **name, char **var_arr, int i, int j)
 	while (i < j)
 	{
 		if ((*name)[i + 1] != (*var_arr)[i])
-			return 0;
+			return (0);
 		i++;
 	}
 	return (1);
@@ -84,7 +98,7 @@ int	isnum(char **name)
 {
 	if ((*name)[1] >= '0' && (*name)[1] <= '9')
 	{
-		(*name)+=2;
+		(*name) += 2;
 		return (1);
 	}
 	return (0);
@@ -92,7 +106,7 @@ int	isnum(char **name)
 
 int	single_dollar(char **name, char **new_name)
 {
-	char *sep;
+	char	*sep;
 
 	sep = " <>|&./@#$%^*-=+,[]{}\'\"";
 	if (ft_strchr(sep, (*name)[1]) != NULL || (*name)[1] == '\0')
@@ -179,12 +193,14 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 	{
 		if (*name_ptr == 34 || *name_ptr == 39)
 		{
-			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *(name_ptr++));
+			i += quote_dollar(&name_ptr,
+					(*ptr)->shell->envex, 0, *(name_ptr++));
 			continue ;
 		}
 		if (*name_ptr == '$')
 		{
-			i += comp_vars(&name_ptr, (*ptr)->shell->envex, 1, " <>|&./?@#$%^*-=+,[]{}\'\"");
+			i += comp_vars(&name_ptr,
+					(*ptr)->shell->envex, 1, " <>|&./?@#$%^*-=+,[]{}\'\"");
 			continue ;
 		}
 		name_ptr++;
@@ -196,7 +212,7 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 
 void	handle_dollar_signs(t_token_small **tokens)
 {
-	t_token_small *ptr;
+	t_token_small	*ptr;
 
 	ptr = *tokens;
 	while (ptr != NULL)

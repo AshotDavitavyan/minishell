@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:33:53 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/06 09:34:09 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/22 16:35:43 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	change_old_pwd(t_shell *shell)
 {
-	int 	i;
-	char 	cwd[PATH_MAX];
-	char 	*oldpwd;
-	char 	*pwd;
-	
+	int		i;
+	char	cwd[PATH_MAX];
+	char	*oldpwd;
+	char	*pwd;
+
 	i = 0;
 	pwd = getcwd(cwd, sizeof(cwd));
 	oldpwd = ft_strdup("OLDPWD=");
@@ -29,7 +29,7 @@ void	change_old_pwd(t_shell *shell)
 		{
 			free(shell -> envex[i]);
 			shell -> envex[i] = oldpwd;
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -37,11 +37,11 @@ void	change_old_pwd(t_shell *shell)
 
 void	change_new_pwd(t_shell *shell)
 {
-	int 	i;
-	char 	cwd[PATH_MAX];
-	char 	*oldpwd;
-	char 	*pwd;
-	
+	int		i;
+	char	cwd[PATH_MAX];
+	char	*oldpwd;
+	char	*pwd;
+
 	i = 0;
 	pwd = getcwd(cwd, sizeof(cwd));
 	oldpwd = ft_strdup("PWD=");
@@ -52,7 +52,7 @@ void	change_new_pwd(t_shell *shell)
 		{
 			free(shell -> envex[i]);
 			shell -> envex[i] = oldpwd;
-			break;
+			break ;
 		}
 		i++;
 	}
