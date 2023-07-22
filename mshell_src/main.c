@@ -7,7 +7,7 @@
 //Signals
 //Errors, parse errors etc
 //leaks, buffer overflows
-
+//norminette
 
 void	error(void)
 {
@@ -39,6 +39,7 @@ void	sighandler(int signum)
 {
 	printf("\n");
 	rl_on_new_line();
+	printf("%d\n", signum);
 	// rl_replace_line("", 0);
 	rl_redisplay();
 	(void)signum;
@@ -75,6 +76,8 @@ int	main(int argc, char **argv, char **env)
 		signal(SIGINT, sighandler);
 		signal(SIGQUIT, SIG_IGN);
 		user_input = readline("shell$ ");
+		if (user_input == NULL)
+			exit(global_error);
 		if (!user_input || *user_input == '\0')
 			continue ;
 		add_history(user_input);

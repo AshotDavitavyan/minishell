@@ -12,6 +12,19 @@ void	init_shell(t_token_small **tokens, t_shell **shell)
 	}
 }
 
+int	count_quotes(char *name, char type)
+{
+	int count;
+
+	count = 0;
+	while (*name && name)
+	{
+		if (*name == type)
+			count++;
+		name--;
+	}
+	return (count);
+}
 
 void	move_ptr(char **name)
 {
@@ -22,6 +35,8 @@ void	move_ptr(char **name)
 		(*name)++;
 	while (ft_strchr(sep, **name) == NULL && **name != '\0')
 		(*name)++;
+	if ((**name == 34 || **name == 39) && count_quotes(*name, **name)%2 == 0)
+		(*name)--;
 }
 int	env_len(char *str, char **name)
 {
@@ -96,7 +111,6 @@ int	single_dollar(char **name, char **new_name)
 		}
 	}
 	return (0);
-
 }
 
 int	comp_vars(char **name, char **var_arr, int i, char *sep)
@@ -163,7 +177,7 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 		return ;
 	while (*name_ptr)
 	{
-		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
+		if (*name_ptr == 34 || *name_ptr == 39)
 		{
 			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *(name_ptr++));
 			continue ;

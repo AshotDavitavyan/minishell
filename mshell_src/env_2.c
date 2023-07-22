@@ -115,7 +115,10 @@ void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_
 		while (**name_ptr != type && **name_ptr != '\0')
 		{
 			if (**name_ptr == '$')
+			{
 				alloc_vars(name_ptr, var_arr, new_name, " <>|&./?@#$%^*-=+,[]{}\'\"");
+				continue ;
+			}
 			**new_name = **name_ptr;
 			(*new_name)++;
 			(*name_ptr)++;
@@ -131,7 +134,7 @@ void	put_vars(char *new_name, t_token_small **ptr)
 	save = new_name;
 	while (*name_ptr)
 	{
-		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
+		if (*name_ptr == 34 || *name_ptr == 39)
 		{
 			alloc_quote_dollar(&new_name, &name_ptr, 0, (*ptr)->shell->envex);
 			continue ;
