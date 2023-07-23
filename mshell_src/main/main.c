@@ -1,13 +1,7 @@
 #include "../../includes/minishell.h"
 
-//single pipe error
-//check tokens if they're empty
-//check big tokens if they're empty
-//Signals
 //Errors, parse errors etc
 //leaks, buffer overflows
-
-//single dollar sign
 
 void	error(void)
 {
