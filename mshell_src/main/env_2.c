@@ -123,6 +123,8 @@ void	alloc_quote_dollar(char **new_name, char **name_ptr, char type, char **var_
 			(*new_name)++;
 			(*name_ptr)++;
 		}
+		if (**name_ptr == type)
+			(*name_ptr)++;
 	}
 }
 void	put_vars(char *new_name, t_token_small **ptr)
@@ -134,7 +136,7 @@ void	put_vars(char *new_name, t_token_small **ptr)
 	save = new_name;
 	while (*name_ptr)
 	{
-		if (*name_ptr == 34 || *name_ptr == 39)
+		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
 		{
 			alloc_quote_dollar(&new_name, &name_ptr, 0, (*ptr)->shell->envex);
 			continue ;
