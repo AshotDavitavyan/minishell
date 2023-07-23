@@ -11,7 +11,12 @@ int	skip_quotes(char *u, int *p, int size)
 		(*p)++;
 	}
 	if (u[(*p)++] == '\0')
-		error();
+	{
+		printf("%s\n", "minishell: syntax_error");
+		rl_on_new_line();
+		rl_redisplay();
+		global_error = 127;
+	}
 	return (size);
 }
 

@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-// shell$ echo "'"$USER"'"
-// 'adavitav"'
-// echo "$USER"'''''' handle quotes pair by pair
-
-//Signals
 //Errors, parse errors etc
 //leaks, buffer overflows
 //norminette
@@ -23,16 +18,15 @@ char	*space_skip(char *user_input)
 
 void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
-	(void)shell;
 	u_i = put_spaces(u_i);
 	get_tokens(u_i, tokens, 0);
-	// print_tokens(*tokens);
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
+	// print_tokens(*tokens);
 	if ((*tokens) == NULL)
 		return ;
 	parse_tokens(*tokens, tbig, *tokens);
-	//print_big_token(*tbig);
+	// print_big_token(*tbig);
 }
 
 void	sighandler(int signum)
@@ -73,8 +67,8 @@ int	main(int argc, char **argv, char **env)
 	global_error = 0;
 	while (1)
 	{
-		signal(SIGINT, sighandler);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, sighandler);
 		user_input = readline("shell$ ");
 		if (user_input == NULL)
 			exit(global_error);
