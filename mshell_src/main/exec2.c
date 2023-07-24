@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 17:15:02 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:37:15 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	piping(t_token *token, int j, int i)
 			redirector(token);
 			execve(true_path(token -> token[0], token -> shell -> envex), token
 				-> token, token -> shell -> envex);
+			f_error(true_path(token -> token[0], token -> shell -> envex));
 		}
 	}
 }

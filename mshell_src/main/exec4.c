@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:10:55 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 17:15:23 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:34:56 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	executing_one(t_shell *shell)
 			openh_dup2(shell -> token -> here_fd);
 		execve(true_path(shell -> token -> token[0], shell -> envex),
 			shell -> token -> token, shell -> envex);
+		f_error(true_path(shell -> token -> token[0], shell -> envex));
 	}
 }
 

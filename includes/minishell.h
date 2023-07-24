@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 17:14:43 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:34:00 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,5 +215,9 @@ void	error_perm_denied(char *str);
 void	change_old_new(t_shell *shell);
 
 void	change_old_pwd(t_shell *shell);
+
+char	*dup_bef_eq(char *str);
+
+void	f_error(char *str);
 
 #endif

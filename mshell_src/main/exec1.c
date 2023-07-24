@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 14:56:14 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 16:11:13 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:38:48 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	f_error(char *str)
 {
-	ft_putstr_fd("minishell: /adfa", 2);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
-	global_error = 127;
+	global_error = 126;
 	exit(global_error);
 }
 
