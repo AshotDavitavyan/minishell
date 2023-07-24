@@ -69,11 +69,14 @@ int		check_for_special_signs(t_token_small *tokens);
 int		comp_vars_util(char **name, char **var_arr, int i, int j);
 int		isnum(char **name);
 int		single_dollar(char **name, char **new_name);
+int		parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *head);
+int		add_redirs(t_token_small **tokens, t_token **tokfin);
 
 char	*space_skip(char *user_input);
 char	*put_spaces(char *user_input);
 char	*alloc(char *u_i, char *input_new);
 char	**add_fd(char **current, t_token_small *tokens, int size, char **to_return);
+
 void	before_quote(char *user_input, int pos, char **token);
 void	tokenadd_back(t_token_small *token, t_token_small *to_add);
 void    free_tokens(t_token_small	**tokens);
@@ -84,8 +87,6 @@ void	check_var(t_token_small **ptr, int dollar_index, int i);
 void	put_vars(char *new_name, t_token_small **ptr);
 void	free_arr(char **to_free);
 void	free_big_tokens(t_token **tokens);
-void	parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *head);
-void	add_redirs(t_token_small **tokens, t_token **tokfin);
 void	init_shell(t_token_small **tokens, t_shell **shell);
 void	init_env(t_shell **shell, char **envp);
 void	move_ptr(char **name);

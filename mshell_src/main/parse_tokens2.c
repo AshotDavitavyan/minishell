@@ -30,15 +30,22 @@ int	check_for_special_signs(t_token_small *tokens)
 	return (0);
 }
 
+char	**handle_synt(char *to_print, char *token)
+{
+	printf("minishell: %s", to_print);
+	printf(" `%s'\n", token);
+	return (NULL);
+}
+
 char	**add_fd(char **current, t_token_small *tokens, int size, char **to_return)
 {
 	char	**ptr;
 
 	ptr = current;
 	if (tokens == NULL)
-		error();
+		return (handle_synt("syntax error near unexpected token", "newline"));
 	if (check_for_special_signs(tokens) != 0 && tokens->type == 0)
-		error();
+		return (handle_synt("syntax error near unexpected token", tokens->name));
 	if (current == NULL)
 	{
 		to_return = (char **)malloc(2 * sizeof(char *));
@@ -59,7 +66,7 @@ char	**add_fd(char **current, t_token_small *tokens, int size, char **to_return)
 	return (to_return);
 }
 
-void	add_redirs(t_token_small **tokens, t_token **tokfin)
+int	add_redirs(t_token_small **tokens, t_token **tokfin)
 {
 	while (*tokens != NULL)
 	{
@@ -68,23 +75,30 @@ void	add_redirs(t_token_small **tokens, t_token **tokfin)
 			(*tokfin)->redir_flag_in = 1;
 			*tokens = (*tokens)->next;
 			(*tokfin)->redir_fd_in = add_fd((*tokfin)->redir_fd_in, *tokens, 0, NULL);
+			if ((*tokfin)->redir_fd_in == NULL)
+				return (-1);
 		}
 		else if (check_for_special_signs(*tokens) == 3)
 		{
 			(*tokfin)->redir_flag_out = 1;
 			*tokens = (*tokens)->next;
 			(*tokfin)->redir_fd_out = add_fd((*tokfin)->redir_fd_out, *tokens, 0, NULL);
+			if ((*tokfin)->redir_fd_out == NULL)
+				return (-1);
 		}
 		else if (check_for_special_signs(*tokens) == 4)
 		{
 			(*tokfin)->redir_flag_outout = 1;
 			*tokens = (*tokens)->next;
 			(*tokfin)->redir_fd_out = add_fd((*tokfin)->redir_fd_out, *tokens, 0, NULL);
+			if ((*tokfin)->redir_fd_out == NULL)
+				return (-1);
 		}
 		else
-			return ;
+			return (0);
 		(*tokens) = (*tokens)->next;
 	}
+	return (0);
 }
 
 t_token **tokenfinaladd(t_token **str, t_token_small *tokens)

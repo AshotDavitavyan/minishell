@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-//Errors, parse errors etc
+//minishell$ echo -nnnnnn -nSDFSDF  SDSDFSDF
 //leaks, buffer overflows
 
 void	error(void)
@@ -15,18 +15,21 @@ char	*space_skip(char *user_input)
 	return (user_input);
 }
 
-void	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
+int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
 	(void)shell;
 	u_i = put_spaces(u_i);
+	if (u_i == NULL)
+		return (-1);
 	get_tokens(u_i, tokens, 0);
 	// print_tokens(*tokens);
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
 	if ((*tokens) == NULL)
-		return ;
-	parse_tokens(*tokens, tbig, *tokens);
-	//print_big_token(*tbig);
+		return (-1);
+	if (parse_tokens(*tokens, tbig, *tokens) == (-1))
+		return (-1);
+	return (0);
 }
 
 void	sighandler(int signum)
@@ -65,21 +68,24 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	shell = malloc(sizeof(t_shell));
 	init_env(&shell, env);
+	rl_catch_signals = 0;
 	while (1)
 	{
-		signal(SIGINT, sighandler);
 		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, sighandler);
 		user_input = readline("\033[94mminishell$\033[0m ");
 		if (user_input == NULL)
 			exit(global_error);
 		if (!user_input || *user_input == '\0')
 			continue ;
 		add_history(user_input);
-		lexing(user_input, &tokens, &shell, &token_final);
-		shell_token(token_final, shell);
-		if ((tokens) == NULL)
-			continue ;
-		exec(shell);
+		if (lexing(user_input, &tokens, &shell, &token_final) != (-1))
+		{
+			shell_token(token_final, shell);
+			if ((tokens) == NULL)
+				continue ;
+			exec(shell);
+		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
 	}

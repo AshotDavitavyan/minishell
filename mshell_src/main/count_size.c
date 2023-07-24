@@ -12,10 +12,9 @@ int	skip_quotes(char *u, int *p, int size)
 	}
 	if (u[(*p)++] == '\0')
 	{
-		printf("%s\n", "minishell: syntax_error");
-		rl_on_new_line();
-		rl_redisplay();
+		printf("%s\n", "minishell: Syntax error detected");
 		global_error = 127;
+		return (-1);
 	}
 	return (size);
 }
@@ -35,6 +34,7 @@ int	handle_redirs(char *user_input, int pos)
 char	*put_spaces(char *user_input)
 {
 	int		i;
+	int		j;
 	int		size;
 	char	*input_new;
 
@@ -44,7 +44,10 @@ char	*put_spaces(char *user_input)
 	{
 		if (user_input[i] == 34 || user_input[i] == 39)
 		{
-			size += skip_quotes(user_input, &i, 2);
+			j = skip_quotes(user_input, &i, 2);
+			if (j == -1)
+				return (NULL);
+			size += j;
 			continue ;
 		}
 		if (user_input[i] == '<' || user_input[i] == '>' || user_input[i] == '|')

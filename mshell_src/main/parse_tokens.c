@@ -1,10 +1,13 @@
 #include "../../includes/minishell.h"
 
-void	heredoc(t_token_small **tokens, t_token **token_final)
+int	heredoc(t_token_small **tokens, t_token **token_final)
 {
 	(*token_final)->here_doc_flag = 1;
 	*tokens = (*tokens)->next;
 	(*token_final)->sep_arr = add_fd((*token_final)->sep_arr, *tokens, 0, NULL);
+	if ((*token_final)->sep_arr == NULL)
+		return (-1);
+	return (0);
 }
 
 void	pick_the_right_flag(t_token **tokfin, t_token_small **tokens)
@@ -30,7 +33,7 @@ void	pick_the_right_flag(t_token **tokfin, t_token_small **tokens)
 	}
 }
 
-void	check_tokfin(t_token **tokfin, t_token_small *tokens)
+int	check_tokfin(t_token **tokfin, t_token_small *tokens)
 {
 	while (*tokfin)
 	{
@@ -43,10 +46,14 @@ void	check_tokfin(t_token **tokfin, t_token_small *tokens)
 		if (check_for_special_signs(tokens) == 5)
 		{
 			if (tokens->prev == NULL || tokens->next == NULL)
-				error();
+			{
+				printf("minishell: syntax error near unexpected token `|'\n");
+				return (-1);
+			}
 		}	
 		tokens = tokens->next;
 	}
+	return (0);
 }
 
 char	*str_tolower(char *to_lower)
@@ -63,6 +70,21 @@ char	*str_tolower(char *to_lower)
 	}
 	return (save);
 }
+
+// char	*str_tolower(char *to_lower)
+// {
+// 	char *save;
+
+// 	if (!to_lower)
+// 		return (NULL);
+// 	save = ft_strdup(to_lower);
+// 	while (*save)
+// 	{
+// 		*save = ft_tolower(*save);
+// 		save++;
+// 	}
+// 	return (save);
+// }
 
 t_token_small	*put_flag(t_token_small **tokens, t_token_small *head, int count, t_token **tokfin)
 {
@@ -91,7 +113,7 @@ t_token_small	*put_flag(t_token_small **tokens, t_token_small *head, int count, 
 
 void	add_funct_name(t_token **tokfin, t_token_small **tokens, t_token_small *save, int count)
 {
-	int				i;
+	int	i;
 
 	if ((*tokens)->next != NULL && ft_strncmp(str_tolower((*tokens)->name), "echo", 4) == 0 && (*tokens)->next->name[0] == '-')
 	{
@@ -112,7 +134,7 @@ void	add_funct_name(t_token **tokfin, t_token_small **tokens, t_token_small *sav
 	(*tokfin)->token = add_fd((*tokfin)->token, *tokens, 0, NULL);
 }
 
-void	parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *head)
+int	parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *head)
 {
 	token_final = tokenfinaladd(token_final, tokens);
 	t_token *token_save = *token_final;
@@ -121,7 +143,8 @@ void	parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *h
 		if (check_for_special_signs(tokens) == 1 || check_for_special_signs\
 		(tokens) == 3 || check_for_special_signs(tokens) == 4)
 		{
-			add_redirs(&tokens, token_final);
+			if (add_redirs(&tokens, token_final) == -1)
+				return (-1);
 			continue ;
 		}
 		else if (check_for_special_signs(tokens) == 5)
@@ -130,12 +153,17 @@ void	parse_tokens(t_token_small *tokens, t_token **token_final, t_token_small *h
 			*token_final = (*token_final)->next;
 		}
 		else if (check_for_special_signs(tokens) == 2)
-			heredoc(&tokens, token_final);
+		{
+			if(heredoc(&tokens, token_final) == (-1))
+				return (-1);
+		}
 		else
 			add_funct_name(token_final, &tokens, tokens, 0);
 		tokens = tokens -> next;
 	}
 	tokens = head;
-	check_tokfin(token_final, tokens);
+	if(check_tokfin(token_final, tokens) == (-1))
+		return (-1);
 	*token_final = token_save;
+	return (0);
 }
