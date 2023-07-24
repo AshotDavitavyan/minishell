@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 14:56:14 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 12:38:48 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:31:56 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ void	true_path_error(char *argv)
 	exit(127);
 }
 
+
 char	*true_path(char *argv, char **env)
 {
 	int				i;
 	char			**res_split;
 	char			*path;
-
-	if (access(argv, F_OK) == 0)
+	
+	if (access(argv, F_OK) == 0 && ft_strchr (argv, '/'))
 		return (argv);
 	if (ft_strchr (argv, '/'))
 		f_error(argv);
@@ -78,6 +79,7 @@ char	*true_path(char *argv, char **env)
 	i = 0;
 	res_split = ft_split(path, ':');
 	fn_path(res_split, argv);
+	res_split[0] = ft_strchr(res_split[0], '=') + 1;
 	while (res_split[i])
 	{
 		if (access(res_split[i], F_OK) == 0)

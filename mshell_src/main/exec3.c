@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:09:49 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 17:14:36 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 20:08:05 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ void	here_d(t_token *token, int j)
 	char	*str;
 
 	token -> here_fd = open("here_doc", O_RDWR | O_CREAT | O_TRUNC, 0664);
-	if (token -> here_fd == -1)
-		exit(1);
 	while (1)
 	{
+		signal(SIGINT, sighandler_hd);
 		str = readline("> ");
 		if (!str)
 		{
 			free(str);
-			write(1, "\n", 1);
+			write(1, "> ", 2);
+			global_error = 0;
 			break ;
 		}
 		if (ft_strcmp(str, token -> sep_arr[j]) == 0)
@@ -74,16 +74,3 @@ void	openh_dup2(int fd)
 	dup2(fd, STDIN_FILENO);
 }
 
-int	fork_with_check(void)
-{
-	int	f;
-
-	f = fork();
-	if (f == -1)
-	{
-		ft_putstr_fd("minishell: fork: ", 2);
-		ft_putstr_fd("Resource temporarily unavailable\n", 2);
-		return (1);
-	}
-	return (f);
-}

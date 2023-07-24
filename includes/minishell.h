@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 12:59:40 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 19:45:31 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,9 @@ t_token_small	*tokenadd_new(char *name, int type);
 t_token_small *create_token(t_token_small *token, char *name, int type);
 t_token_small	*tokendelone(t_token_small *to_remove, t_token_small **tokens);
 t_token **tokenfinaladd(t_token **str, t_token_small *tokens);
+void	sighandler(int signum);
+void	sighandler2(int signal);
+void	sighandler_hd(int signum);
 
 int					global_error;
 
