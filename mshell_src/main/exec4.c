@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:10:55 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 12:34:56 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 13:00:07 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	executing_one(t_shell *shell)
 
 	here_doc_looper(shell -> token);
 	i = -1;
-	f = fork_with_check();
+	f = fork();
 	if (f == 0)
 	{
 		global_error = 0;

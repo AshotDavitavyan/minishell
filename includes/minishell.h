@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 12:34:00 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 12:59:40 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ int		open_0(char *argv);
 
 char	*str_to_lower(char *str);
 
-int		fork_with_check(void);
 
 void	openh_dup2(int fd);
 
