@@ -66,6 +66,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	shell = malloc(sizeof(t_shell));
 	init_env(&shell, env);
+	rl_catch_signals = 0;
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);

@@ -45,10 +45,7 @@ char	**add_fd(char **current, t_token_small *tokens, int size, char **to_return)
 	if (tokens == NULL)
 		return (handle_synt("syntax error near unexpected token", "newline"));
 	if (check_for_special_signs(tokens) != 0 && tokens->type == 0)
-	{
-		printf("%s\n", tokens->name);
 		return (handle_synt("syntax error near unexpected token", tokens->name));
-	}
 	if (current == NULL)
 	{
 		to_return = (char **)malloc(2 * sizeof(char *));
