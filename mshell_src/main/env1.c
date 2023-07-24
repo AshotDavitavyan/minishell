@@ -21,8 +21,6 @@ void	move_ptr(char **name)
 		(*name)++;
 	while (ft_strchr(sep, **name) == NULL && **name != '\0')
 		(*name)++;
-	if ((**name == 34 || **name == 39) && count_quotes(*name, **name)%2 == 0)
-		(*name)--;
 }
 int	env_len(char *str, char **name)
 {
@@ -164,7 +162,7 @@ void	check_var(t_token_small **ptr, int dollar_index, int i)
 		return ;
 	while (*name_ptr)
 	{
-		if (*name_ptr == 34 || *name_ptr == 39)
+		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
 		{
 			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *(name_ptr++));
 			continue ;
