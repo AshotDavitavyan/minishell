@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 16:34:32 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/24 11:36:13 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,36 @@ size_t	strlen_bef_eq(char *str)
 	return (i);
 }
 
+char	*dup_bef_eq(char *str)
+{
+	char	*arr;
+	int		i;
+	
+	i = -1;
+	if (!str)
+		return (NULL);
+	arr = ft_strdup(str);
+	while (arr[++i])
+	{
+		if (arr[i] == '=')
+			break;
+	}
+	arr[i] = '\0';
+	return (arr);
+}
+
 int	unset_acheck(t_shell *shell, char *str)
 {
 	int		i;
+	int		j;
 	char	*del;
 
 	del = "<>|&./?@#$%^*-=+,[]{}\'\"";
 	i = 0;
-	while (*del)
+	j = 0;
+	while (del[j])
 	{
-		if (ft_strchr(str, *del) || ft_isdigit(str[0]) == 1)
+		if (ft_strchr(dup_bef_eq(str), del[j]) || ft_isdigit(str[0]) == 1)
 		{
 			ft_putstr_fd("minishell: \'", 2);
 			ft_putstr_fd(str, 2);
@@ -64,7 +84,7 @@ int	unset_acheck(t_shell *shell, char *str)
 			global_error = 1;
 			return (-1);
 		}
-		del++;
+		j++;
 	}
 	while (shell -> envex[i])
 	{
@@ -90,8 +110,7 @@ void	unset_delete(t_shell *shell, char *str)
 	i = 0;
 	while (shell -> envex[j])
 	{
-		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)) != 0
-			&& strlen_bef_eq(shell -> envex[i]) != ft_strlen(str))
+		if (ft_strcmp(dup_bef_eq(shell -> envex[j]), str))
 		{
 			new_arr[i] = shell -> envex[j];
 			i++;
