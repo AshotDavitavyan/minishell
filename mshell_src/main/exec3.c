@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:09:49 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 20:08:05 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/25 16:27:46 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ void	here_d(t_token *token, int j)
 	while (1)
 	{
 		signal(SIGINT, sighandler_hd);
+		if (global_error == 1)
+			break ;
 		str = readline("> ");
+		if (global_error == 1)
+			break ;
+		if (global_error)
+			break ;
 		if (!str)
 		{
 			free(str);
@@ -33,6 +39,7 @@ void	here_d(t_token *token, int j)
 			free(str);
 			break ;
 		}
+		//printf("%d\n", global_error);
 		write(token -> here_fd, str, ft_strlen(str));
 		write(token -> here_fd, "\n", 1);
 		free(str);

@@ -44,11 +44,11 @@ void	sighandler(int signum)
 
 void	sighandler_hd(int signum)
 {
-	//printf("\nlol");
 	// rl_on_new_line();
 	// rl_replace_line("", 0);
 	// rl_redisplay();
-	global_error = 123;
+	global_error = 1;
+	//exit(1);
 	(void)signum;
 }
 

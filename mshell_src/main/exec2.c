@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 18:04:03 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/25 14:54:13 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	piping(t_token *token, int j, int i)
 	f = fork();
 	if (f == 0)
 	{
-		global_error = 0;
 		pipes_dups(token, j);
 		if (token -> here_doc_flag == 1)
 		{
