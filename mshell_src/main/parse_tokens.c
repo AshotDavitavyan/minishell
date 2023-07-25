@@ -107,20 +107,36 @@ t_token_small	*put_flag(t_token_small **tokens, t_token_small *head, int count, 
 		ptr->name = ft_strdup("-n");
 	}
 	else
-		ptr = head;
+		ptr = head->next;
 	return (ptr);
+}
+
+int	str_find(char **tokens)
+{
+	char **ptr;
+
+	ptr = tokens;
+	if (!tokens || !(*tokens))
+		return (0);
+	while (ptr != NULL)
+	{
+		if (ft_strncmp(str_tolower(*ptr), "echo", 4) == 0)
+			return (1);
+		ptr++;
+	}
+	return (0);
 }
 
 void	add_funct_name(t_token **tokfin, t_token_small **tokens, t_token_small *save, int count)
 {
 	int	i;
 
-	if ((*tokens)->next != NULL && ft_strncmp(str_tolower((*tokens)->name), "echo", 4) == 0 && (*tokens)->next->name[0] == '-')
+	if ((*tokens)->next != NULL && ft_strncmp(str_tolower((*tokens)->name), "echo", 4) == 0 && (*tokens)->next->name[0] == '-' && str_find((*tokfin)->token) != 1)
 	{
 		(*tokens) = (*tokens)->next;
 		while (*tokens)
 		{
-			i = 1;
+			i= 1;
 			while ((*tokens)->name[i] && (*tokens)->name[0] == '-' && (*tokens)->name[i] == 'n')
 				i++;
 			if ((*tokens)->name[i - 1] == 'n' && (*tokens)->name[i] == '\0')
