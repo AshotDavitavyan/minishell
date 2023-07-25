@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:09:49 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/25 16:27:46 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/25 18:28:16 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	here_d(t_token *token, int j)
 	token -> here_fd = open("here_doc", O_RDWR | O_CREAT | O_TRUNC, 0664);
 	while (1)
 	{
-		signal(SIGINT, sighandler_hd);
 		if (global_error == 1)
 			break ;
 		str = readline("> ");
