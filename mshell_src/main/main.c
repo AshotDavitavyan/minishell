@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-//minishell$ echo -nnnnnn -nSDFSDF  SDSDFSDF
 //leaks, buffer overflows
 
 void	error(void)
@@ -17,12 +16,15 @@ char	*space_skip(char *user_input)
 
 int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
-	(void)shell;
-	u_i = put_spaces(u_i);
-	if (u_i == NULL)
+	char *u_i_space;
+
+	u_i_space = put_spaces(u_i);
+	free(u_i);
+	if (u_i_space == NULL)
 		return (-1);
-	get_tokens(u_i, tokens, 0);
-	// print_tokens(*tokens);
+	get_tokens(u_i_space, tokens, 0);
+	free(u_i_space);
+	print_tokens(*tokens);
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
 	if ((*tokens) == NULL)
@@ -107,6 +109,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
+		// free(user_input);
 	}
 	return (0);
 }
