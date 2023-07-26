@@ -24,7 +24,7 @@ int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 		return (-1);
 	get_tokens(u_i_space, tokens, 0);
 	free(u_i_space);
-	print_tokens(*tokens);
+	//print_tokens(*tokens);
 	init_shell(tokens, shell);
 	handle_dollar_signs(tokens);
 	if ((*tokens) == NULL)
@@ -105,11 +105,12 @@ int	main(int argc, char **argv, char **env)
 			shell_token(token_final, shell);
 			if ((tokens) == NULL)
 				continue ;
+			system("leaks minishell");
 			exec(shell);
 		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
-		// free(user_input);
+		system("leaks minishell");
 	}
 	return (0);
 }

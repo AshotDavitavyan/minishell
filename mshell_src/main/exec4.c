@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:10:55 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/25 14:50:37 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/25 18:48:05 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,5 @@ void	exec(t_shell *shell)
 	else
 		exec_n(shell);
 	waiter(ft_lstsize_token(shell -> token));
-	unlink("here_doc");	                                            
+	unlink("here_doc");
 }
