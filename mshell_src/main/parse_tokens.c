@@ -71,20 +71,6 @@ char	*str_tolower(char *to_lower)
 	return (save);
 }
 
-// char	*str_tolower(char *to_lower)
-// {
-// 	char *save;
-
-// 	if (!to_lower)
-// 		return (NULL);
-// 	save = ft_strdup(to_lower);
-// 	while (*save)
-// 	{
-// 		*save = ft_tolower(*save);
-// 		save++;
-// 	}
-// 	return (save);
-// }
 
 t_token_small	*put_flag(t_token_small **tokens, t_token_small *head, int count, t_token **tokfin)
 {
@@ -105,6 +91,7 @@ t_token_small	*put_flag(t_token_small **tokens, t_token_small *head, int count, 
 		ptr = *tokens;
 		free((*tokens)->name);
 		ptr->name = ft_strdup("-n");
+		// system("leaks minishell");
 	}
 	else
 		ptr = head->next;

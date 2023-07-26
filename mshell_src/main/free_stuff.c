@@ -39,6 +39,7 @@ void	free_big_tokens(t_token **tokens)
 		free_arr((*tokens)->sep_arr);
 		free_arr((*tokens)->redir_fd_out);
 		free_arr((*tokens)->redir_fd_in);
+		free_arr((*tokens)->token);
 		free((*tokens)->token);
 		free(ptr);
 		(*tokens) = (*tokens)->next;
