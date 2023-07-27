@@ -5,7 +5,7 @@ LIBS     = -I./includes/ -I./readline/include
 
 SRC = mshell_src
 OBJ = obj
-SUBDIRS = lexer utils execute builtins parser main heredoc_redir error_handles
+SUBDIRS = main #lexer utils execute builtins parser heredoc_redir error_handles 
 
 SRC_DIR = $(foreach dir, $(SUBDIRS), $(addprefix $(SRC)/, $(dir)))
 OBJ_DIR = $(foreach dir, $(SUBDIRS), $(addprefix $(OBJ)/, $(dir)))
@@ -47,7 +47,7 @@ clean:
 	@make -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)
 fclean: clean
-	@make -C $(LIBFT_DIR) fclean
+	@make -C $(LIBFT_DIR) fcleancd
 	@$(RM) $(NAME)
 	@$(RM) $(RDLINE)
 re: fclean all
