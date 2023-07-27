@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 12:16:11 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,7 +240,7 @@ int bi_check_exec(t_token *token)
 		ret_value = bi_pwd();
 	else if (ft_strcmp("echo", str_to_lower(arr[0])) == 0)
 		ret_value = bi_echo(token);
-	else if (ft_strcmp("cd", str_to_lower(arr[0])) == 0)
+	else if (ft_strcmp("cd", arr[0]) == 0)
 		ret_value = bi_cd(token);
 	else if (ft_strcmp("export", str_to_lower(arr[0])) == 0)
 		ret_value = bi_export1(token -> shell);
@@ -280,6 +280,6 @@ int	bi_execution(t_token *token)
 		ret_value = 0;
 		redirector(token);
 		ret_value = bi_check_exec(token);
-		global_error = ret_value;
+		g_global_error = ret_value;
 		exit(ret_value);
 }

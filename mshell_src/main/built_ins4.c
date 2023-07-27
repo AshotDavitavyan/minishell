@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:32:19 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 16:37:14 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 16:49:34 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	bi_cd(t_token *token)
 	DIR		*tmp;
 
 	arr = token -> token;
-	if (!arr[1])
+	if (change_old_pwd(token -> shell, arr[1]) == 0)
 		return (0);
 	if (access(arr[1], F_OK))
 	{
@@ -36,7 +36,7 @@ int	bi_cd(t_token *token)
 			error_perm_denied(arr[1]);
 			return (1);
 		}
-		change_old_new(token -> shell);
+		change_new_pwd(token -> shell);
 	}
 	return (0);
 }

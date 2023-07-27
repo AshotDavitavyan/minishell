@@ -17,12 +17,12 @@ void	init_env(t_shell **shell, char **envp)
 	(*shell) -> envex[i] = NULL;
 }
 
-int	put_global_error(char **new_name, char **name_ptr)
+int	put_g_global_error(char **new_name, char **name_ptr)
 {
 	char	*num;
 	char	*save;
 
-	num = ft_itoa(global_error);
+	num = ft_itoa(g_global_error);
 	save = num;
 	(*name_ptr) += 2;
 	while (*num != '\0' && *new_name)
@@ -79,7 +79,7 @@ int	alloc_vars(char **name, char **var_arr, char **new_name, char *sep)
 	if (isnum(name) == 1)
 		return (0);
 	if ((*name)[1] == '?')
-		return (put_global_error(new_name, name));
+		return (put_g_global_error(new_name, name));
 	while (ft_strchr(sep, (*name)[i]) == NULL && (*name)[i] != '\0')
 		i++;
 	i--;
