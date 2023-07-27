@@ -47,7 +47,7 @@ clean:
 	@make -C $(LIBFT_DIR) clean
 	@$(RM) $(OBJ)
 fclean: clean
-	@make -C $(LIBFT_DIR) fcleancd
+	@make -C $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
 	@$(RM) $(RDLINE)
 re: fclean all
