@@ -39,10 +39,8 @@ void	alloc_redpip(char **user_input, char **input_new)
 char	*alloc(char *u_i, char *input_new)
 {
 	char	*start;
-	// char	*to_free;
 
 	start = input_new;
-	// to_free = start;
 	while (*u_i)
 	{
 		if (*u_i == 34 || *u_i == 39)
@@ -60,6 +58,5 @@ char	*alloc(char *u_i, char *input_new)
 	*(input_new++) = ' ';
 	*input_new = '\0';
 	input_new = start;
-	// free(to_free);
 	return (input_new);
 }

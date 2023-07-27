@@ -85,7 +85,6 @@ void	error(void);
 void	handle_dollar_signs(t_token_small **tokens);
 void	check_var(t_token_small **ptr, int dollar_index, int i);
 void	put_vars(char *new_name, t_token_small **ptr);
-void	free_arr(char **to_free);
 void	free_big_tokens(t_token **tokens);
 void	init_shell(t_token_small **tokens, t_shell **shell);
 void	init_env(t_shell **shell, char **envp);
