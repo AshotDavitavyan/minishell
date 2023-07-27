@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:33:53 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 16:35:43 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:07:31 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	change_old_pwd(t_shell *shell)
 	{
 		if (ft_strncmp(shell -> envex[i], "OLDPWD", 6) == 0)
 		{
-			free(shell -> envex[i]);
+				free(shell -> envex[i]);
 			shell -> envex[i] = oldpwd;
 			break ;
 		}

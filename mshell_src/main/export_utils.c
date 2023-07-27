@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 16:36:29 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/26 16:05:43 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	push_in_arr(t_shell *shell, char *str)
 	}
 	new_arr[j] = ft_strdup(str);
 	new_arr[++j] = NULL;
-	free(shell -> envex);
+	ft_free(shell -> envex);
 	shell -> envex = new_arr;
 	return (0);
 }
@@ -68,7 +68,9 @@ char	*strdup_bez_pls(char *arr)
 	int		i;
 	int		j;
 	char	*new_arr;
+	char 	*temp;
 
+	temp = arr;
 	i = -1;
 	j = 0;
 	while (arr[++i])
@@ -83,14 +85,15 @@ char	*strdup_bez_pls(char *arr)
 		arr++;
 	}
 	new_arr[j] = '\0';
+	free(temp);
 	return (new_arr);
 }
 
-void	help_exp(t_shell *shell, int i, char *arr)
+void	help_exp(t_shell **shell, int i, char *arr)
 {
-	free(shell -> envex[i]);
-	shell -> envex[i] = NULL;
-	shell -> envex[i] = arr;
+	free((*shell)->envex[i]);
+	(*shell)->envex[i] = NULL;
+	(*shell)->envex[i] = ft_strdup(arr);
 }
 
 int	bi_export2(t_shell *shell, char **arr)
@@ -102,21 +105,24 @@ int	bi_export2(t_shell *shell, char **arr)
 	i = 0;
 	while (arr[++j])
 	{
-		i = find_dup(shell, arr[j]);
 		if ((find_dup(shell, arr[j])) != -1)
 		{
+			i = find_dup(shell, arr[j]);
 			if (ft_strchr(arr[j], '+'))
-				shell -> envex[i] = ft_strjoin(shell -> envex[i],
-						ft_strchr(arr[j], '+') + 2);
-			else
 			{
-				help_exp(shell, i, arr[j]);
+				char *temp = ft_strchr(arr[j], '+') + 2;
+				shell -> envex[i] = ft_strjoin(shell -> envex[i], temp);
 			}
+			else
+				help_exp(&shell, i, arr[j]);
 			return (0);
 		}
-		if (ft_strchr(arr[j], '+'))
+		else if (ft_strchr(arr[j], '+'))
+		{
 			arr[j] = strdup_bez_pls(arr[j]);
+		}
 		return (push_in_arr(shell, arr[j]));
 	}
 	return (1);
 }
+	

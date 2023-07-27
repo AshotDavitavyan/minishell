@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 11:36:13 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:12:45 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	bi_exit(t_token *token)
 {
 	char	**arr;
-
+	
 	arr = token -> token;
 	if (ft_strlen_2d_arr(arr) == 1)
 		exit(0);
@@ -70,30 +70,49 @@ int	unset_acheck(t_shell *shell, char *str)
 	int		i;
 	int		j;
 	char	*del;
-
+	char 	*temp;
+	
+	system("leaks minishell");
 	del = "<>|&./?@#$%^*-=+,[]{}\'\"";
 	i = 0;
 	j = 0;
+	temp = dup_bef_eq(str);
 	while (del[j])
 	{
-		if (ft_strchr(dup_bef_eq(str), del[j]) || ft_isdigit(str[0]) == 1)
+		if (ft_strchr(temp, del[j]) || ft_isdigit(str[0]) == 1)
 		{
 			ft_putstr_fd("minishell: \'", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd("\': not a valid identifier\n", 2);
 			global_error = 1;
+			free(temp);
 			return (-1);
 		}
 		j++;
 	}
 	while (shell -> envex[i])
 	{
-		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0
-			&& strlen_bef_eq(shell -> envex[i]) == ft_strlen(str))
+		if (ft_strncmp(shell -> envex[i], str, ft_strlen(str)) == 0 && strlen_bef_eq(shell -> envex[i]) == ft_strlen(str))
+		{
+			free(temp);
 			return (1);
+		}
 		i++;
 	}
+	free(temp);
 	return (0);
+}
+
+void	free_ins(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
 }
 
 void	unset_delete(t_shell *shell, char *str)
@@ -101,6 +120,7 @@ void	unset_delete(t_shell *shell, char *str)
 	char	**new_arr;
 	int		i;
 	int		j;
+	char	**tmp;
 
 	i = 0;
 	j = 0;
@@ -110,15 +130,18 @@ void	unset_delete(t_shell *shell, char *str)
 	i = 0;
 	while (shell -> envex[j])
 	{
-		if (ft_strcmp(dup_bef_eq(shell -> envex[j]), str))
+		if (ft_strncmp(shell -> envex[j], str, ft_strlen(str)))
 		{
-			new_arr[i] = shell -> envex[j];
+			new_arr[i] = ft_strdup(shell -> envex[j]);
 			i++;
 		}
 		j++;
 	}
 	new_arr[i] = NULL;
+	tmp = shell -> envex;
 	shell -> envex = new_arr;
+	ft_free(tmp);
+
 }
 
 int	bi_unset(t_shell *shell)

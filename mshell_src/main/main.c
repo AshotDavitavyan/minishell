@@ -104,12 +104,10 @@ int	main(int argc, char **argv, char **env)
 			shell_token(token_final, shell);
 			if ((tokens) == NULL)
 				continue ;
-			system("leaks minishell");
 			exec(shell);
 		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
-		system("leaks minishell");
 	}
 	return (0);
 }

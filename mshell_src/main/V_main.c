@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:07:01 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 14:01:47 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:16:11 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,13 +202,13 @@ void	ft_lstadd_back_token(t_token **lst, t_token *new)
 
 // //---------------------------------------------------------------------------//
 
-// void	printf_arr(char **input)
-// {
-// 	int i = 0;
+void	printf_arr(char **input)
+{
+	int i = 0;
 
-// 	while(input[i])
-// 		printf("%s\n", input[i++]);
-// }
+	while(input[i])
+		printf("%s\n", input[i++]);
+}
 
 // void	init_env(t_shell **shell, char **envp)
 // {

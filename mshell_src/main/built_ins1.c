@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 11:36:57 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:10:57 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,17 @@ int	validation(char **str)
 	int		i;
 	int		j;
 	char	*del;
+	char 	*temp;
 
 	del = "<>|&./?@#$%^*-,[]{}\'\"";
 	i = 0;
-	j = 0;
 	while (str[i])
 	{
 		j = 0;
+		temp = dup_bef_eq(str[i]);
 		while (del[j])
 		{
-			if (ft_strchr(dup_bef_eq(str[i]), del[j]) || ft_isdigit(str[i][0]) == 1)
+			if (ft_strchr(temp, del[j]) || ft_isdigit(str[i][0]) == 1)
 			{
 				ft_putstr_fd("minishell: \'", 2);
 				ft_putstr_fd(str[i], 2);
@@ -58,6 +59,7 @@ int	validation(char **str)
 			}
 			j++;
 		}
+		free(temp);
 		i++;
 	}
 	return (1);
