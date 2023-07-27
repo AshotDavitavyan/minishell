@@ -18,16 +18,22 @@ void    free_tokens(t_token_small	**tokens)
 
 void	free_arr(char **to_free)
 {
-	char *ptr;
+	char	*ptr;
+	char	**save;
 	
 	if (to_free == NULL)
 		return ;
-	while(*to_free && to_free)
+	save = to_free;
+
+	while(*to_free != NULL && to_free)
 	{
 		ptr = *to_free;
 		to_free++;
 		free(ptr);
 	}
+	*to_free = ft_strdup("bussing");
+	free(*to_free);
+	free(save);
 }
 
 void	free_big_tokens(t_token **tokens)
@@ -40,7 +46,6 @@ void	free_big_tokens(t_token **tokens)
 		free_arr((*tokens)->redir_fd_out);
 		free_arr((*tokens)->redir_fd_in);
 		free_arr((*tokens)->token);
-		free((*tokens)->token);
 		free(ptr);
 		(*tokens) = (*tokens)->next;
 	}

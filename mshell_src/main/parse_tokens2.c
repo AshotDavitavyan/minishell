@@ -48,7 +48,7 @@ char	**add_fd(char **current, t_token_small *tokens, int size, char **to_return)
 		return (handle_synt("syntax error near unexpected token", tokens->name));
 	if (current == NULL)
 	{
-		to_return = (char **)malloc(2 * sizeof(char *));
+		to_return = (char **)malloc((2) * sizeof(char *));
 		to_return[0] = ft_strdup(tokens->name);
 		to_return[1] = NULL;
 	}
