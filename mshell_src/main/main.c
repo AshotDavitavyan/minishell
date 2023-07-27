@@ -111,6 +111,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
+		system("leaks minishell");
 	}
 	return (0);
 }
