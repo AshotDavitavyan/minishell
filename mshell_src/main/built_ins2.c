@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 12:12:45 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:45:59 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	unset_acheck(t_shell *shell, char *str)
 	char	*del;
 	char 	*temp;
 	
-	system("leaks minishell");
 	del = "<>|&./?@#$%^*-=+,[]{}\'\"";
 	i = 0;
 	j = 0;

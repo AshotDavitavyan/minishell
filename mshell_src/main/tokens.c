@@ -72,7 +72,7 @@ void	add_token(char **user_input, int i, t_token_small **tokens)
 		(*user_input)++;
 	}
 	token[i] = '\0';
-	(*user_input)++;
+	// (*user_input)++;
 	*tokens = create_token(*tokens, token, 0);
 }
 

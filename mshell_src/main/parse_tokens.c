@@ -91,7 +91,6 @@ t_token_small	*put_flag(t_token_small **tokens, t_token_small *head, int count, 
 		ptr = *tokens;
 		free((*tokens)->name);
 		ptr->name = ft_strdup("-n");
-		// system("leaks minishell");
 	}
 	else
 		ptr = head->next;

@@ -1,7 +1,7 @@
 #include "../../includes/minishell.h"
 
 //leaks, buffer overflows
-
+//
 void	error(void)
 {
 	write(2, "Error\n", 6);
@@ -106,7 +106,10 @@ int	main(int argc, char **argv, char **env)
 		if (user_input == NULL)
 			exit(global_error);
 		if (!user_input || *user_input == '\0')
+		{
+			free(user_input);
 			continue ;
+		}
 		add_history(user_input);
 		if (lexing(user_input, &tokens, &shell, &token_final) != (-1))
 		{

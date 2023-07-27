@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 12:10:57 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 15:56:14 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ int	validation(char **str)
 	char 	*temp;
 
 	del = "<>|&./?@#$%^*-,[]{}\'\"";
-	i = 0;
+	i = 1;
+	temp = dup_bef_eq(str[i]);
 	while (str[i])
 	{
 		j = 0;
-		temp = dup_bef_eq(str[i]);
 		while (del[j])
 		{
 			if (ft_strchr(temp, del[j]) || ft_isdigit(str[i][0]) == 1)
@@ -55,13 +55,14 @@ int	validation(char **str)
 				ft_putstr_fd(str[i], 2);
 				ft_putstr_fd("\': not a valid identifier\n", 2);
 				global_error = 1;
+				free(temp);
 				return (-1);
 			}
 			j++;
 		}
-		free(temp);
 		i++;
 	}
+	free(temp);
 	return (1);
 }
 
