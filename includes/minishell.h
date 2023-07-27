@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/24 19:45:31 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:10:50 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ t_token **tokenfinaladd(t_token **str, t_token_small *tokens);
 void	sighandler(int signum);
 void	sighandler2(int signal);
 void	sighandler_hd(int signum);
+void	sighandler3(int signal);
 
 int					global_error;
 

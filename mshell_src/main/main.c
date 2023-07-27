@@ -62,6 +62,15 @@ void	sighandler2(int signal)
 	(void)signal;
 }
 
+void	sighandler3(int signal)
+{
+	printf("\n");
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// global_error = 130;
+	(void)signal;
+}
+
 void	shell_token(t_token *token_final, t_shell *shell)
 {
 	if (token_final)
