@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_tokens2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/28 13:56:55 by adavitav          #+#    #+#             */
-/*   Updated: 2023/07/28 13:56:56 by adavitav         ###   ########.fr       */
+/*   Updated: 2023/07/28 15:32:59 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,19 @@ int	add_redirs(t_token_small **tokens, t_token **tokfin)
 	{
 		if (check_for_special_signs(*tokens) == 1)
 		{
+			check_spec_signs_one(tokfin, tokens);
 			if ((*tokfin)->redir_fd_in == NULL)
 				return (-1);
 		}
 		else if (check_for_special_signs(*tokens) == 3)
 		{
+			check_spec_signs_three(tokfin, tokens);
 			if ((*tokfin)->redir_fd_out == NULL)
 				return (-1);
 		}
 		else if (check_for_special_signs(*tokens) == 4)
 		{
+			check_spec_signs_four(tokfin, tokens);
 			if ((*tokfin)->redir_fd_out == NULL)
 				return (-1);
 		}

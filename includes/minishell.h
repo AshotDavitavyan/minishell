@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/28 15:27:17 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 15:33:20 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void				init_shell(t_token_small **tokens, t_shell **shell);
 void				init_env(t_shell **shell, char **envp);
 void				move_ptr(char **name);
 void				util_dollar(char **new_name, char **name_ptr);
-void				parse_tokens_util1(t_toke **token_final,
+void				parse_tokens_util1(t_token **token_final,
 						t_token_small *tokens);
 void				pick_the_right_flag(t_token **tokfin,
 						t_token_small **tokens);
@@ -111,6 +111,12 @@ void				arrcpy(char **to_be, char **current, char *to_add);
 void				sighandler3(int signal);
 void				sighandler2(int signal);
 void				sighandler3(int signal);
+void				check_spec_signs_four(t_token **tokfin, \
+t_token_small **tokens);
+void				check_spec_signs_three(t_token **tokfin, \
+t_token_small **tokens);
+void				check_spec_signs_one(t_token **tokfin, \
+t_token_small **tokens);
 
 //free_stuff
 void				free_tokens(t_token_small	**tokens);
