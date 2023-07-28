@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_tokens_util2.c                               :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/28 13:57:35 by adavitav          #+#    #+#             */
-/*   Updated: 2023/07/28 13:57:36 by adavitav         ###   ########.fr       */
+/*   Created: 2023/07/28 14:02:56 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/28 14:03:38 by adavitav         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_token_small	*reset_tokens(t_token **token_final, \
-t_token *token_save, t_token_small *head)
+void	sighandler(int signum)
 {
-	*token_final = token_save;
-	return (head);
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_global_error = 1;
+	(void)signum;
 }
 
-void	parse_tokens_util1(t_token **token_final, t_token_small *tokens)
+void	sighandler2(int signal)
 {
-	token_final = tokenfinaladd(token_final, tokens);
-	*token_final = (*token_final)->next;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	g_global_error = 130;
+	(void)signal;
 }
 
-t_token	*parse_tokens_util2(t_token **token_final, t_token_small *tokens)
+void	sighandler3(int signal)
 {
-	token_final = tokenfinaladd(token_final, tokens);
-	return (*token_final);
+	printf("\n");
+	(void)signal;
 }

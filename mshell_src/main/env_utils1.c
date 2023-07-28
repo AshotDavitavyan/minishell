@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils1.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/28 13:53:55 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/28 13:53:56 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	put_global_error(char **new_name, char **name_ptr)
@@ -5,7 +17,7 @@ int	put_global_error(char **new_name, char **name_ptr)
 	char	*num;
 	char	*save;
 
-	num = ft_itoa(global_error);
+	num = ft_itoa(g_global_error);
 	save = num;
 	(*name_ptr) += 2;
 	while (*num != '\0' && *new_name)

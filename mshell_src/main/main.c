@@ -1,6 +1,16 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/28 13:54:39 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/28 13:54:43 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//global_error should start with g_
+#include "../../includes/minishell.h"
 
 int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
@@ -19,44 +29,6 @@ int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 	if (parse_tokens(*tokens, tbig, *tokens, NULL) == (-1))
 		return (-1);
 	return (0);
-}
-
-void	sighandler(int signum)
-{
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_global_error = 1;
-	(void)signum;
-}
-
-void	sighandler_hd(int signum)
-{
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
-	g_global_error = 1;
-	//exit(1);
-	(void)signum;
-}
-
-void	sighandler2(int signal)
-{
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	g_global_error = 130;
-	(void)signal;
-}
-
-void	sighandler3(int signal)
-{
-	printf("\n");
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// g_global_error = 130;
-	(void)signal;
 }
 
 void	shell_token(t_token *token_final, t_shell *shell)
