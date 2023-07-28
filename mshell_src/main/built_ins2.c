@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 13:04:59 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 12:12:45 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,22 @@ int	bi_exit(t_token *token)
 	
 	arr = token -> token;
 	if (ft_strlen_2d_arr(arr) == 1)
+	{
+		ft_putstr_fd("exit\n", 2);
 		exit(0);
+	}
 	else if (ft_strlen_2d_arr(arr) > 2)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		g_global_error = 1;
 		return (1);
 	}
 	else if (ft_is_num(arr[1]) && long_long_check(arr[1]))
+	{
+		ft_putstr_fd("exit\n", 2);
 		exit(ft_atoi(arr[1]));
+	}
+	ft_putstr_fd("exit\n", 2);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(arr[1], 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
@@ -72,8 +80,7 @@ int	unset_acheck(t_shell *shell, char *str)
 	char	*del;
 	char 	*temp;
 	
-	system("leaks minishell");
-	del = "<>|&./?@#$%^*-=+,[]{}\'\"";
+	del = "!()<>|&./?@#$%^*-=+,[]{}\'\"";
 	i = 0;
 	j = 0;
 	temp = dup_bef_eq(str);
@@ -84,7 +91,7 @@ int	unset_acheck(t_shell *shell, char *str)
 			ft_putstr_fd("minishell: \'", 2);
 			ft_putstr_fd(str, 2);
 			ft_putstr_fd("\': not a valid identifier\n", 2);
-			global_error = 1;
+			g_global_error = 1;
 			free(temp);
 			return (-1);
 		}

@@ -34,7 +34,7 @@ int	comp_vars(char **name, char **var_arr, int i, char *sep)
 	if ((*name)[1] == '?')
 	{
 		(*name) += 2;
-		return (intlen(global_error));
+		return (intlen(g_global_error));
 	}
 	while (ft_strchr(sep, (*name)[i]) == NULL && (*name)[i] != '\0')
 		i++;

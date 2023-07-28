@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:09:49 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/25 18:34:37 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	here_d(t_token *token, int j)
 		{
 			free(str);
 			write(1, "> ", 2);
-			global_error = 0;
+			g_global_error = 0;
 			break ;
 		}
 		if (ft_strcmp(str, token -> sep_arr[j]) == 0)
@@ -61,7 +61,7 @@ int	open_0(char *argv)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(argv, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
-		global_error = 1;
+		g_global_error = 1;
 		exit(1);
 	}
 	return (fd);
@@ -73,3 +73,27 @@ void	openh_dup2(int fd)
 	dup2(fd, STDIN_FILENO);
 }
 
+void	exec_n(t_shell *shell)
+{
+	int		i;
+	int		j;
+	t_token	*tmp;
+	t_token	*tmp1;
+
+	tmp = shell -> token;
+	tmp1 = tmp;
+	j = 0;
+	i = count_exec(shell);
+	if (i > 400)
+	{
+		fork_failed_error();
+		return ;
+	}
+	do_pipes(shell, i);
+	while (tmp)
+	{
+		piping(tmp, j++, i);
+		tmp = tmp -> next;
+	}
+	close_all(tmp1, j);
+}

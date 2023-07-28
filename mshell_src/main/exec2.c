@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:39:23 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/25 14:54:13 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	piping(t_token *token, int j, int i)
 	int	f;
 
 	here_doc_looper(token);
+	signal(SIGINT, sighandler3);
 	f = fork();
 	if (f == 0)
 	{
@@ -80,33 +81,9 @@ void	piping(t_token *token, int j, int i)
 	}
 }
 
-void	fork_failed_error()
+void	fork_failed_error(void)
 {
 	ft_putstr_fd("minishell: fork: ", 2);
 	ft_putstr_fd("Resource temporarily unavailable\n", 2);
-	global_error = 1;
-}
-void	exec_n(t_shell *shell)
-{
-	int		i;
-	int		j;
-	t_token	*tmp;
-	t_token	*tmp1;
-
-	tmp = shell -> token;
-	tmp1 = tmp;
-	j = 0;
-	i = count_exec(shell);
-	if (i > 400)
-	{
-		fork_failed_error();
-		return ;
-	}
-	do_pipes(shell, i);
-	while (tmp)
-	{
-		piping(tmp, j++, i);
-		tmp = tmp -> next;
-	}
-	close_all(tmp1, j);
+	g_global_error = 1;
 }

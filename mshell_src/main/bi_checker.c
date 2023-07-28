@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:29:58 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 12:17:39 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:04:32 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,13 @@ int	bi_avail(t_token *token)
 	if (ft_strcmp("env", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("pwd", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("echo", str_to_lower(arr[0])) == 0
-		|| ft_strcmp("cd", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("exit", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("export", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("unset", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("env", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("pwd", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("echo", str_to_lower(arr[0])) == 0
-		|| ft_strcmp("cd", str_to_lower(arr[0])) == 0
+		|| ft_strcmp("cd", arr[0]) == 0
 		|| ft_strcmp("exit ", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("export", str_to_lower(arr[0])) == 0
 		|| ft_strcmp("unset", str_to_lower(arr[0])) == 0

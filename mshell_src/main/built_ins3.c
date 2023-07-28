@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:30:43 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/22 16:43:51 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	fd_cd_print_status(char *cmd)
 {
 	if (cmd)
 		;
-	global_error = 1;
+	g_global_error = 1;
 	if (errno == 13)
 	{
 		ft_putstr_fd("minishell : cd: ", 2);
@@ -54,6 +54,7 @@ void	fd_cd_print_status(char *cmd)
 		ft_putstr_fd(cmd, 2);
 		ft_putstr_fd(": Not a directory\n", 2);
 	}
+	g_global_error = 1;
 }
 
 void	error_no_dir(char *str)
@@ -61,6 +62,7 @@ void	error_no_dir(char *str)
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	g_global_error = 1;
 }
 
 void	error_perm_denied(char *str)
@@ -68,10 +70,6 @@ void	error_perm_denied(char *str)
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("/: Permission denied\n", 2);
+	g_global_error = 1;
 }
 
-void	change_old_new(t_shell *shell)
-{
-	change_old_pwd(shell);
-	change_new_pwd(shell);
-}

@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:10:55 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/25 18:48:05 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	red_out_outout(t_shell *shell, int i)
 void	quit(int sig)
 {
 	(void)sig;
-	global_error = 131;
+	g_global_error = 131;
 	ft_putstr_fd("Quit: 3\n", 1);	
 }
 
@@ -78,7 +78,7 @@ void	waiter(int count)
 		if (pid > temp)
 		{
 			temp = pid;
-			global_error = status / 256;
+			g_global_error = status / 256;
 		}
 		j++;
 	}
@@ -86,7 +86,7 @@ void	waiter(int count)
 
 void	exec(t_shell *shell)
 {
-	global_error = 0;
+	g_global_error = 0;
 	if (!shell -> token -> next)
 	{
 		if (bi_avail(shell -> token))
