@@ -1,5 +1,17 @@
 #include "../../includes/minishell.h"
 
+int	qch_usd(char *user_input, int i)
+{
+	while (i >= 0)
+	{
+		if (*user_input == '$')
+			return (1);
+		user_input--;
+		i--;
+	}
+	return (0);
+}
+
 int	check(char *user_input, char type, int i, int todo)
 {
 	if (todo == 1 && i > 0 && *(user_input - 1) != ' ')
@@ -21,14 +33,14 @@ int	check(char *user_input, char type, int i, int todo)
 
 void	before_quote(char *user_input, int pos, char **token)
 {
-	int i;
+	int	i;
 
 	i = pos;
 	while (pos > 0)
 	{
-		(*token)[pos-1] = *user_input;
+		(*token)[pos - 1] = *user_input;
 		pos--;
-		if(pos == 0)
+		if (pos == 0)
 			break ;
 		user_input--;
 	}
@@ -37,8 +49,8 @@ void	before_quote(char *user_input, int pos, char **token)
 
 int	after_quotes(char *user_input, char type)
 {
-	int i;
-	int size;
+	int	i;
+	int	size;
 
 	i = 0;
 	size = 0;

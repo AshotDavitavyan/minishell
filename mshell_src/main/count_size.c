@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   count_size.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 15:01:18 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/27 15:03:25 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	skip_quotes(char *u, int *p, int size)
@@ -31,15 +43,11 @@ int	handle_redirs(char *user_input, int pos)
 	return (96);
 }
 
-char	*put_spaces(char *user_input)
+char	*put_spaces(char *user_input, int i, int size)
 {
-	int		i;
 	int		j;
-	int		size;
 	char	*input_new;
 
-	i = 0;
-	size = 0;
 	while (user_input[i])
 	{
 		if (user_input[i] == 34 || user_input[i] == 39)
@@ -50,7 +58,8 @@ char	*put_spaces(char *user_input)
 			size += j;
 			continue ;
 		}
-		if (user_input[i] == '<' || user_input[i] == '>' || user_input[i] == '|')
+		if (user_input[i] == '<' || user_input[i] == '>'
+			|| user_input[i] == '|')
 		{
 			size += handle_redirs(user_input, i);
 			i += (handle_redirs(user_input, i) - 2);

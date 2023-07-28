@@ -1,4 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   alloc_usr_input.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 18:29:35 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/27 18:29:37 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+
+char	*space_skip(char *user_input)
+{
+	while (*user_input == ' ' && *user_input)
+		user_input++;
+	return (user_input);
+}
 
 void	alloc_quotes(char **user_input, char **input_new)
 {
