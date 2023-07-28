@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:33:47 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/28 14:54:01 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 18:15:08 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,18 @@
 void	new_putstr(char *s)
 {
 	int	i;
+	int	flag;
 
+	flag = 1;
 	i = 0;
 	while (s[i])
 	{	
 		write(1, &s[i], 1);
-		if (s[i] == '=')
+		if (s[i] == '=' && flag == 1)
+		{
 			write(1, "\"", 1);
+			flag = 0;
+		}
 		i++;
 	}
 	write(1, "\"", 1);
