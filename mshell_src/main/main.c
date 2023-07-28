@@ -12,6 +12,8 @@
 
 #include "../../includes/minishell.h"
 
+//syntax errors 258
+
 int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
 	char	*u_i_space;

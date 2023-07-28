@@ -39,15 +39,9 @@ int size, char **to_return)
 
 	ptr = current;
 	if (tokens == NULL)
-	{
-		printf("Here\n");
 		return (hand_s("syntax error near unexpected token", "newline"));
-	}
 	if (check_for_special_signs(tokens) != 0 && tokens->type == 0)
-	{
-		printf("HEHE\n");
 		return (hand_s("syntax error near unexpected token", tokens->name));
-	}
 	if (current == NULL)
 	{
 		to_return = (char **)malloc((2) * sizeof(char *));

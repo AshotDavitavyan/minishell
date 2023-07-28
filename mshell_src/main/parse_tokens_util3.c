@@ -31,6 +31,7 @@ char	**hand_s(char *to_print, char *token)
 {
 	printf("minishell: %s", to_print);
 	printf(" `%s'\n", token);
+	g_global_error = 258;
 	return (NULL);
 }
 

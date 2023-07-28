@@ -25,7 +25,7 @@ int	skip_quotes(char *u, int *p, int size)
 	if (u[(*p)++] == '\0')
 	{
 		printf("%s\n", "minishell: Syntax error detected");
-		g_global_error = 127;
+		g_global_error = 258;
 		return (-1);
 	}
 	return (size);

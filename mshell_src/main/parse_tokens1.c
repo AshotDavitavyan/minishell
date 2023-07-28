@@ -31,6 +31,7 @@ int	check_tokfin(t_token **tokfin, t_token_small *tokens)
 			if (tokens->prev == NULL || tokens->next == NULL)
 			{
 				printf("minishell: syntax error near unexpected token `|'\n");
+				g_global_error = 258;
 				return (-1);
 			}
 		}	
