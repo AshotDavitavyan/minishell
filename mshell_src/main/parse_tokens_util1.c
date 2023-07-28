@@ -85,7 +85,7 @@ int	str_find(char **tokens)
 	ptr = tokens;
 	if (!tokens || !(*tokens))
 		return (0);
-	while (ptr != NULL)
+	while (*ptr != NULL)
 	{
 		if (check_echo(*ptr) == 0)
 			return (1);

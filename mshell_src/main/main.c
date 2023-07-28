@@ -62,7 +62,6 @@ t_shell **shell, char *user_input)
 		add_history(user_input);
 		if (lexing(user_input, &tokens, shell, &token_final) != (-1))
 		{
-			print_big_token(token_final);
 			shell_token(token_final, *shell);
 			if ((tokens) == NULL)
 				continue ;
@@ -70,6 +69,7 @@ t_shell **shell, char *user_input)
 		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
+		system("leaks minishell");
 	}
 }
 

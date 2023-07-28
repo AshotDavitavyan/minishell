@@ -107,6 +107,9 @@ void				arrcpy(char **to_be, char **current, char *to_add);
 void				sighandler3(int signal);
 void				sighandler2(int signal);
 void				sighandler3(int signal);
+void				check_spec_signs_four(t_token **tokfin, t_token_small **tokens);
+void				check_spec_signs_three(t_token **tokfin, t_token_small **tokens);
+void				check_spec_signs_one(t_token **tokfin, t_token_small **tokens);
 
 //free_stuff
 void				free_tokens(t_token_small	**tokens);

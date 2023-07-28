@@ -39,9 +39,15 @@ int size, char **to_return)
 
 	ptr = current;
 	if (tokens == NULL)
+	{
+		printf("Here\n");
 		return (hand_s("syntax error near unexpected token", "newline"));
+	}
 	if (check_for_special_signs(tokens) != 0 && tokens->type == 0)
+	{
+		printf("HEHE\n");
 		return (hand_s("syntax error near unexpected token", tokens->name));
+	}
 	if (current == NULL)
 	{
 		to_return = (char **)malloc((2) * sizeof(char *));
@@ -68,16 +74,19 @@ int	add_redirs(t_token_small **tokens, t_token **tokfin)
 	{
 		if (check_for_special_signs(*tokens) == 1)
 		{
+			check_spec_signs_one(tokfin, tokens);
 			if ((*tokfin)->redir_fd_in == NULL)
 				return (-1);
 		}
 		else if (check_for_special_signs(*tokens) == 3)
 		{
+			check_spec_signs_three(tokfin, tokens);
 			if ((*tokfin)->redir_fd_out == NULL)
 				return (-1);
 		}
 		else if (check_for_special_signs(*tokens) == 4)
 		{
+			check_spec_signs_four(tokfin, tokens);
 			if ((*tokfin)->redir_fd_out == NULL)
 				return (-1);
 		}
