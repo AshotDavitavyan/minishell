@@ -103,7 +103,7 @@ int	parse_tokens(t_token_small *tokens, t_token \
 		(tokens) == 3 || check_for_special_signs(tokens) == 4)
 		{
 			if (add_redirs(&tokens, token_final) == -1)
-				return (-1);
+				break ;
 			continue ;
 		}
 		else if (check_for_special_signs(tokens) == 5)
@@ -111,14 +111,14 @@ int	parse_tokens(t_token_small *tokens, t_token \
 		else if (check_for_special_signs(tokens) == 2)
 		{
 			if (heredoc(&tokens, token_final) == (-1))
-				return (-1);
+				break ;
 		}
 		else
 			add_funct_name(token_final, &tokens, tokens, 0);
 		tokens = tokens -> next;
 	}
 	tokens = reset_tokens(token_final, token_save, head);
-	if (check_tokfin(token_final, tokens) == (-1))
+	if (g_global_error == 258 || check_tokfin(token_final, tokens) == (-1))
 		return (-1);
 	return (0);
 }

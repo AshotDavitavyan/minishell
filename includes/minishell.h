@@ -87,7 +87,7 @@ char				*alloc(char *u_i, char *input_new);
 char				**add_fd(char **current, t_token_small *tokens,
 						int size, char **to_return);
 char				*move_env(char *env);
-char				**hand_s(char *to_print, char *token);
+char				**hand_s(char *to_print, char *token, char **to_free);
 
 void				before_quote(char *user_input, int pos, char **token);
 void				tokenadd_back(t_token_small *token, t_token_small *to_add);
