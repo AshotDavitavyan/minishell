@@ -41,6 +41,8 @@ void	check_spec_signs_one(t_token **tokfin, t_token_small **tokens)
 	(*tokfin)->redir_flag_in = 1;
 	*tokens = (*tokens)->next;
 	(*tokfin)->redir_fd_in = add_fd((*tokfin)->redir_fd_in, *tokens, 0, NULL);
+	if ((*tokfin)->redir_fd_in == NULL)
+		(*tokfin)->err = 258;
 }
 
 void	check_spec_signs_three(t_token **tokfin, t_token_small **tokens)
@@ -48,6 +50,8 @@ void	check_spec_signs_three(t_token **tokfin, t_token_small **tokens)
 	(*tokfin)->redir_flag_out = 1;
 	*tokens = (*tokens)->next;
 	(*tokfin)->redir_fd_out = add_fd((*tokfin)->redir_fd_out, *tokens, 0, NULL);
+	if ((*tokfin)->redir_fd_out == NULL)
+		(*tokfin)->err = 258;
 }
 
 void	check_spec_signs_four(t_token **tokfin, t_token_small **tokens)
@@ -55,4 +59,6 @@ void	check_spec_signs_four(t_token **tokfin, t_token_small **tokens)
 	(*tokfin)->redir_flag_outout = 1;
 	*tokens = (*tokens)->next;
 	(*tokfin)->redir_fd_out = add_fd((*tokfin)->redir_fd_out, *tokens, 0, NULL);
+	if ((*tokfin)->redir_fd_out == NULL)
+		(*tokfin)->err = 258;
 }

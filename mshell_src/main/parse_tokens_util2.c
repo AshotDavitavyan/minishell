@@ -30,3 +30,14 @@ t_token	*parse_tokens_util2(t_token **token_final, t_token_small *tokens)
 	token_final = tokenfinaladd(token_final, tokens);
 	return (*token_final);
 }
+
+int	find_err(t_token *tokfin)
+{
+	while (tokfin != NULL)
+	{
+		if (tokfin->err == 258)
+			return (1);
+		tokfin = tokfin->next;
+	}
+	return (0);
+}

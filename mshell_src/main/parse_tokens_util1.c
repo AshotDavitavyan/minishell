@@ -18,7 +18,10 @@ int	heredoc(t_token_small **tokens, t_token **token_final)
 	*tokens = (*tokens)->next;
 	(*token_final)->sep_arr = add_fd((*token_final)->sep_arr, *tokens, 0, NULL);
 	if ((*token_final)->sep_arr == NULL)
+	{
+		(*token_final)->err = 258;
 		return (-1);
+	}
 	return (0);
 }
 

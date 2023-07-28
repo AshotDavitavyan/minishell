@@ -31,6 +31,7 @@ typedef struct s_token
 {
 	int					here_fd;
 
+	int					err;
 	int					here_doc_flag;
 	char				**sep_arr;
 	int					redir_flag_out;
@@ -71,7 +72,8 @@ int					comp_vars_util(char **name, char **var_arr, int i, int j);
 int					isnum(char **name);
 int					single_dollar(char **name, char **new_name);
 int					parse_tokens(t_token_small *tokens, t_token \
-					**token_final, t_token_small *head, t_token *token_save);
+					**tokfin, t_token_small *head, t_token *token_save);
+int					find_err(t_token *tokfin);
 int					str_find(char **tokens);
 int					heredoc(t_token_small **tokens, t_token **token_final);
 int					add_redirs(t_token_small **tokens, t_token **tokfin);

@@ -97,6 +97,7 @@ t_token	**tokenfinaladd(t_token **str, t_token_small *tokens)
 
 	to_add = (t_token *)malloc(sizeof(t_token));
 	to_add->here_fd = 0;
+	to_add->err = 0;
 	to_add->here_doc_flag = 0;
 	to_add->sep_arr = NULL;
 	to_add->redir_flag_out = 0;
