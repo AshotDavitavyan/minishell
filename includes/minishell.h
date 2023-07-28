@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/28 14:51:35 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 15:27:17 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_shell
 	t_token				*token;
 }				t_shell;
 
+int						g_global_error;
 int					check(char *user_input, char type, int i, int todo);
 int					after_quotes(char *user_input, char type);
 int					ft_strchr_num(const char *s, int c);
@@ -95,14 +96,17 @@ void				get_tokens(char *user_input, t_token_small **tokens, int i);
 void				error(void);
 void				handle_dollar_signs(t_token_small **tokens);
 void				check_var(t_token_small **ptr, int dollar_index, int i);
-void				put_vars(char *new_name, t_token_small **ptr, char *name_ptr, char *save);
+void				put_vars(char *new_name,
+						t_token_small **ptr, char *name_ptr, char *save);
 void				free_big_tokens(t_token **tokens);
 void				init_shell(t_token_small **tokens, t_shell **shell);
 void				init_env(t_shell **shell, char **envp);
 void				move_ptr(char **name);
 void				util_dollar(char **new_name, char **name_ptr);
-void				parse_tokens_util1(t_token **token_final, t_token_small *tokens);
-void				pick_the_right_flag(t_token **tokfin, t_token_small **tokens);
+void				parse_tokens_util1(t_toke **token_final,
+						t_token_small *tokens);
+void				pick_the_right_flag(t_token **tokfin,
+						t_token_small **tokens);
 void				arrcpy(char **to_be, char **current, char *to_add);
 void				sighandler3(int signal);
 void				sighandler2(int signal);
@@ -124,14 +128,13 @@ t_token_small		*tokendelone(t_token_small *to_remove,
 						t_token_small **tokens);
 t_token_small		*reset_tokens(t_token **token_final,
 						t_token *token_save, t_token_small *head);
-t_token				*parse_tokens_util2(t_token **token_final, t_token_small *tokens);
+t_token				*parse_tokens_util2(t_token **token_final,
+						t_token_small *tokens);
 t_token				**tokenfinaladd(t_token **str, t_token_small *tokens);
 void				sighandler(int signum);
 void				sighandler2(int signal);
 void				sighandler_hd(int signum);
 void				sighandler3(int signal);
-
-int					g_global_error;
 
 int					bi_avail(t_token *token);
 
