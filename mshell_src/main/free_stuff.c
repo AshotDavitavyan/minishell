@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_stuff.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 14:57:58 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/27 15:00:45 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void    free_tokens(t_token_small	**tokens)
+void	free_tokens(t_token_small **tokens)
 {
 	t_token_small	*tmp;
 
@@ -20,12 +32,11 @@ void	free_arr(char **to_free)
 {
 	char	*ptr;
 	char	**save;
-	
+
 	if (to_free == NULL)
 		return ;
 	save = to_free;
-
-	while(*to_free != NULL && to_free)
+	while (*to_free != NULL && to_free)
 	{
 		ptr = *to_free;
 		to_free++;
@@ -39,6 +50,7 @@ void	free_arr(char **to_free)
 void	free_big_tokens(t_token **tokens)
 {
 	t_token	*ptr;
+
 	while (*tokens != NULL)
 	{
 		ptr = (*tokens);
