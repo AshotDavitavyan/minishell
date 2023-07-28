@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 12:50:06 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/28 14:51:57 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 18:16:46 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ char	*ft_strjoin_my(char const *s1, char const *s2)
 
 void	help_exp(t_shell **shell, int i, char *arr)
 {
+	if (!ft_strchr((arr), '='))
+		return ;
 	free((*shell)->envex[i]);
 	(*shell)->envex[i] = NULL;
 	(*shell)->envex[i] = ft_strdup(arr);
