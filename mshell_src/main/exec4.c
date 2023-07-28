@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:10:55 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:42:20 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	quit(int sig)
 {
 	(void)sig;
 	g_global_error = 131;
-	ft_putstr_fd("Quit: 3\n", 1);	
+	ft_putstr_fd("Quit: 3\n", 1);
 }
 
 void	executing_one(t_shell *shell)
@@ -58,7 +58,8 @@ void	executing_one(t_shell *shell)
 		red_out_outout(shell, i);
 		if (shell -> token -> here_doc_flag == 1)
 			openh_dup2(shell -> token -> here_fd);
-		execve(true_path(shell -> token -> token[0], shell -> envex), shell -> token -> token, shell -> envex);
+		execve(true_path(shell -> token -> token[0], shell -> envex),
+			shell -> token -> token, shell -> envex);
 		f_error(true_path(shell -> token -> token[0], shell -> envex));
 	}
 }

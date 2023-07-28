@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/06 09:33:53 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 16:46:57 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:53:09 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	change_old_pwd(t_shell *shell, char *arr)
 	{
 		if (ft_strncmp(shell -> envex[i], "OLDPWD", 6) == 0)
 		{
-				free(shell -> envex[i]);
+			free(shell -> envex[i]);
 			shell -> envex[i] = oldpwd;
 			break ;
 		}
@@ -59,4 +59,12 @@ void	change_new_pwd(t_shell *shell)
 		}
 		i++;
 	}
+}
+
+int	bi_pwd(void)
+{
+	char	cwd[PATH_MAX];
+
+	printf("%s\n", getcwd(cwd, sizeof(cwd)));
+	return (0);
 }

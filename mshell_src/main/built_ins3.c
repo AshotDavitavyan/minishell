@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 16:30:43 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:50:41 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,3 +73,31 @@ void	error_perm_denied(char *str)
 	g_global_error = 1;
 }
 
+int	bi_export2(t_shell *shell, char **arr, int i)
+{
+	int		j;
+	char	*temp;
+
+	j = 0;
+	while (arr[++j])
+	{
+		if ((find_dup(shell, arr[j], 0)) != -1)
+		{
+			i = find_dup(shell, arr[j], 0);
+			if (ft_strchr(arr[j], '+'))
+			{
+				if (!ft_strchr(shell -> envex[i], '='))
+					shell -> envex[i] = ft_strjoin(shell -> envex[i], "=");
+				temp = ft_strchr(arr[j], '+') + 2;
+				shell -> envex[i] = ft_strjoin(shell -> envex[i], temp);
+			}
+			else
+				help_exp(&shell, i, arr[j]);
+		}
+		else if (ft_strchr(arr[j], '+'))
+			arr[j] = strdup_bez_pls(arr[j]);
+		else
+			push_in_arr(shell, arr[j]);
+	}
+	return (0);
+}

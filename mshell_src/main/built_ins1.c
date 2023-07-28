@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:50 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 18:38:18 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:53:47 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,20 @@ int	ft_isletter(int c)
 		return (0);
 }
 
+void	error_nvi(char *str)
+{
+	ft_putstr_fd("minishell: \'", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\': not a valid identifier\n", 2);
+	g_global_error = 1;
+}
+
 int	validation(char **str)
 {
 	int		i;
 	int		j;
 	char	*del;
-	char 	*temp;
+	char	*temp;
 
 	del = "!()<>|&./?@#$%^*-,[]{}\'\"";
 	i = 1;
@@ -51,10 +59,7 @@ int	validation(char **str)
 		{
 			if (ft_strchr(temp, del[j]) || ft_isdigit(str[i][0]) == 1)
 			{
-				ft_putstr_fd("minishell: \'", 2);
-				ft_putstr_fd(str[i], 2);
-				ft_putstr_fd("\': not a valid identifier\n", 2);
-				g_global_error = 1;
+				error_nvi(str[i]);
 				free(temp);
 				return (-1);
 			}
@@ -87,14 +92,6 @@ int	bi_export1(t_shell *shell)
 	}
 	if (validation(arr) == -1)
 		return (1);
-	ret_val = bi_export2(shell, arr);
+	ret_val = bi_export2(shell, arr, 0);
 	return (ret_val);
-}
-
-int	bi_pwd(void)
-{
-	char	cwd[PATH_MAX];
-
-	printf("%s\n", getcwd(cwd, sizeof(cwd)));
-	return (0);
 }
