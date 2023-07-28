@@ -32,7 +32,6 @@ char	**hand_s(char *to_print, char *token, char **to_free)
 	printf("minishell: syntax error%s", to_print);
 	printf(" `%s'\n", token);
 	g_global_error = 258;
-	print_arr(to_free, "bussing");
 	free_arr(to_free);
 	return (NULL);
 }
