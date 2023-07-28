@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 19:04:27 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/27 19:04:28 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 t_token_small	*tokendelone(t_token_small *to_remove, t_token_small **tokens)
@@ -30,7 +42,7 @@ t_token_small	*tokendelone(t_token_small *to_remove, t_token_small **tokens)
 
 t_token_small	*tokenadd_new(char *name, int type)
 {
-	t_token_small *token;
+	t_token_small	*token;
 
 	token = malloc(sizeof(t_token_small));
 	token->name = name;
@@ -43,7 +55,8 @@ t_token_small	*tokenadd_new(char *name, int type)
 
 void	tokenadd_back(t_token_small *token, t_token_small *to_add)
 {
-	t_token_small *save;
+	t_token_small	*save;
+
 	save = token;
 	while (token->next != NULL)
 		token = token->next;
@@ -52,7 +65,7 @@ void	tokenadd_back(t_token_small *token, t_token_small *to_add)
 	token = save;
 }
 
-t_token_small *create_token(t_token_small *token, char *name, int type)
+t_token_small	*create_token(t_token_small *token, char *name, int type)
 {
 	if (token == NULL)
 		return (tokenadd_new(name, type));

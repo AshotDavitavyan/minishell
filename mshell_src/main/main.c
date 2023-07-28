@@ -1,24 +1,22 @@
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/28 13:54:39 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/28 13:54:43 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//leaks, buffer overflows
-//
-void	error(void)
-{
-	write(2, "Error\n", 6);
-	exit (1);
-}
-char	*space_skip(char *user_input)
-{
-	while (*user_input == ' ' && *user_input)
-		user_input++;
-	return (user_input);
-}
+#include "../../includes/minishell.h"
 
 int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
-	char *u_i_space;
+	char	*u_i_space;
 
-	u_i_space = put_spaces(u_i);
+	u_i_space = put_spaces(u_i, 0, 0);
 	free(u_i);
 	if (u_i_space == NULL)
 		return (-1);
@@ -28,47 +26,9 @@ int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 	handle_dollar_signs(tokens);
 	if ((*tokens) == NULL)
 		return (-1);
-	if (parse_tokens(*tokens, tbig, *tokens) == (-1))
+	if (parse_tokens(*tokens, tbig, *tokens, NULL) == (-1))
 		return (-1);
 	return (0);
-}
-
-void	sighandler(int signum)
-{
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_global_error = 1;
-	(void)signum;
-}
-
-void	sighandler_hd(int signum)
-{
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
-	g_global_error = 1;
-	//exit(1);
-	(void)signum;
-}
-
-void	sighandler2(int signal)
-{
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	g_global_error = 130;
-	(void)signal;
-}
-
-void	sighandler3(int signal)
-{
-	printf("\n");
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// g_global_error = 130;
-	(void)signal;
 }
 
 void	shell_token(t_token *token_final, t_shell *shell)
@@ -84,20 +44,9 @@ void	shell_token(t_token *token_final, t_shell *shell)
 
 int	g_global_error = 0;
 
-int	main(int argc, char **argv, char **env)
+void	main_loop(t_token *token_final, t_token_small *tokens, \
+t_shell **shell, char *user_input)
 {
-	t_token_small *tokens;
-	t_token *token_final;
-	t_shell *shell;
-	char *user_input;
-
-	tokens = NULL;
-	token_final = NULL;
-	(void)argv;
-	(void)argc;
-	shell = malloc(sizeof(t_shell));
-	init_env(&shell, env);
-	rl_catch_signals = 0;
 	while (1)
 	{
 		signal(SIGQUIT, SIG_IGN);
@@ -111,15 +60,32 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		add_history(user_input);
-		if (lexing(user_input, &tokens, &shell, &token_final) != (-1))
+		if (lexing(user_input, &tokens, shell, &token_final) != (-1))
 		{
-			shell_token(token_final, shell);
+			print_big_token(token_final);
+			shell_token(token_final, *shell);
 			if ((tokens) == NULL)
 				continue ;
-			exec(shell);
+			exec(*shell);
 		}
 		free_tokens(&tokens);
 		free_big_tokens(&token_final);
 	}
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_token_small	*tokens;
+	t_token			*token_final;
+	t_shell			*shell;
+
+	tokens = NULL;
+	token_final = NULL;
+	shell = malloc(sizeof(t_shell));
+	(void)argv;
+	(void)argc;
+	init_env(&shell, env);
+	rl_catch_signals = 0;
+	main_loop(token_final, tokens, &shell, NULL);
 	return (0);
 }

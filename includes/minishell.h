@@ -69,15 +69,24 @@ int					check_for_special_signs(t_token_small *tokens);
 int					comp_vars_util(char **name, char **var_arr, int i, int j);
 int					isnum(char **name);
 int					single_dollar(char **name, char **new_name);
-int					parse_tokens(t_token_small *tokens,
-						t_token **token_final, t_token_small *head);
+int					parse_tokens(t_token_small *tokens, t_token \
+					**token_final, t_token_small *head, t_token *token_save);
+int					str_find(char **tokens);
+int					heredoc(t_token_small **tokens, t_token **token_final);
 int					add_redirs(t_token_small **tokens, t_token **tokfin);
+int					intlen(int to_count);
+int					env_len(char *str, char **name);
+int					put_global_error(char **new_name, char **name_ptr);
+int					check_echo(char *to_check);
+int					qch_usd(char *user_input, int i);
 
 char				*space_skip(char *user_input);
-char				*put_spaces(char *user_input);
+char				*put_spaces(char *user_input, int i, int size);
 char				*alloc(char *u_i, char *input_new);
 char				**add_fd(char **current, t_token_small *tokens,
 						int size, char **to_return);
+char				*move_env(char *env);
+char				**hand_s(char *to_print, char *token);
 
 void				before_quote(char *user_input, int pos, char **token);
 void				tokenadd_back(t_token_small *token, t_token_small *to_add);
@@ -86,11 +95,18 @@ void				get_tokens(char *user_input, t_token_small **tokens, int i);
 void				error(void);
 void				handle_dollar_signs(t_token_small **tokens);
 void				check_var(t_token_small **ptr, int dollar_index, int i);
-void				put_vars(char *new_name, t_token_small **ptr);
+void				put_vars(char *new_name, t_token_small **ptr, char *name_ptr, char *save);
 void				free_big_tokens(t_token **tokens);
 void				init_shell(t_token_small **tokens, t_shell **shell);
 void				init_env(t_shell **shell, char **envp);
 void				move_ptr(char **name);
+void				util_dollar(char **new_name, char **name_ptr);
+void				parse_tokens_util1(t_token **token_final, t_token_small *tokens);
+void				pick_the_right_flag(t_token **tokfin, t_token_small **tokens);
+void				arrcpy(char **to_be, char **current, char *to_add);
+void				sighandler3(int signal);
+void				sighandler2(int signal);
+void				sighandler3(int signal);
 
 //free_stuff
 void				free_tokens(t_token_small	**tokens);
@@ -106,6 +122,9 @@ t_token_small		*tokenadd_new(char *name, int type);
 t_token_small		*create_token(t_token_small *token, char *name, int type);
 t_token_small		*tokendelone(t_token_small *to_remove,
 						t_token_small **tokens);
+t_token_small		*reset_tokens(t_token **token_final,
+						t_token *token_save, t_token_small *head);
+t_token				*parse_tokens_util2(t_token **token_final, t_token_small *tokens);
 t_token				**tokenfinaladd(t_token **str, t_token_small *tokens);
 void				sighandler(int signum);
 void				sighandler2(int signal);

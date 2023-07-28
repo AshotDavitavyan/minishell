@@ -1,4 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_utils2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/28 13:50:17 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/28 13:50:20 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
+
+int	qch_usd(char *user_input, int i)
+{
+	while (i >= 0)
+	{
+		if (*user_input == '$')
+			return (1);
+		user_input--;
+		i--;
+	}
+	return (0);
+}
 
 int	check(char *user_input, char type, int i, int todo)
 {
@@ -21,14 +45,14 @@ int	check(char *user_input, char type, int i, int todo)
 
 void	before_quote(char *user_input, int pos, char **token)
 {
-	int i;
+	int	i;
 
 	i = pos;
 	while (pos > 0)
 	{
-		(*token)[pos-1] = *user_input;
+		(*token)[pos - 1] = *user_input;
 		pos--;
-		if(pos == 0)
+		if (pos == 0)
 			break ;
 		user_input--;
 	}
@@ -37,8 +61,8 @@ void	before_quote(char *user_input, int pos, char **token)
 
 int	after_quotes(char *user_input, char type)
 {
-	int i;
-	int size;
+	int	i;
+	int	size;
 
 	i = 0;
 	size = 0;

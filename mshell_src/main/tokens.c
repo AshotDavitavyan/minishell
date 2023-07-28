@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/27 19:03:05 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/27 19:03:07 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 char	*add_after_quotes(char **user_input, char *token, char type)
@@ -23,7 +35,8 @@ char	*add_after_quotes(char **user_input, char *token, char type)
 	return (token);
 }
 
-void	add_quote_token(char **user_input, char type, int pos, t_token_small **tokens)
+void	add_quote_token(char **user_input, char type, int pos, \
+t_token_small **tokens)
 {
 	char	*token;
 	char	*save;
@@ -72,25 +85,12 @@ void	add_token(char **user_input, int i, t_token_small **tokens)
 		(*user_input)++;
 	}
 	token[i] = '\0';
-	// (*user_input)++;
 	*tokens = create_token(*tokens, token, 0);
-}
-
-int qch_usd(char *user_input, int i)
-{
-	while (i >= 0)
-	{
-		if (*user_input == '$')
-			return (1);
-		user_input--;
-		i--;
-	}
-	return (0);
 }
 
 int	qcheck(char **user_input, int *i, char type, int s)
 {
-	char *save;
+	char	*save;
 
 	save = *user_input;
 	type = *(*user_input)++;

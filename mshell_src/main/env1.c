@@ -1,82 +1,20 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env1.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adavitav <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/28 13:52:23 by adavitav          #+#    #+#             */
+/*   Updated: 2023/07/28 13:52:23 by adavitav         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	init_shell(t_token_small **tokens, t_shell **shell)
-{
-	t_token_small *ptr;
-	(*shell)->token_small = *tokens;
-	ptr = *tokens;
-	while (ptr != NULL)
-	{
-		ptr->shell = *shell;
-		ptr = ptr->next;
-	}
-}
-
-void	move_ptr(char **name)
-{
-	char *sep;
-
-	sep = " <>|&./?@#$%^*-=+,[]{}\'\"";
-	if (**name == '$')
-		(*name)++;
-	while (ft_strchr(sep, **name) == NULL && **name != '\0')
-		(*name)++;
-}
-int	env_len(char *str, char **name)
-{
-	int i;
-
-	i = 0;
-	move_ptr(name);
-	while (*str != '=' && *str)
-		str++;
-	if (*str == '=')
-		str++;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-int	intlen(int to_count)
-{
-	int i;
-
-	i = 1;
-	while (to_count > 9)
-	{
-		to_count /= 10;
-		i++;
-	}
-	return (i);
-}
-int	comp_vars_util(char **name, char **var_arr, int i, int j)
-{
-	if (i != j)
-		return (0);
-	i = 0;
-	while (i < j)
-	{
-		if ((*name)[i + 1] != (*var_arr)[i])
-			return 0;
-		i++;
-	}
-	return (1);
-}
-
-
-int	isnum(char **name)
-{
-	if ((*name)[1] >= '0' && (*name)[1] <= '9')
-	{
-		(*name)+=2;
-		return (1);
-	}
-	return (0);
-}
+#include "../../includes/minishell.h"
 
 int	single_dollar(char **name, char **new_name)
 {
-	char *sep;
+	char	*sep;
 
 	sep = " <>|&./@#$%^*-=+,[]{}\'\"";
 	if (ft_strchr(sep, (*name)[1]) != NULL || (*name)[1] == '\0')
@@ -99,7 +37,7 @@ int	single_dollar(char **name, char **new_name)
 
 int	comp_vars(char **name, char **var_arr, int i, char *sep)
 {
-	int		j;
+	int	j;
 
 	if (single_dollar(name, NULL) == 1)
 		return (1);
@@ -154,34 +92,36 @@ int	quote_dollar(char **name, char **var_arr, int i, char type)
 
 void	check_var(t_token_small **ptr, int dollar_index, int i)
 {
-	char	*name_ptr;
-	char	*new_name = NULL;
+	char	*nam_ptr;
+	char	*new_name;
 
-	name_ptr = (*ptr)->name;
+	nam_ptr = (*ptr)->name;
+	new_name = NULL;
 	if (dollar_index == -1)
 		return ;
-	while (*name_ptr)
+	while (*nam_ptr)
 	{
-		if ((*name_ptr == 34 || *name_ptr == 39) && (*ptr)->type != 34)
+		if ((*nam_ptr == 34 || *nam_ptr == 39) && (*ptr)->type != 34)
 		{
-			i += quote_dollar(&name_ptr, (*ptr)->shell->envex, 0, *(name_ptr++));
+			i += quote_dollar(&nam_ptr, (*ptr)->shell->envex, 0, *(nam_ptr++));
 			continue ;
 		}
-		if (*name_ptr == '$')
+		if (*nam_ptr == '$')
 		{
-			i += comp_vars(&name_ptr, (*ptr)->shell->envex, 1, " <>|&./?@#$%^*-=+,[]{}\'\"");
+			i += comp_vars(&nam_ptr, (*ptr)->shell->envex, 1, \
+			" <>|&./?@#$%^*-=+,[]{}\'\"");
 			continue ;
 		}
-		name_ptr++;
+		nam_ptr++;
 		i++;
 	}
 	new_name = (char *)ft_calloc((i + 1), 1);
-	put_vars(new_name, ptr);
+	put_vars(new_name, ptr, (*ptr)->name, new_name);
 }
 
 void	handle_dollar_signs(t_token_small **tokens)
 {
-	t_token_small *ptr;
+	t_token_small	*ptr;
 
 	ptr = *tokens;
 	while (ptr != NULL)
