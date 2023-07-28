@@ -6,7 +6,7 @@
 /*   By: vgribkov <vgribkov@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 12:49:57 by vgribkov          #+#    #+#             */
-/*   Updated: 2023/07/27 18:39:36 by vgribkov         ###   ########.fr       */
+/*   Updated: 2023/07/28 14:51:35 by vgribkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,11 +149,11 @@ void				my_putstr(char *str);
 
 void				my_putstr(char *str);
 
-int					bi_export2(t_shell *shell, char **arr);
+int					bi_export2(t_shell *shell, char **arr, int i);
 
 int					push_in_arr(t_shell *shell, char *str);
 
-int					find_dup(t_shell *shell, char *str);
+int					find_dup(t_shell *shell, char *str, int i);
 
 int					bi_exit(t_token *token);
 
@@ -248,5 +248,11 @@ void				pipes_dups(t_token *token, int j);
 void				piping(t_token *token, int j, int i);
 
 void				fork_failed_error(void);
+
+int					unset_acheck(t_shell *shell, char *str);
+
+void				help_exp(t_shell **shell, int i, char *arr);
+
+char				*strdup_bez_pls(char *arr);
 
 #endif
