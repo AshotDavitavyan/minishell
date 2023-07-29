@@ -16,6 +16,11 @@ int	lexing(char *u_i, t_token_small **tokens, t_shell **shell, t_token **tbig)
 {
 	char	*u_i_space;
 
+	if (kastil(u_i) == 1)
+	{
+		free(u_i);
+		return (-1);
+	}
 	u_i_space = put_spaces(u_i, 0, 0);
 	free(u_i);
 	if (u_i_space == NULL)

@@ -63,6 +63,7 @@ typedef struct s_shell
 }				t_shell;
 
 int						g_global_error;
+int					kastil(char *user_input);
 int					check(char *user_input, char type, int i, int todo);
 int					after_quotes(char *user_input, char type);
 int					ft_strchr_num(const char *s, int c);

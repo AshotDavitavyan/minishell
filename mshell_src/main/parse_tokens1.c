@@ -29,7 +29,7 @@ int	check_tokfin(t_token **tokfin, t_token_small *tokens, t_token *save)
 		{
 			if (tokens->prev == NULL || tokens->next == NULL)
 			{
-				printf("minishell: syntax error near unexpected tokenasd `|'\n");
+				printf("minishell: syntax error near unexpected token `|'\n");
 				g_global_error = 258;
 				(*tokfin)->err = 258;
 				return (-1);

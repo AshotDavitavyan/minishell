@@ -12,6 +12,27 @@
 
 #include "../../includes/minishell.h"
 
+int	kastil(char *user_input)
+{
+	int	i;
+
+	i = 1;
+	if (!user_input)
+		return (0);
+	while (user_input[i] && user_input[i + 1])
+	{
+		if (user_input[i] == '|' && user_input[i - 1] == '|'
+			&& user_input[i + 1] == '|')
+		{
+			printf("minishell: syntax error near unexpected token `|'\n");
+			g_global_error = 258;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	skip_quotes(char *u, int *p, int size)
 {
 	char	type;
